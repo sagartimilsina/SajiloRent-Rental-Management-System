@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/8d6d549f25.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #ebf8ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        .rounded-full {
+            border-radius: 10rem !important;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #4299e1, #9f7aea);
+            border: none;
+        }
+
+        .or-divider {
+            position: relative;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .or-divider hr {
+            border-top: 5px solid;
+            border-image: linear-gradient(to right, #4299e1, #9f7aea) 1;
+        }
+
+        .or-divider span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 0 0.5rem;
+            color: #4299e1;
+            font-weight: bold;
+        }
+
+        .fa-google {
+            background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .position-absolute {
+            position: absolute;
+        }
+
+        .end-0 {
+            right: 0;
+        }
+
+        .top-50 {
+            top: 50%;
+        }
+
+        .translate-middle-y {
+            transform: translateY(-50%);
+        }
+
+        .register-hover:hover {
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="card shadow p-4 col-4">
+        <h2 class="text-center text-primary mb-4">Login to Your Account</h2>
+        <form>
+            <div class="form-group mb-4">
+                <div class=" d-flex align-items-center">
+                    <i class="fas fa-envelope fa-2x me-2"></i>
+                    <input type="text" class="form-control rounded-full" placeholder="Email">
+
+                </div>
+                <div class="text-danger m-1 mx-5">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Error message</span>
+                </div>
+            </div>
+            <div class="form-group mb-4">
+                <div class=" d-flex align-items-center position-relative">
+                    <i class="fas fa-lock fa-2x me-2"></i>
+                    <input type="password" id="password" class="form-control rounded-full" placeholder="Password"
+                        style="padding-right: 2.5rem;">
+                    <span class="position-absolute end-0 top-50 translate-middle-y me-3"
+                        onclick="togglePasswordVisibility()">
+                        <i class="fas fa-eye" id="toggleEye"></i>
+                    </span>
+                </div>
+                <div class="text-danger m-1 mx-5">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Error message</span>
+                </div>
+
+            </div>
+            <div class="form-group d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input ms-2 me-2" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                </div>
+                <a href="#" class="text-primary me-1 register-hover text-decoration-none">Forgot Password</a>
+            </div>
+            <a href="#" class="btn btn-gradient w-100 text-dark rounded-full mb-4 p-2 "
+                style="font-size: 18px;">Login</a>
+        </form>
+        <div class="or-divider mb-4">
+            <hr>
+            <span>OR</span>
+        </div>
+        <a href="#"
+            class="btn btn-light rounded-full border w-100 mb-4 d-flex align-items-center justify-content-center p-1 ">
+            <i class="fab fa-google fa-2x px-3"></i>
+            Sign in with Google
+        </a>
+
+        <div class="text-center ">
+            <p class="text-muted">Don’t have an account? <a href="#"
+                    class="text-primary register-hover text-decoration-none">Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ecW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById("password");
+            var toggleIcon = document.getElementById("toggleEye");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+    </script>
+</body>
+
+</html>
