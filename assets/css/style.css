@@ -552,4 +552,109 @@ h2 {
     margin-bottom: 1rem;
 }
 
+.gallery-image:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
 /* Gallery Section End */
+/* achievements section */
+.achievement-section {
+    position: relative;
+    background-image: url('https://storage.googleapis.com/a1aa/image/PWGDLPshtN5iDdQkZkydACT8bgzmHSq1JMpdN7wlXCuX3b8E.jpg');
+    background-size: cover;
+    background-position: center;
+    padding:20px 0px ;
+    text-align: center;
+    color: #fff;
+    height: auto;
+}
+
+.achievement-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    filter: blur(10px);
+    opacity: 0.8;
+    z-index: 0;
+}
+
+.achievement-section>* {
+    position: relative;
+    z-index: 1;
+}
+
+.achievement-section h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.achievement-section h2 {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+/* achievements section end */
+
+/* list your property contact */
+.list-your-section {
+    position: relative;
+    background-image: url('https://storage.googleapis.com/a1aa/image/PWGDLPshtN5iDdQkZkydACT8bgzmHSq1JMpdN7wlXCuX3b8E.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 20px 0px ;
+    text-align: center;
+    color: #fff;
+    height: auto;
+}
+
+.list-your-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    filter: blur(100px);
+    opacity: 0.8;
+    z-index: 0;
+
+}
+
+.list-your-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+.list-your-section button {
+    font-size: 1.1rem;
+    padding: 10px 25px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.list-your-section button:hover {
+    background-color: #0056b3;
+}
+
+.list-your-section h6 {
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+/* list your property contact */
