@@ -13,85 +13,69 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <style>
 
-    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark position-relative">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img alt="House Rent Logo" height="30"
-                    src="https://storage.googleapis.com/a1aa/image/eBW4yMPhVb3LdSFuWCVlB6vsLbOzrwqMgYcgusROpz4CDy3JA.jpg"
-                    width="30" />
-                House Rent
+            <a class="navbar-brand" href="index.html">
+                <img alt="House Rent Logo" height="60"
+                    src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+                    width="60" />
             </a>
             <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
                 class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <form class="navbar-search-mobile d-none ">
+                <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+            </form>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-
+                    <li class="nav-item"><a class="nav-link active-nav" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blogs.html">Blogs</a></li>
                     <li class="nav-item dropdown">
-                        <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                            id="navbarDropdownHouse" role="button">House</a>
-                        <ul aria-labelledby="navbarDropdownHouse" class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Product
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownPages">
+                            <li><a class="dropdown-item active-nav" href="product.html">Product Category 1</a></li>
+                            <li><a class="dropdown-item" href="product.html">Product Category 2</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                            id="navbarDropdownPages" role="button">Pages</a>
-                        <ul aria-labelledby="navbarDropdownPages" class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                            id="navbarDropdownBlog" role="button">Blog</a>
-                        <ul aria-labelledby="navbarDropdownBlog" class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link booking" href="#">BOOKING</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link booking" href="#">BOOKING</a></li>
                 </ul>
-                <span class="navbar-text me-3">
-                    <i class="fas fa-phone-alt"></i> CALL US - 01623 030020
-                </span>
-                <a class="nav-link" href="#" style="color: #00cc00;">LOGIN / REGISTER</a>
-                <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                <a class="nav-link" href="#"><i class="fas fa-bars"></i></a>
+                <div class="login-register">
+                    <a href="auth/login.html" class="btn btn-outline-warning login-no-hover">Login</a>
+                    <a href="auth/register.html" class="btn btn-warning">Register</a>
+                    <i class="fa fa-search fa-2x btn btn-outline-warning search-icon text-white me-2"
+                        aria-hidden="true"></i>
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- Search Form -->
+    <form class="navbar-search d-none position-absolute">
+        <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchIcon = document.querySelector(".search-icon");
+            const searchForm = document.querySelector(".navbar-search");
+
+            searchIcon.addEventListener("click", () => {
+                searchForm.classList.toggle("d-none");
+            });
+        });
+    </script>
+
+
     <main>
-
-        <style>
-            @media screen and (max-width: 1058px) {
-                .slider-section {
-                    height: auto;
-
-                }
-
-
-            }
-        </style>
         <!-- Slider Section Start -->
         <section class="slider-section">
             <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
@@ -154,7 +138,7 @@
             <div class="text-center">
                 <h5 class="we-provide text-dark  ">We Provide</h5>
             </div>
-            <div class="owl-carousel owl-theme">
+            <div class="owl-carousel owl-theme" id="provide-carousel">
                 <div class="item">
                     <div class="provide-icon">
                         <i class="fas fa-warehouse icon"></i>
@@ -212,9 +196,8 @@
             </div>
         </section>
         <!-- We Provide Section End -->
-
         <!-- Availability Section Start -->
-        <section class="mt-5 availibility-section">
+        <section class=" availibility-section">
             <div class="container py-5">
                 <h1>For rates & Availability</h1>
                 <h2>Search for Rent property</h2>
@@ -260,7 +243,7 @@
         </section>
         <!-- Availability Section End -->
         <!-- About Section Start -->
-        <section class="mt-5">
+        <section class="about-section">
             <div class="container py-5">
                 <div class="text-center mb-5">
                     <h1 class="title text-dark">About Us</h1>
@@ -313,7 +296,7 @@
                                 </div>
                                 <div class="col-lg-5 col-md-12">
                                     <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                                        height="400" class="img-fluid rounded shadow"
+                                        class="img-fluid rounded shadow"
                                         src="https://storage.googleapis.com/a1aa/image/jR8EVe5c5VS1EavtbJOQSChAT4DGOyXAT9NgeirfcTiGipgnA.jpg"
                                         width="400" />
                                 </div>
@@ -363,7 +346,7 @@
                                 </div>
                                 <div class="col-lg-5">
                                     <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                                        height="400" class="img-fluid rounded shadow"
+                                        class="img-fluid rounded shadow"
                                         src="https://storage.googleapis.com/a1aa/image/jR8EVe5c5VS1EavtbJOQSChAT4DGOyXAT9NgeirfcTiGipgnA.jpg"
                                         width="400" />
                                 </div>
@@ -983,353 +966,331 @@
         </section>
         <!-- list your property contact  ends -->
         <!-- Testimonial Section Start -->
-        <style>
-            .testimonial-section {
-                text-align: center;
-                padding: 50px 0;
-                position: relative;
-            }
-
-            .testimonial-section h1 {
-                font-size: 100px;
-                color: rgba(0, 0, 0, 0.05);
-                position: absolute;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1;
-            }
-
-            .testimonial-section h2 {
-                font-size: 24px;
-                font-weight: bold;
-                color: #333;
-                z-index: 2;
-                position: relative;
-            }
-
-            .testimonial-card {
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-                margin: 20px;
-                text-align: left;
-                position: relative;
-            }
-
-            .testimonial-card img {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                position: absolute;
-                top: -30px;
-                left: 50%;
-                transform: translateX(-50%);
-                border: 5px solid #fff;
-            }
-
-            .testimonial-card h3 {
-                font-size: 18px;
-                font-weight: bold;
-                margin-top: 40px;
-            }
-
-            .testimonial-card h4 {
-                font-size: 14px;
-                color: #777;
-                margin-bottom: 15px;
-            }
-
-            .testimonial-card p {
-                font-size: 14px;
-                color: #555;
-            }
-
-            .testimonial-card .stars {
-                color: #f39c12;
-            }
-
-            .carousel-indicators {
-                justify-content: center;
-                margin-top: 20px;
-            }
-
-            .carousel-indicators button {
-                background-color: #ddd;
-            }
-
-            .carousel-indicators .active {
-                background-color: #f39c12;
-            }
-        </style>
-        <!-- <section class="testimonial-section">
-            <div class="container">
-                <div class="section-header">
-                    <h1>Testimonial</h1>
-                    <h2><i class="fas fa-quote-left"></i> SOME REVIEWS</h2>
-                </div>
-                <div class="owl-carousel owl-theme">
-                   
-                    <div class="testimonial-item">
-                        <div class="testimonial-card">
-                            <div class="text-center">
-                                <img src="https://storage.googleapis.com/a1aa/image/NQecN2p97QTCFa7GZNTkdKiJIKrm1Kw7na37cLQpcHH8zC5JA.jpg"
-                                    alt="Avatar of Single Rakib" height="100" width="100" />
-                            </div>
-                            <h3>Single Rakib</h3>
-                            <p>Softhopper Manager</p>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Cras vitae nibh nisl. Cras etitikis mauris eget lorem ultricies fermentum.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+        <section class="container">
+            <div class="testimonial-section">
+                <h1>What Our Clients Say</h1>
+                <h2>
+                    <p><i class="fas fa-quote-right"></i></p> 
+                    Real feedback from our satisfied customers about their experiences.
+                </h2>
+                <div class="testimonial-container">
+                    <div id="testimonial-carousel" class="owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="testimonial-card">
+                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                                    alt="Single Rakib">
+                                <h3>Single Rakib</h3>
+                                <h4>Softhopper Manager</h4>
+                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                   
-                </div>
-            </div>
-        </section> -->
-
-        <section class="testimonial-section">
-            <h1>
-                Testimonial
-            </h1>
-            <h2>
-                <i class="fas fa-quote-right">
-                </i>
-                SOME REVIEWS
-            </h2>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
+                        <!-- Add more testimonial items below -->
+                        <div class="item">
+                            <div class="testimonial-card">
+                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                                    alt="Single Rakib">
+                                <h3>Single Rakib</h3>
+                                <h4>Softhopper Manager</h4>
+                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
+                        <div class="item">
+                            <div class="testimonial-card">
+                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                                    alt="Single Rakib">
+                                <h3>Single Rakib</h3>
+                                <h4>Softhopper Manager</h4>
+                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
+                        <div class="item">
+                            <div class="testimonial-card">
+                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                                    alt="Single Rakib">
+                                <h3>Single Rakib</h3>
+                                <h4>Softhopper Manager</h4>
+                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="testimonial-card">
-                            <img alt="Avatar of Single Rakib" height="60"
-                                src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                width="60" />
-                            <h3>
-                                Single Rakib
-                            </h3>
-                            <h4>
-                                Softhopper Manager
-                            </h4>
-                            <p>
-                                Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras
-                                etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-                            </p>
-                            <div class="stars">
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
-                                <i class="fas fa-star">
-                                </i>
+                        <div class="item">
+                            <div class="testimonial-card">
+                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                                    alt="Single Rakib">
+                                <h3>Single Rakib</h3>
+                                <h4>Softhopper Manager</h4>
+                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="carousel-indicators">
-                            <button aria-current="true" aria-label="Slide 1" class="active" data-bs-slide-to="0"
-                                data-bs-target="#carouselExampleIndicators" type="button">
-                            </button>
-                            <button aria-label="Slide 2" data-bs-slide-to="1"
-                                data-bs-target="#carouselExampleIndicators" type="button">
-                            </button>
-                            <button aria-label="Slide 3" data-bs-slide-to="2"
-                                data-bs-target="#carouselExampleIndicators" type="button">
-                            </button>
+        </section>
+        <!-- Testimonial Section End -->
+        <!-- Available section start -->
+        <section class="container">
+            <div class="contact-section">
+                <h1>We Are Available <br> For You 24/7</h1>
+                <p>OUR ONLINE SUPPORT SERVICE IS ALWAYS 24 HOURS</p>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="map-container">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537353153167!3d-37.8172099797517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d1b1f4b0b1b!2sStone%20%26%20Chalk%20Melbourne%20Startup%20Hub!5e0!3m2!1sen!2sau!4v1633072871234!5m2!1sen!2sau"
+                                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="contact-info">
+                            <div class="row justify-content-between ">
+                                <div class="mb-5 col-md-6 ">
+                                    <h5> <i class="fas fa-map-marker-alt me-2"></i>Address</h5>
+                                    <p>112/B - Road 121, King/St Melbourne Australia</p>
+                                </div>
+                                <div class="mb-5 col-md-6">
+                                    <h5> <i class="fas fa-envelope me-2"></i>Mail</h5>
+                                    <p>yourmail@domain.com<br>houserent@domain.com</p>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between ">
+                                <div class="mb-5 col-md-6">
+                                    <h5> <i class="fas fa-phone-alt me-2"></i>Call</h5>
+                                    <p>+99 0215469875<br>666 35874692050</p>
+                                </div>
+                                <div class="mb-5 col-md-6">
+                                    <h5> <i class="fas fa-user me-2"></i>Social account</h5>
+                                    <div class="social-icons">
+                                        <a href="#"><i class="fab fa-facebook "></i></a>
+                                        <a href="#"><i class="fab fa-twitter "></i></a>
+                                        <a href="#"><i class="fab fa-instagram "></i></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        <!-- Available section end -->
+        <!-- Blogs Section Start -->
+        <section class="blog-section container">
+            <div class="container text-center">
+                <h1 class="blog-title">
+                    Our Blogs
+                </h1>
+                <p class="blog-subtitle">
+                    Discover the Latest Trends & Insights in Rental Living
+                </p>
+            </div>
+            <div class="row">
+                <div class="  col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card blog-card">
+                        <img alt="Aerial view of a small town with houses and trees" class="card-img-top img-fluid"
+                            src="https://storage.googleapis.com/a1aa/image/lRe0UTQVo80NFCxe7ETkyNqHCdzVJ9MHPdUe8VDOub5pbknnA.jpg"
+                            width="600" />
+                        <div class="card-body blog-card-body">
+                            <p class="blog-card-text">
+                                July 25, 2016 | Rooms &amp; Suites
+                            </p>
+                             <h5 class="blog-card-title">
+                                <a href="#"> Finding best places to visit in California </a>
+                            </h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card blog-card">
+                        <img alt="A church with a tall steeple in a small town" class="card-img-top img-fluid"
+                            src="https://storage.googleapis.com/a1aa/image/w7YI5MZPHGJkBthc1yfoa2gLmR7y68FPmJIy1nAxjsI7G55JA.jpg"
+                            width="600" />
+                        <div class="card-body blog-card-body">
+                            <p class="blog-card-text">
+                                July 25, 2016 | Rooms &amp; Suites
+                            </p>
+                             <h5 class="blog-card-title">
+                                <a href="#"> Finding best places to visit in California </a>
+                            </h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card blog-card">
+                        <img alt="A house on a cliff overlooking the ocean" class="card-img-top img-fluid"
+                            src="https://storage.googleapis.com/a1aa/image/HEZU1atlN0ZoOV6nfe3IIy9Dkqf5c8BW3xyeeCeiOYQwcj88E.jpg"
+                            width="600" />
+                        <div class="card-body blog-card-body">
+                            <p class="blog-card-text">
+                                July 25, 2016 | Rooms &amp; Suites
+                            </p>
+                             <h5 class="blog-card-title">
+                                <a href="#"> Finding best places to visit in California </a>
+                            </h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card blog-card">
+                        <img alt="A house on a cliff overlooking the ocean" class="img-fluid"
+                            src="https://storage.googleapis.com/a1aa/image/HEZU1atlN0ZoOV6nfe3IIy9Dkqf5c8BW3xyeeCeiOYQwcj88E.jpg"
+                            width="600" />
+                        <div class="card-body blog-card-body">
+                            <p class="blog-card-text">
+                                July 25, 2016 | Rooms &amp; Suites
+                            </p>
+                             <h5 class="blog-card-title">
+                                <a href="#"> Finding best places to visit in California </a>
+                            </h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center my-4">
+                <button class="btn btn-primary">
+                    Show All
+                </button>
+            </div>
+        </section>
+        <!-- Blogs Section End -->
     </main>
+    <section class="footer-section">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h2 class="section-title">About Sajilo Rent</h2>
+                    <div class="about-house-rent">
+                        <img alt="House Rent Logo" height="100"
+                            src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+                            width="100" />
+                        <!-- <h2 style="color: #f39c12; font-size: 32px; font-weight: bold; ">Sajilo Rent</h2> -->
+                    </div>
+                    <p>
+                        We provide premium WordPress, Ghost, and HTML templates designed to be user-friendly and
+                        client-focused for seamless support.
+                    </p>
+                </div>
+
+                <!-- Place Categories -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Place Categories</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Francis</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Collins St</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Rose Ln</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Cosgrave Ln</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Bourke St</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Flinders Ln</a></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Quick Links</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Home</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">About Us</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Services</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Contact</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Contact Us</h2>
+                    <ul class="list-unstyled">
+                        <li><strong>Phone:</strong> +1 234 567 890</li>
+                        <li><strong>Email:</strong>
+                            <a href="mailto:support@houserent.com" style="color: #fff; text-decoration: none;">
+                                support@houserent.com
+                            </a>
+                        </li>
+                        <li><strong>Address:</strong> 123 Main St, Cityville, Country</li>
+                        <li><strong>Follow Us:</strong>
+                            <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none; ">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Payment Support -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Payment Support</h2>
+                    <ul class="list-unstyled">
+                        <li><strong>Accepted Payments:</strong></li>
+                        <li>
+                            <img src="https://cdn.esewa.com.np/ui/images/esewa_og.png?111" alt="eSewa"
+                                style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                            <img src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082018/untitled-1_110.png?NUSEVyMKG.6mmq9Jwutfm3zYrezAp4gA&itok=nwwsDR-M"
+                                alt="Khalti" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                            <img src="https://w7.pngwing.com/pngs/903/316/png-transparent-stripe-payment-gateway-payment-processor-authorize-net-colored-stripes-thumbnail.png"
+                                alt="Stripe" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                        </li>
+                        <li><strong>Support Line:</strong> +1 800 123 456</li>
+                        <li><strong>Refunds:</strong>
+                            <a href="mailto:support@sajilorent.com" style="color: #fff; text-decoration: none;">
+                                support@sajilorent.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="row text-center mt-2 ">
+                <div class="col-12">
+                    <p class="text-white">Copyright © 2024 <span style="color: #f39c12;">Sajilo Rent Group.</span> All
+                        rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
@@ -1341,30 +1302,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(".owl-carousel").owlCarousel({
-
-                responsive: {
-                    0: { items: 2 },   // Show 1 item on small screens
-                    600: { items: 5 }, // Show 3 items on medium screens
-
-                    1000: { items: 8 } // Show 5 items on large screens
-                },
-                loop: true,
-
-                autoplay: true,
-                autoplayTimeout: 3000,
-                autoplayHoverPause: true,
-
-                navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'], // Custom text/icons for nav
-                navContainer: '.owl-carousel ', // Specify container for nav buttons
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
 
             // Second Carousel Configuration
-            $(".owl-carousel").owlCarousel({
+            $("#provide-carousel").owlCarousel({
                 responsive: {
                     0: { items: 2 }, // Corrected Configuration
                     600: { items: 5 },
@@ -1380,58 +1320,25 @@
                 ],
                 navContainer: ".owl-carousel", // Ensure correct selector
             });
-        });
 
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const indicators = document.querySelectorAll('.carousel-indicators button');
-            let activeIndex = 0;
-
-            // Auto-slide functionality
-            const autoSlide = () => {
-                indicators[activeIndex].classList.remove('active');
-                activeIndex = (activeIndex + 1) % indicators.length;
-                indicators[activeIndex].classList.add('active');
-            };
-
-            let slideInterval = setInterval(autoSlide, 3000); // Change slides every 3 seconds
-
-            // Pause auto-slide on hover
-            const testimonialSection = document.querySelector('.testimonial-section');
-            testimonialSection.addEventListener('mouseenter', () => {
-                clearInterval(slideInterval);
-            });
-
-            testimonialSection.addEventListener('mouseleave', () => {
-                slideInterval = setInterval(autoSlide, 3000);
-            });
-
-            // Swipe functionality
-            let startX = 0;
-
-            testimonialSection.addEventListener('touchstart', (event) => {
-                startX = event.touches[0].clientX;
-            });
-
-            testimonialSection.addEventListener('touchend', (event) => {
-                const endX = event.changedTouches[0].clientX;
-
-                if (endX - startX > 50) {
-                    // Swipe right
-                    indicators[activeIndex].classList.remove('active');
-                    activeIndex = (activeIndex - 1 + indicators.length) % indicators.length;
-                    indicators[activeIndex].classList.add('active');
-                } else if (startX - endX > 50) {
-                    // Swipe left
-                    indicators[activeIndex].classList.remove('active');
-                    activeIndex = (activeIndex + 1) % indicators.length;
-                    indicators[activeIndex].classList.add('active');
+            $("#testimonial-carousel").owlCarousel({
+                loop: true,  // Enables looping of the carousel
+                nav: false,  // Disables navigation arrows
+                dots: true,  // Enables pagination dots
+                autoplay: true,  // Enables auto-rotation of the carousel
+                autoplayTimeout: 3000,  // Time between each slide
+                autoplayHoverPause: true,  // Pause autoplay on hover
+                rewind: true,  // Enables the looping behavior, ensuring that the last item loops back to the first
+                responsive: {
+                    0: { items: 1 },        // Displays 1 item for small screens
+                    600: { items: 1 },      // Displays 1 item for medium screens
+                    992: { items: 2 },      // Displays 2 items for larger screens
+                    1400: { items: 3 }      // Displays 3 items for extra-large screens
                 }
             });
+
         });
     </script>
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Trigger showContent for the default active content

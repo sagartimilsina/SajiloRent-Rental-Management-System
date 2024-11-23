@@ -1,0 +1,102 @@
+<html>
+<head>
+    <title>Frequently Asked Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .faq-header {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .faq-header h1 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .faq-header p {
+            font-size: 16px;
+            color: #666;
+        }
+        .faq-item {
+            border-top: 1px solid #e5e5e5;
+            padding: 20px 0;
+        }
+        .faq-item:first-child {
+            border-top: none;
+        }
+        .faq-question {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            margin-top: 10px;
+            display: none;
+            font-size: 16px;
+            color: #666;
+        }
+        .faq-answer p {
+            margin: 0;
+        }
+        .faq-answer ul {
+            padding-left: 20px;
+        }
+        .faq-answer ul li {
+            list-style-type: disc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="faq-header">
+            <h1>Frequently Asked Question</h1>
+            <p>Here are some frequently asked questions (FAQ's) that our clients asked.</p>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>What Features Does Your LMS Offer?</span>
+                <span class="toggle-icon">-</span>
+            </div>
+            <div class="faq-answer" style="display: block;">
+                <p>Our LMS offers a variety of features including:</p>
+                <ul>
+                    <li>User friendly interface</li>
+                    <li>Customizable modules</li>
+                    <li>Robust reporting</li>
+                    <li>Mobile compatibility</li>
+                </ul>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>How Can I Access The LMS?</span>
+                <span class="toggle-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <!-- Answer content goes here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const answer = item.nextElementSibling;
+                const icon = item.querySelector('.toggle-icon');
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    icon.textContent = '+';
+                } else {
+                    answer.style.display = 'block';
+                    icon.textContent = '-';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

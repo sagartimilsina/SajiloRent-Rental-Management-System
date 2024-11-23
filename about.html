@@ -1,121 +1,541 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>About Us</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-    }
-    .title {
-      font-family: 'Playfair Display', serif;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <title>House Rent</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
 </head>
-<body class="bg-white text-gray-800">
 
-  <div class="container my-5">
-    <div class="text-center mb-4">
-      <h1 class="title display-4 text-dark">About Us</h1>
-      <p class="h5 text-primary mt-2">WELCOME TO OUR HOUSE RENT COMPANY</p>
-    </div>
-
-    <div class="row">
-      <!-- Sidebar Section -->
-      <div class="col-md-3 mb-4">
-        <ul class="list-unstyled">
-          <li class="mb-3">
-            <button class="btn btn-link p-0" onclick="showContent('about-company')">
-              <i class="fas fa-building me-2"></i><span class="h5">About Company</span>
-            </button>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark position-relative">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img alt="House Rent Logo" height="60"
+          src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+          width="60" />
+      </a>
+      <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+        data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <form class="navbar-search-mobile d-none ">
+        <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+      </form>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active-nav" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="blogs.html">Blogs</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Product
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownPages">
+              <li><a class="dropdown-item" href="#">Product Category 1</a></li>
+              <li><a class="dropdown-item" href="#">Product Category 2</a></li>
+            </ul>
           </li>
-          <li class="mb-3">
-            <button class="btn btn-link p-0" onclick="showContent('terms-condition')">
-              <i class="fas fa-gavel me-2"></i><span class="h5">Terms &amp; Condition</span>
-            </button>
-          </li>
-          <li class="mb-3">
-            <button class="btn btn-link p-0" onclick="showContent('our-specialty')">
-              <i class="fas fa-star me-2"></i><span class="h5">Our Specialty</span>
-            </button>
-          </li>
-          <li class="mb-3">
-            <button class="btn btn-link p-0" onclick="showContent('our-specialty-2')">
-              <i class="fas fa-star-half-alt me-2"></i><span class="h5">Our Specialty</span>
-            </button>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item"><a class="nav-link booking" href="#">BOOKING</a></li>
         </ul>
-      </div>
-
-      <!-- Content Section -->
-      <div class="col-md-9">
-        <div class="content-section" id="about-company">
-          <p class="lead mb-4">
-            Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies. Cras etitikis mauris eget lorem ultricies ferme ntum a inti diam.
-          </p>
-          <ul class="list-unstyled">
-            <li><i class="fas fa-check me-2"></i> Amorem ipsum dolor sit amet, consectetur</li>
-            <li><i class="fas fa-check me-2"></i> Cras etitikis mauris egeth lorem ultricies</li>
-          </ul>
+        <div class="login-register">
+          <a href="auth/login.html" class="btn btn-outline-warning login-no-hover">Login</a>
+          <a href="auth/register.html" class="btn btn-warning">Register</a>
+          <i class="fa fa-search fa-2x btn btn-outline-warning search-icon text-white me-2" aria-hidden="true"></i>
         </div>
-
-        <div class="content-section hidden" id="terms-condition">
-          <p class="lead mb-4">
-            Terms and conditions content goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam.
-          </p>
-          <ul class="list-unstyled">
-            <li><i class="fas fa-check me-2"></i> Term 1: Lorem ipsum dolor sit amet</li>
-            <li><i class="fas fa-check me-2"></i> Term 2: Cras etitikis mauris egeth lorem ultricies</li>
-          </ul>
-        </div>
-
-        <div class="content-section hidden" id="our-specialty">
-          <p class="lead mb-4">
-            Our specialty content goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam.
-          </p>
-          <ul class="list-unstyled">
-            <li><i class="fas fa-check me-2"></i> Specialty 1: Lorem ipsum dolor sit amet</li>
-            <li><i class="fas fa-check me-2"></i> Specialty 2: Cras etitikis mauris egeth lorem ultricies</li>
-          </ul>
-        </div>
-
-        <div class="content-section hidden" id="our-specialty-2">
-          <p class="lead mb-4">
-            Our second specialty content goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam.
-          </p>
-          <ul class="list-unstyled">
-            <li><i class="fas fa-check me-2"></i> Specialty 1: Lorem ipsum dolor sit amet</li>
-            <li><i class="fas fa-check me-2"></i> Specialty 2: Cras etitikis mauris egeth lorem ultricies</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Image Section -->
-      <div class="col-md-3">
-        <img alt="A beautiful house with a red roof surrounded by trees and greenery" class="img-fluid rounded-lg shadow-lg" src="https://storage.googleapis.com/a1aa/image/giB2uGVdJXrLA5Cn3eOmsn2TOSxV6laHFqZcJ82bzsgrKK4JA.jpg"/>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <!-- Bootstrap 5 JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
+  <!-- Search Form -->
+  <form class="navbar-search d-none position-absolute">
+    <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+  </form>
   <script>
-    function showContent(sectionId) {
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchIcon = document.querySelector(".search-icon");
+      const searchForm = document.querySelector(".navbar-search");
+
+      searchIcon.addEventListener("click", () => {
+        searchForm.classList.toggle("d-none");
+      });
+    });
+  </script>
+ 
+
+  <main>
+    <section class="breadcrumb-hero">
+      <div class="breadcrumb-overlay">
+        <nav class="breadcrumb">
+          <a class="breadcrumb-item" href="index.html">Home</a>
+          <a href="#" class="breadcrumb-item active" aria-current="page"> About</a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- About Section Start -->
+    <section class="container mt-5">
+      <div class="about-section">
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <h1 class="title text-dark text-start">About Us</h1>
+            <h4 class="text-secondary fs-5 text-start">WELCOME TO OUR <span class="text-warning">SAJIO RENT</span>
+              COMPANY </h4>
+            <p class="text-start"> Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Cras vitae nibh nisl.
+              Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
+              mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.
+            </p>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <img alt="A beautiful house with a red roof surrounded by trees and greenery"
+              class="img-fluid rounded shadow"
+              src="https://storage.googleapis.com/a1aa/image/jR8EVe5c5VS1EavtbJOQSChAT4DGOyXAT9NgeirfcTiGipgnA.jpg" />
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- About Section End -->
+    <!-- Rooms and property Section Start -->
+
+    <section class="container">
+      <div class="rent-property">
+        <div class="header text-center mb-5">
+          <h1>Meet the Team Behind Your Rental Experience</h1>
+          <p class="text-secondary fs-5">Dedicated professionals ensuring seamless and hassle-free rental solutions for
+            you.</p>
+        </div>
+        <div class="row justify-content-center">
+          <!-- Team Member 1 -->
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+            <div class="card">
+              <img alt="Sagar Timilsina" class="img-fluid" height="200px" src="/assets/images/team2.jpeg" />
+              <a href="#" class="text-decoration-none">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Sagar Timilsina</h5>
+                  <p class="card-text">Rental Property Manager</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Team Member 2 -->
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+            <div class="card">
+              <img alt="Prakriti Timilsina" class="img-fluid" src="/assets/images/team2.jpeg" />
+              <a href="#" class="text-decoration-none">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Prakriti Timilsina</h5>
+                  <p class="card-text">Customer Relations Manager</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Team Member 3 -->
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+            <div class="card">
+              <img alt="Aashish Paudel" class="img-fluid" src="/assets/images/team2.jpeg" />
+              <a href="#" class="text-decoration-none">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Aashish Paudel</h5>
+                  <p class="card-text">Marketing Specialist</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Team Member 4 -->
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+            <div class="card">
+              <img alt="Pramila Timilsina" class="img-fluid" src="/assets/images/team2.jpeg" />
+              <a href="#" class="text-decoration-none">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Pramila Timilsina</h5>
+                  <p class="card-text">Operations Manager</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Testimonial Section Start -->
+    <section class="container">
+      <div class="testimonial-section">
+        <div class="header text-center ">
+          <h1>What Our Clients Say</h1>
+          <h2>
+            <p><i class="fas fa-quote-right"></i></p>
+            Real feedback from our satisfied customers about their experiences.
+          </h2>
+        </div>
+        <div id="testimonial-carousel" class="owl-carousel owl-theme">
+          <!-- Testimonial 1 -->
+          <div class="item">
+            <div class="testimonial-card text-center">
+              <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                alt="Single Rakib" class="rounded-circle mb-3" width="100" height="100">
+              <h3>Single Rakib</h3>
+              <h4 class="text-secondary">Softhopper Manager</h4>
+              <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl."</p>
+              <div class="stars text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <!-- Add more testimonials below -->
+          <div class="item">
+            <div class="testimonial-card text-center">
+              <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                alt="Sophia Johnson" class="rounded-circle mb-3" width="100" height="100">
+              <h3>Sophia Johnson</h3>
+              <h4 class="text-secondary">Product Manager</h4>
+              <p>"Amazing service! The process was smooth and hassle-free. Highly recommend."</p>
+              <div class="stars text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="testimonial-card text-center">
+              <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
+                alt="Michael Lee" class="rounded-circle mb-3" width="100" height="100">
+              <h3>Michael Lee</h3>
+              <h4 class="text-secondary">Entrepreneur</h4>
+              <p>"The team is professional and attentive. My rental needs were handled perfectly."</p>
+              <div class="stars text-warning">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+   
+
+    <!-- Testimonial Section End -->
+
+    <!-- FAQ Section Start -->
+    <section class="container">
+      <div class="faq-section">
+        <div class="faq-header">
+          <h1>Frequently Asked Questions</h1>
+          <p>Find answers to some of the most commonly asked questions about our rental system.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h5>How does the rental system work?</h5>
+            <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Our rental system allows you to browse available items, select your preferred rental period, and complete
+              your booking online. You can also manage your rentals through your account.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h5>What items can I rent?</h5>
+            <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>You can rent a wide variety of items, including:</p>
+            <ul>
+              <li>Electronics (e.g., laptops, cameras)</li>
+              <li>Furniture</li>
+              <li>Event supplies</li>
+              <li>Vehicles</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h5>What is the payment process?</h5>
+            <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>You can pay securely through our platform using credit/debit cards, online wallets, or bank transfers.
+              Payments must be completed before the rental period begins.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h5>Can I extend my rental period?</h5>
+            <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes, you can extend your rental period by logging into your account and modifying your booking.
+              Additional charges may apply.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <h5>What is the cancellation policy?</h5>
+            <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+          </div>
+          <div class="faq-answer">
+            <p>You can cancel your booking up to 24 hours before the rental period starts for a full refund.
+              Cancellations made within 24 hours may incur a fee.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FAQ Section End -->
+
+
+  </main>
+  <section class="footer-section">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- About Section -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <h2 class="section-title">About Sajilo Rent</h2>
+          <div class="about-house-rent">
+            <img alt="House Rent Logo" height="100"
+              src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+              width="100" />
+            <!-- <h2 style="color: #f39c12; font-size: 32px; font-weight: bold; ">Sajilo Rent</h2> -->
+          </div>
+          <p>
+            We provide premium WordPress, Ghost, and HTML templates designed to be user-friendly and
+            client-focused for seamless support.
+          </p>
+        </div>
+
+        <!-- Place Categories -->
+        <div class="col-lg-2 col-md-6 mb-4 place-category">
+          <h2 class="section-title">Place Categories</h2>
+          <ul class="list-unstyled">
+            <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Francis</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Collins St</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Rose Ln</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Cosgrave Ln</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Bourke St</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Flinders Ln</a></li>
+          </ul>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-lg-2 col-md-6 mb-4 place-category">
+          <h2 class="section-title">Quick Links</h2>
+          <ul class="list-unstyled">
+            <li><a href="#" style="color: #fff; text-decoration: none;">Home</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">About Us</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Services</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">Contact</a></li>
+            <li><a href="#" style="color: #fff; text-decoration: none;">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="col-lg-2 col-md-6 mb-4 place-category">
+          <h2 class="section-title">Contact Us</h2>
+          <ul class="list-unstyled">
+            <li><strong>Phone:</strong> +1 234 567 890</li>
+            <li><strong>Email:</strong>
+              <a href="mailto:support@houserent.com" style="color: #fff; text-decoration: none;">
+                support@houserent.com
+              </a>
+            </li>
+            <li><strong>Address:</strong> 123 Main St, Cityville, Country</li>
+            <li><strong>Follow Us:</strong>
+              <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none; ">
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Payment Support -->
+        <div class="col-lg-2 col-md-6 mb-4 place-category">
+          <h2 class="section-title">Payment Support</h2>
+          <ul class="list-unstyled">
+            <li><strong>Accepted Payments:</strong></li>
+            <li>
+              <img src="https://cdn.esewa.com.np/ui/images/esewa_og.png?111" alt="eSewa"
+                style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+              <img
+                src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082018/untitled-1_110.png?NUSEVyMKG.6mmq9Jwutfm3zYrezAp4gA&itok=nwwsDR-M"
+                alt="Khalti" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+              <img
+                src="https://w7.pngwing.com/pngs/903/316/png-transparent-stripe-payment-gateway-payment-processor-authorize-net-colored-stripes-thumbnail.png"
+                alt="Stripe" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+            </li>
+            <li><strong>Support Line:</strong> +1 800 123 456</li>
+            <li><strong>Refunds:</strong>
+              <a href="mailto:support@sajilorent.com" style="color: #fff; text-decoration: none;">
+                support@sajilorent.com
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="row text-center mt-2 ">
+        <div class="col-12">
+          <p class="text-white">Copyright © 2024 <span style="color: #f39c12;">Sajilo Rent Group.</span> All
+            rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Owl Carousel JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script>
+    document.querySelectorAll('.faq-question').forEach(item => {
+      item.addEventListener('click', () => {
+        const answer = item.nextElementSibling;
+        const icon = item.querySelector('.toggle-icon i');
+
+        // Toggle visibility of the answer
+        if (answer.style.display === 'block') {
+          answer.style.display = 'none';
+          icon.className = 'fa fa-plus';
+        } else {
+          answer.style.display = 'block';
+          icon.className = 'fa fa-minus';
+        }
+      });
+    });
+
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      // Second Carousel Configuration
+      $("#provide-carousel").owlCarousel({
+        responsive: {
+          0: { items: 2 }, // Corrected Configuration
+          600: { items: 5 },
+          1000: { items: 8 },
+        },
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        navText: [
+          '<i class="fas fa-chevron-left"></i>',
+          '<i class="fas fa-chevron-right"></i>',
+        ],
+        navContainer: ".owl-carousel", // Ensure correct selector
+      });
+
+      $("#testimonial-carousel").owlCarousel({
+        loop: true,  // Enables looping of the carousel
+        nav: false,  // Disables navigation arrows
+        dots: true,  // Enables pagination dots
+        autoplay: true,  // Enables auto-rotation of the carousel
+        autoplayTimeout: 3000,  // Time between each slide
+        autoplayHoverPause: true,  // Pause autoplay on hover
+        rewind: true,  // Enables the looping behavior, ensuring that the last item loops back to the first
+        responsive: {
+          0: { items: 1 },        // Displays 1 item for small screens
+          600: { items: 1 },      // Displays 1 item for medium screens
+          992: { items: 2 },      // Displays 2 items for larger screens
+          1400: { items: 3 }      // Displays 3 items for extra-large screens
+        }
+      });
+
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Trigger showContent for the default active content
+      showContent('about-company', document.querySelector('.nav-item.active'));
+    });
+
+    function showContent(sectionId, element) {
+      // Hide all content sections
       const sections = document.querySelectorAll('.content-section');
       sections.forEach(section => {
-        section.classList.add('hidden');
+        section.classList.add('d-none');
       });
-      document.getElementById(sectionId).classList.remove('hidden');
+
+      // Show the clicked section
+      document.getElementById(sectionId).classList.remove('d-none');
+
+      // Remove 'active' class from all navigation items
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('active-about-nav');
+      });
+
+      // Add 'active' class to the clicked nav item
+      element.classList.add('active-about-nav');
     }
   </script>
 
+
+
+  <script>
+    // JavaScript to handle image click and modal image update
+    document.querySelectorAll('[data-bs-image]').forEach(imgLink => {
+      imgLink.addEventListener('click', function () {
+        const imgSrc = this.getAttribute('data-bs-image');
+        const modalImg = document.getElementById('modalImage');
+        modalImg.setAttribute('src', imgSrc);
+      });
+    });
+  </script>
+
+
 </body>
+
 </html>
