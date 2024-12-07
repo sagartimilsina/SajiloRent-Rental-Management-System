@@ -121,9 +121,9 @@
             </form>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active-nav" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="blogs.html">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link " href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active-nav" href="blogs.html">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" role="button"
@@ -131,23 +131,139 @@
                             Product
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownPages">
-                            <li><a class="dropdown-item" href="product.html">Product Category 1</a></li>
+                            <li><a class="dropdown-item  " href="product.html">Product Category 1</a></li>
                             <li><a class="dropdown-item" href="product.html">Product Category 2</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link booking" href="#">BOOKING</a></li>
+    
+                    <li class="nav-item">
+                        <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
+                            List your Property
+                        </a>
+                    </li>
                 </ul>
                 <div class="login-register">
                     <a href="auth/login.html" class="btn btn-outline-warning login-no-hover">Login</a>
-                    <a href="auth/register.html" class="btn btn-warning">Register</a>
-                    <i class="fa fa-search fa-2x btn btn-outline-warning search-icon text-white me-2"
+                    <a href="auth/register.html" class="btn btn-warning" style="background-color: #f39c12;">Register</a>
+                    <i class="fa fa-search fa-2x btn  btn-outline-warning search-icon text-white me-2"
                         aria-hidden="true"></i>
                 </div>
             </div>
         </div>
+        <!-- Modal for Submitting Request -->
+        <div class="modal fade" id="listPropertyModal" tabindex="-1" aria-labelledby="listPropertyModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="submitRequestModalLabel">Request to List Your Property</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="requestForm" enctype="multipart/form-data">
+                            <div class="accordion" id="userTypeAccordion">
+                                <!-- Normal User Section -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingNormalUser">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseNormalUser" aria-expanded="true"
+                                            aria-controls="collapseNormalUser">
+                                            Normal User
+                                        </button>
+                                    </h2>
+                                    <div id="collapseNormalUser" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingNormalUser" data-bs-parent="#userTypeAccordion">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="mb-3 col-6">
+                                                    <label for="fullName" class="form-label">Full Name</label>
+                                                    <input type="text" class="form-control" id="fullName"
+                                                        placeholder="Enter your full name" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="contactNumber" class="form-label">Contact Number</label>
+                                                    <input type="text" class="form-control" id="contactNumber"
+                                                        placeholder="+(00)0-9999-9999" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="emailAddress" class="form-label">Email Address</label>
+                                                    <input type="email" class="form-control" id="emailAddress"
+                                                        placeholder="example@domain.com" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="govtId" class="form-label">Government-Issued ID</label>
+                                                    <input type="file" class="form-control" id="govtId"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <!-- Company Section -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingCompany">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseCompany"
+                                            aria-expanded="false" aria-controls="collapseCompany">
+                                            Company
+                                        </button>
+                                    </h2>
+                                    <div id="collapseCompany" class="accordion-collapse collapse"
+                                        aria-labelledby="headingCompany" data-bs-parent="#userTypeAccordion">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="mb-3 col-6">
+                                                    <label for="businessName" class="form-label">Business/Company
+                                                        Name</label>
+                                                    <input type="text" class="form-control" id="businessName"
+                                                        placeholder="Enter business or company name" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="ownershipProof" class="form-label">Proof of
+                                                        Ownership/Business Registration</label>
+                                                    <input type="file" class="form-control" id="ownershipProof"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="addressProof" class="form-label">Proof of
+                                                        Address</label>
+                                                    <input type="file" class="form-control" id="addressProof"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="govtIdCompany" class="form-label">Government-Issued
+                                                        ID</label>
+                                                    <input type="file" class="form-control" id="govtIdCompany"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Agreement Checkbox -->
+                            <div class="mb-3 mt-3">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <label for="agreeTerms" class="form-label">I agree to the terms and conditions of the
+                                    system.</label>
+                            </div>
+    
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
     </nav>
-
+    
+    
+    
     <!-- Search Form -->
     <form class="navbar-search d-none position-absolute">
         <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
@@ -156,7 +272,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const searchIcon = document.querySelector(".search-icon");
             const searchForm = document.querySelector(".navbar-search");
-
+    
             searchIcon.addEventListener("click", () => {
                 searchForm.classList.toggle("d-none");
             });
@@ -165,15 +281,17 @@
 
 
     <main>
-        <section class="breadcrumb-hero">
-            <div class="breadcrumb-overlay">
-                <nav class="breadcrumb">
-                    <a class="breadcrumb-item" href="index.html">Home</a>
-                    <a class="breadcrumb-item" href="blogs.html">Blogs</a>
-                    <a href="#" class="breadcrumb-item active" aria-current="page"> Blogs Details</a>
-                </nav>
+        <section class="breadcrumb-hero ">
+            <hr>
+            <div class="container text-start breadcrumb-overlay" style="padding: 0;">
+              <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="index.html">Home</a>
+                <a class="" href="index.html">Blogs</a>
+                <a href="#" class="active-nav" aria-current="page">Blogs Name</a>
+              </nav>
             </div>
-        </section>
+            <hr>
+          </section>
 
         <section class="container container-left  mt-4">
             <div class="row">

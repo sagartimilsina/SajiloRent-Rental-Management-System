@@ -13,7 +13,6 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-
 </head>
 
 <body>
@@ -43,22 +42,138 @@
                             Product
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownPages">
-                            <li><a class="dropdown-item active-nav" href="product.html">Product Category 1</a></li>
+                            <li><a class="dropdown-item  " href="product.html">Product Category 1</a></li>
                             <li><a class="dropdown-item" href="product.html">Product Category 2</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link booking" href="#">BOOKING</a></li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
+                            List your Property
+                        </a>
+                    </li>
                 </ul>
                 <div class="login-register">
                     <a href="auth/login.html" class="btn btn-outline-warning login-no-hover">Login</a>
-                    <a href="auth/register.html" class="btn btn-warning">Register</a>
-                    <i class="fa fa-search fa-2x btn btn-outline-warning search-icon text-white me-2"
+                    <a href="auth/register.html" class="btn btn-warning" style="background-color: #f39c12;">Register</a>
+                    <i class="fa fa-search fa-2x btn  btn-outline-warning search-icon text-white me-2"
                         aria-hidden="true"></i>
                 </div>
             </div>
         </div>
+        <!-- Modal for Submitting Request -->
+        <div class="modal fade" id="listPropertyModal" tabindex="-1" aria-labelledby="listPropertyModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="submitRequestModalLabel">Request to List Your Property</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="requestForm" enctype="multipart/form-data">
+                            <div class="accordion" id="userTypeAccordion">
+                                <!-- Normal User Section -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingNormalUser">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseNormalUser" aria-expanded="true"
+                                            aria-controls="collapseNormalUser">
+                                            Normal User
+                                        </button>
+                                    </h2>
+                                    <div id="collapseNormalUser" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingNormalUser" data-bs-parent="#userTypeAccordion">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="mb-3 col-6">
+                                                    <label for="fullName" class="form-label">Full Name</label>
+                                                    <input type="text" class="form-control" id="fullName"
+                                                        placeholder="Enter your full name" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="contactNumber" class="form-label">Contact Number</label>
+                                                    <input type="text" class="form-control" id="contactNumber"
+                                                        placeholder="+(00)0-9999-9999" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="emailAddress" class="form-label">Email Address</label>
+                                                    <input type="email" class="form-control" id="emailAddress"
+                                                        placeholder="example@domain.com" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="govtId" class="form-label">Government-Issued ID</label>
+                                                    <input type="file" class="form-control" id="govtId"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Company Section -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingCompany">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseCompany"
+                                            aria-expanded="false" aria-controls="collapseCompany">
+                                            Company
+                                        </button>
+                                    </h2>
+                                    <div id="collapseCompany" class="accordion-collapse collapse"
+                                        aria-labelledby="headingCompany" data-bs-parent="#userTypeAccordion">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="mb-3 col-6">
+                                                    <label for="businessName" class="form-label">Business/Company
+                                                        Name</label>
+                                                    <input type="text" class="form-control" id="businessName"
+                                                        placeholder="Enter business or company name" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="ownershipProof" class="form-label">Proof of
+                                                        Ownership/Business Registration</label>
+                                                    <input type="file" class="form-control" id="ownershipProof"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="addressProof" class="form-label">Proof of
+                                                        Address</label>
+                                                    <input type="file" class="form-control" id="addressProof"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="govtIdCompany" class="form-label">Government-Issued
+                                                        ID</label>
+                                                    <input type="file" class="form-control" id="govtIdCompany"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agreement Checkbox -->
+                            <div class="mb-3 mt-3">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <label for="agreeTerms" class="form-label">I agree to the terms and conditions of the
+                                    system.</label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </nav>
+
+
 
     <!-- Search Form -->
     <form class="navbar-search d-none position-absolute">
@@ -284,9 +399,13 @@
                             <div class="row">
                                 <div class="col-lg-7 col-md-12">
                                     <p class="fs-5 mb-4 text-start">
-                                        Sajilo Rent is an innovative rental management system designed to address inefficiencies in traditional renting methods. 
-                                        It serves as a centralized platform where individuals can find and manage rental properties, including rooms, apartments, commercial spaces, tools, and vehicles, with ease.
-                                        Sajilo Rent simplifies the rental experience, promotes trust, and supports cultural and social integration.
+                                        Sajilo Rent is an innovative rental management system designed to address
+                                        inefficiencies in traditional renting methods.
+                                        It serves as a centralized platform where individuals can find and manage rental
+                                        properties, including rooms, apartments, commercial spaces, tools, and vehicles,
+                                        with ease.
+                                        Sajilo Rent simplifies the rental experience, promotes trust, and supports
+                                        cultural and social integration.
                                     </p>
                                     <ul class="list-unstyled">
                                         <li class="mb-2">
@@ -316,20 +435,27 @@
                                     <ul class="list-unstyled">
                                         <li class="mb-2">
                                             For Property Owners:
-                                            Term 1: Provide accurate and up-to-date property details; false information may result in removal.
+                                            Term 1: Provide accurate and up-to-date property details; false information
+                                            may result in removal.
                                             Term 2:Ensure your property complies with all local and national laws.
-                                            Term 3:You are responsible for drafting and managing rental agreements with tenants.
+                                            Term 3:You are responsible for drafting and managing rental agreements with
+                                            tenants.
                                             Term 4:Address tenant maintenance requests promptly.
-                                            Term 5:Prohibited activities include spam listings, discrimination, and promoting illegal activities.
-                                            
+                                            Term 5:Prohibited activities include spam listings, discrimination, and
+                                            promoting illegal activities.
+
                                         </li>
                                         <li class="mb-2">
                                             For Property Seekers
-                                            Term 1: rovide truthful information and verify property details before renting.
-                                            Term 2:Respect property owners during communication; harassment is prohibited.
+                                            Term 1: rovide truthful information and verify property details before
+                                            renting.
+                                            Term 2:Respect property owners during communication; harassment is
+                                            prohibited.
                                             Term 3:Payments made through Sajilo Rent must follow platform guidelines.
-                                            Term 4:Ensure you inspect properties physically or online before finalizing agreements.
-                                            Term 5:Use the platform only for rental-related purposes; fraudulent activities are forbidden.
+                                            Term 4:Ensure you inspect properties physically or online before finalizing
+                                            agreements.
+                                            Term 5:Use the platform only for rental-related purposes; fraudulent
+                                            activities are forbidden.
                                         </li>
                                     </ul>
                                 </div>
@@ -939,7 +1065,7 @@
                             rhoncus.
                             Nam ute ultricies.
                         </p>
-                        <button class="btn btn-custom btn-primary btn-lg">
+                        <button class="btn  btn-primary btn-lg">
                             ALL PHOTOS &amp; VIDEO
                         </button>
                     </div>
@@ -968,12 +1094,12 @@
                 <div class="row align-items-center justify-content-center text-center">
                     <div class="col-md-6">
                         <h1 class="fw-bold text-white">Do you want to rent your property?</h1>
-                        <h6 class="text-primary">Call us and list your property here.</h6>
+                        <h6 class=" " style="color:#f39c12">Call us and list your property here.</h6>
                     </div>
                     <div class="col-md-6">
                         <h6>+977 9819113548</h6>
                         <h6>info.sajilorent@gmail.com</h6>
-                        <button class="btn btn-primary btn-lg mt-3">Contact Us</button>
+                        <a href="contact.html" class="btn btn-primary "> Contact Us</a>
                     </div>
                 </div>
             </div>
@@ -984,7 +1110,7 @@
             <div class="testimonial-section">
                 <h1>What Our Clients Say</h1>
                 <h2>
-                    <p><i class="fas fa-quote-right"></i></p> 
+                    <p><i class="fas fa-quote-right"></i></p>
                     Real feedback from our satisfied customers about their experiences.
                 </h2>
                 <div class="testimonial-container">
@@ -1092,17 +1218,18 @@
                             <div class="row justify-content-between ">
                                 <div class="mb-5 col-md-6 ">
                                     <h5> <i class="fas fa-map-marker-alt me-2"></i>Address</h5>
-                                    <p>112/B - Road 121, King/St Melbourne Australia</p>
+                                    <a href="#" class="text-decoration-none p">112/B - Road 121, King/St Melbourne
+                                        Australia</a>
                                 </div>
                                 <div class="mb-5 col-md-6">
                                     <h5> <i class="fas fa-envelope me-2"></i>Mail</h5>
-                                    <p>yourmail@domain.com<br>houserent@domain.com</p>
+                                    <a href="mailto:yourmail@domain.com" class="text-decoration-none ">yourmail@domain.com</a> <br> <a href="mailto:houserent@domain.com" class="text-decoration-none ">houserent@domain.com</a>
                                 </div>
                             </div>
                             <div class="row justify-content-between ">
                                 <div class="mb-5 col-md-6">
                                     <h5> <i class="fas fa-phone-alt me-2"></i>Call</h5>
-                                    <p>+99 0215469875<br>666 35874692050</p>
+                                    <a href="tel:+99 0215469875" class="text-decoration-none ">+99 0215469875<br> <a href="tel:+88 0215469875" class="text-decoration-none "> +88 0215469875</a>
                                 </div>
                                 <div class="mb-5 col-md-6">
                                     <h5> <i class="fas fa-user me-2"></i>Social account</h5>
@@ -1139,8 +1266,8 @@
                             <p class="blog-card-text">
                                 July 25, 2016 | Rooms &amp; Suites
                             </p>
-                             <h5 class="blog-card-title">
-                                <a href="#"> Finding best places to visit in California </a>
+                            <h5 class="blog-card-title">
+                                <a href="blog_details.html"> Finding best places to visit in California </a>
                             </h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
@@ -1155,8 +1282,8 @@
                             <p class="blog-card-text">
                                 July 25, 2016 | Rooms &amp; Suites
                             </p>
-                             <h5 class="blog-card-title">
-                                <a href="#"> Finding best places to visit in California </a>
+                            <h5 class="blog-card-title">
+                                <a href="blog_details.html"> Finding best places to visit in California </a>
                             </h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
@@ -1171,8 +1298,8 @@
                             <p class="blog-card-text">
                                 July 25, 2016 | Rooms &amp; Suites
                             </p>
-                             <h5 class="blog-card-title">
-                                <a href="#"> Finding best places to visit in California </a>
+                            <h5 class="blog-card-title">
+                                <a href="blog_details.html"> Finding best places to visit in California </a>
                             </h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
@@ -1187,8 +1314,8 @@
                             <p class="blog-card-text">
                                 July 25, 2016 | Rooms &amp; Suites
                             </p>
-                             <h5 class="blog-card-title">
-                                <a href="#"> Finding best places to visit in California </a>
+                            <h5 class="blog-card-title">
+                                <a href="blog_details.html"> Finding best places to visit in California </a>
                             </h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
