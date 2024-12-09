@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>House Rent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark position-relative">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img alt="House Rent Logo" height="60"
+                    src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+                    width="60" />
+            </a>
+            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <form class="navbar-search-mobile d-none ">
+                <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+            </form>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link " href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link " href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active-nav" href="blogs.html">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Product
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownPages">
+                            <li><a class="dropdown-item  " href="product.html">Product Category 1</a></li>
+                            <li><a class="dropdown-item" href="product.html">Product Category 2</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
+                            List your Property
+                        </a>
+                    </li>
+                </ul>
+                <div class="login-register">
+                    <a href="auth/login.html" class="btn btn-outline-warning login-no-hover">Login</a>
+                    <a href="auth/register.html" class="btn btn-warning" style="background-color: #f39c12;">Register</a>
+                    <i class="fa fa-search fa-2x btn  btn-outline-warning search-icon text-white me-2"
+                        aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for Submitting Request -->
+        <div class="modal fade" id="listPropertyModal" tabindex="-1" aria-labelledby="listPropertyModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="submitRequestModalLabel">Request to List Your Property</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="requestForm" enctype="multipart/form-data">
+                            <div class="accordion" id="userTypeAccordion">
+                                <!-- Normal User Section -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingNormalUser">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseNormalUser" aria-expanded="true"
+                                            aria-controls="collapseNormalUser">
+                                            Normal User
+                                        </button>
+                                    </h2>
+                                    <div id="collapseNormalUser" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingNormalUser" data-bs-parent="#userTypeAccordion">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="mb-3 col-6">
+                                                    <label for="fullName" class="form-label">Full Name</label>
+                                                    <input type="text" class="form-control" id="fullName"
+                                                        placeholder="Enter your full name" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="contactNumber" class="form-label">Contact Number</label>
+                                                    <input type="text" class="form-control" id="contactNumber"
+                                                        placeholder="+(00)0-9999-9999" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="emailAddress" class="form-label">Email Address</label>
+                                                    <input type="email" class="form-control" id="emailAddress"
+                                                        placeholder="example@domain.com" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="govtId" class="form-label">Government-Issued ID</label>
+                                                    <input type="file" class="form-control" id="govtId"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Company Section -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingCompany">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseCompany"
+                                            aria-expanded="false" aria-controls="collapseCompany">
+                                            Company
+                                        </button>
+                                    </h2>
+                                    <div id="collapseCompany" class="accordion-collapse collapse"
+                                        aria-labelledby="headingCompany" data-bs-parent="#userTypeAccordion">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="mb-3 col-6">
+                                                    <label for="businessName" class="form-label">Business/Company
+                                                        Name</label>
+                                                    <input type="text" class="form-control" id="businessName"
+                                                        placeholder="Enter business or company name" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="ownershipProof" class="form-label">Proof of
+                                                        Ownership/Business Registration</label>
+                                                    <input type="file" class="form-control" id="ownershipProof"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="addressProof" class="form-label">Proof of
+                                                        Address</label>
+                                                    <input type="file" class="form-control" id="addressProof"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                                <div class="mb-3 col-6">
+                                                    <label for="govtIdCompany" class="form-label">Government-Issued
+                                                        ID</label>
+                                                    <input type="file" class="form-control" id="govtIdCompany"
+                                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agreement Checkbox -->
+                            <div class="mb-3 mt-3">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <label for="agreeTerms" class="form-label">I agree to the terms and conditions of the
+                                    system.</label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </nav>
+
+
+
+    <!-- Search Form -->
+    <form class="navbar-search d-none position-absolute">
+        <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchIcon = document.querySelector(".search-icon");
+            const searchForm = document.querySelector(".navbar-search");
+
+            searchIcon.addEventListener("click", () => {
+                searchForm.classList.toggle("d-none");
+            });
+        });
+    </script>
+
+    <section class="breadcrumb-hero ">
+        <hr>
+        <div class="container text-start breadcrumb-overlay" style="padding: 0;">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="index.html">Home</a>
+                <a class="" href="cart.html">Cart</a>
+
+
+                <a href="#" class="active-nav" aria-current="page">Checkout </a>
+            </nav>
+        </div>
+        <hr>
+    </section>
+    <div class="container mt-3">
+
+        
+        <div class="row">
+            <!-- Order Summary -->
+            <div class="col-md-6 ">
+                <div class="order-summary">
+                    <h5>Order Summary</h5>
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <div class="d-flex align-items-center">
+                            <img src="https://placehold.co/80x80" alt="Wireless Headphones" class="me-3">
+                            <div>
+                                <div>XB950B1 EXTRA BASS™ Wireless Headphones</div>
+                                <small class="text-muted">MDR-XB950B1</small>
+                            </div>
+                        </div>
+                        <div>$399.99</div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <div class="d-flex align-items-center">
+                            <img src="https://placehold.co/80x80" alt="Red Backpack" class="me-3">
+                            <div>
+                                <div>Supreme Louis Vuitton Backpack</div>
+                                <small class="text-muted">Red</small>
+                            </div>
+                        </div>
+                        <div>$157.99</div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <div class="d-flex align-items-center">
+                            <img src="https://placehold.co/80x80" alt="Blue Volt Shoes" class="me-3">
+                            <div>
+                                <div>Armory Navy Gamma Blue Volt</div>
+                                <small class="text-muted">Nike Air Max 2013</small>
+                            </div>
+                        </div>
+                        <div>$115.98</div>
+                    </div>
+                    <div class="d-flex justify-content-between my-3">
+                        <div>SUB-TOTAL</div>
+                        <div>$673.96</div>
+                    </div>
+                    <div class="d-flex justify-content-between my-3">
+                        <div>SHIPPING</div>
+                        <div>$20.00</div>
+                    </div>
+                    <div class="d-flex justify-content-between my-3">
+                        <div>TOTAL</div>
+                        <div>$693.96</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="col-md-6 ">
+                <div class="checkout">
+                    <h5>Checkout</h5>
+                    <div class="accordion" id="paymentAccordion">
+                        <!-- Esewa -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="esewaHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#esewaCollapse" aria-expanded="false" aria-controls="esewaCollapse">
+                                    <img src="https://cdn.esewa.com.np/ui/images/esewa_og.png?111" alt="eSewa"
+                                        style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                                    eSewa
+                                </button>
+                            </h2>
+                            <div id="esewaCollapse" class="accordion-collapse collapse" aria-labelledby="esewaHeading"
+                                data-bs-parent="#paymentAccordion">
+                                <div class="accordion-body">
+                                    <h5 class="text-center mb-3">Pay with eSewa</h5>
+                                    <div class="mb-2">
+                                        <input type="text" class="form-control" id="esewaName" placeholder="Enter your Name">
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="email" class="form-control" id="esewaEmail" placeholder="Enter your Email">
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="tel" class="form-control" id="esewaPhone" placeholder="Enter your Phone Number">
+                                    </div>
+                                    <button class="btn btn-success w-100">Pay with eSewa</button>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Khalti -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="khaltiHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#khaltiCollapse" aria-expanded="false" aria-controls="khaltiCollapse">
+                                    <img src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082018/untitled-1_110.png?NUSEVyMKG.6mmq9Jwutfm3zYrezAp4gA&itok=nwwsDR-M"
+                                        alt="Khalti" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                                    Khalti
+                                </button>
+                            </h2>
+                            <div id="khaltiCollapse" class="accordion-collapse collapse" aria-labelledby="khaltiHeading"
+                                data-bs-parent="#paymentAccordion">
+                                <div class="accordion-body">
+                                    <h5 class="text-center mb-3">Pay with Khalti</h5>
+                                    <div class="mb-2">
+                                        <input type="text" class="form-control" id="khaltiName" placeholder="Enter your Name">
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="email" class="form-control" id="khaltiEmail" placeholder="Enter your Email">
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="tel" class="form-control" id="khaltiPhone" placeholder="Enter your Phone Number">
+                                    </div>
+                                    <button class="btn btn-primary w-100">Pay with Khalti</button>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Stripe -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="stripeHeading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#stripeCollapse" aria-expanded="false" aria-controls="stripeCollapse">
+                                    <img src="https://w7.pngwing.com/pngs/903/316/png-transparent-stripe-payment-gateway-payment-processor-authorize-net-colored-stripes-thumbnail.png"
+                                        alt="Stripe" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                                    Stripe
+                                </button>
+                            </h2>
+                            <div id="stripeCollapse" class="accordion-collapse collapse" aria-labelledby="stripeHeading"
+                                data-bs-parent="#paymentAccordion">
+                                <div class="accordion-body">
+                                    <h5 class="text-center mb-3">Pay with Stripe</h5>
+                                    <div class="mb-2">
+                                        <label for="cardHolderName" class="text-start d-block">Card Holder's Name</label>
+                                        <input type="text" class="form-control" id="cardHolderName"
+                                            placeholder="Enter the cardholder's name">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="cardNumber" class="text-start d-block">Card Number</label>
+                                        <input type="text" class="form-control" id="cardNumber" placeholder="Enter the card number">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2">
+                                            <label for="expirationDate" class="text-start d-block">Expiration Date</label>
+                                            <input type="text" class="form-control" id="expirationDate" placeholder="MM/YY">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <label for="cvv" class="text-start d-block">CVV</label>
+                                            <input type="text" class="form-control" id="cvv" placeholder="Enter CVV (e.g., 123)">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger w-100">Pay with Stripe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="footer-section">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h2 class="section-title">About Sajilo Rent</h2>
+                    <div class="about-house-rent">
+                        <img alt="House Rent Logo" height="100"
+                            src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+                            width="100" />
+                        <!-- <h2 style="color: #f39c12; font-size: 32px; font-weight: bold; ">Sajilo Rent</h2> -->
+                    </div>
+                    <p>
+                        We provide premium WordPress, Ghost, and HTML templates designed to be user-friendly and
+                        client-focused for seamless support.
+                    </p>
+                </div>
+
+                <!-- Place Categories -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Place Categories</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Francis</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Collins St</a>
+                        </li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Rose Ln</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Cosgrave Ln</a>
+                        </li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Bourke St</a>
+                        </li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Flinders Ln</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Quick Links</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Home</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">About Us</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Services</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">Contact</a></li>
+                        <li><a href="#" style="color: #fff; text-decoration: none;">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Contact Us</h2>
+                    <ul class="list-unstyled">
+                        <li><strong>Phone:</strong> +1 234 567 890</li>
+                        <li><strong>Email:</strong>
+                            <a href="mailto:support@houserent.com" style="color: #fff; text-decoration: none;">
+                                support@houserent.com
+                            </a>
+                        </li>
+                        <li><strong>Address:</strong> 123 Main St, Cityville, Country</li>
+                        <li><strong>Follow Us:</strong>
+                            <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none; ">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Payment Support -->
+                <div class="col-lg-2 col-md-6 mb-4 place-category">
+                    <h2 class="section-title">Payment Support</h2>
+                    <ul class="list-unstyled">
+                        <li><strong>Accepted Payments:</strong></li>
+                        <li>
+                            <img src="https://cdn.esewa.com.np/ui/images/esewa_og.png?111" alt="eSewa"
+                                style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                            <img src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082018/untitled-1_110.png?NUSEVyMKG.6mmq9Jwutfm3zYrezAp4gA&itok=nwwsDR-M"
+                                alt="Khalti" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                            <img src="https://w7.pngwing.com/pngs/903/316/png-transparent-stripe-payment-gateway-payment-processor-authorize-net-colored-stripes-thumbnail.png"
+                                alt="Stripe" style="margin-right: 10px; object-fit: cover;" width="50" height="30" />
+                        </li>
+                        <li><strong>Support Line:</strong> +1 800 123 456</li>
+                        <li><strong>Refunds:</strong>
+                            <a href="mailto:support@sajilorent.com" style="color: #fff; text-decoration: none;">
+                                support@sajilorent.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="row text-center mt-2 ">
+                <div class="col-12">
+                    <p class="text-white">Copyright © 2024 <span style="color: #f39c12;">Sajilo Rent Group.</span>
+                        All
+                        rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Second Carousel Configuration
+            $("#provide-carousel").owlCarousel({
+                responsive: {
+                    0: { items: 2 }, // Corrected Configuration
+                    600: { items: 5 },
+                    1000: { items: 8 },
+                },
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                navText: [
+                    '<i class="fas fa-chevron-left"></i>',
+                    '<i class="fas fa-chevron-right"></i>',
+                ],
+                navContainer: ".owl-carousel", // Ensure correct selector
+            });
+
+            $("#testimonial-carousel").owlCarousel({
+                loop: true,  // Enables looping of the carousel
+                nav: false,  // Disables navigation arrows
+                dots: true,  // Enables pagination dots
+                autoplay: true,  // Enables auto-rotation of the carousel
+                autoplayTimeout: 3000,  // Time between each slide
+                autoplayHoverPause: true,  // Pause autoplay on hover
+                rewind: true,  // Enables the looping behavior, ensuring that the last item loops back to the first
+                responsive: {
+                    0: { items: 1 },        // Displays 1 item for small screens
+                    600: { items: 1 },      // Displays 1 item for medium screens
+                    992: { items: 2 },      // Displays 2 items for larger screens
+                    1400: { items: 3 }      // Displays 3 items for extra-large screens
+                }
+            });
+
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Trigger showContent for the default active content
+            showContent('about-company', document.querySelector('.nav-item.active'));
+        });
+
+        function showContent(sectionId, element) {
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.add('d-none');
+            });
+
+            // Show the clicked section
+            document.getElementById(sectionId).classList.remove('d-none');
+
+            // Remove 'active' class from all navigation items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active-about-nav');
+            });
+
+            // Add 'active' class to the clicked nav item
+            element.classList.add('active-about-nav');
+        }
+    </script>
+
+
+
+    <script>
+        // JavaScript to handle image click and modal image update
+        document.querySelectorAll('[data-bs-image]').forEach(imgLink => {
+            imgLink.addEventListener('click', function () {
+                const imgSrc = this.getAttribute('data-bs-image');
+                const modalImg = document.getElementById('modalImage');
+                modalImg.setAttribute('src', imgSrc);
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

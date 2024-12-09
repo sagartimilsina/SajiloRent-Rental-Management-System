@@ -1,0 +1,377 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-bright-blue: #008dd2 !important;
+    --color-light-blue: #e9f5fb !important;
+    --color-yellow-orange: #f39c12 !important;
+    --color-purple: #b69cfc !important;
+    --color-light-pink: #f7c6c7 !important;
+    --color-light-grey: #1a2b4c !important;
+}
+
+
+body {
+    background-color: var(--color-light-blue);
+
+}
+
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    background-color: #ffffff;
+}
+
+.rounded-full {
+    border-radius: 10rem !important;
+}
+
+.btn-gradient {
+    background: linear-gradient(to right, #4299e1, #9f7aea);
+    border: none;
+}
+
+.or-divider {
+    position: relative;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.or-divider hr {
+    border-top: 5px solid;
+    border-image: linear-gradient(to right, #4299e1, #9f7aea) 1;
+}
+
+.or-divider span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 0 0.5rem;
+    color: #4299e1;
+    font-weight: bold;
+}
+
+.text-primary {
+    color: var(--color-light-grey) !important;
+}
+
+.form-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--color-light-grey)
+}
+
+.form-control,
+.form-select {
+    font-size: 1.1rem;
+    color: var(--color-light-grey);
+}
+
+.form-control:focus {
+    border-color: var(--color-yellow-orange);
+    box-shadow: 0 0 0 0.01rem var(--color-yellow-orange);
+}
+
+.form-select:focus {
+    border-color: var(--color-yellow-orange);
+    box-shadow: 0 0 0 0.01rem var(--color-yellow-orange);
+}
+
+/* Button Primary Default State */
+.btn-primary {
+    background-color: var(--color-yellow-orange);
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.1s ease;
+}
+
+/* Hover State */
+.btn-primary:hover {
+    background-color: var(--color-bright-blue);
+}
+
+/* Active State (When clicked) */
+.btn-primary:active {
+    background-color: var(--color-light-pink);
+    /* A lighter color for pressed state */
+    transform: scale(0.96);
+    /* Shrink slightly for a "pressed" effect */
+}
+
+/* Focus State (Keyboard Navigation or Click) */
+.btn-primary:focus {
+    outline: none;
+    /* Remove default browser outline */
+    box-shadow: 0 0 0 4px var(--color-light-blue);
+    /* Custom focus indicator */
+}
+
+.fa-google {
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.end-0 {
+    right: 0;
+}
+
+.top-50 {
+    top: 50%;
+}
+
+.translate-middle-y {
+    transform: translateY(-50%);
+}
+
+.register-hover:hover {
+    color: var(--color-bright-blue)!important;
+    text-decoration: underline !important;
+}
+
+.fa-2x {
+    font-size: 1.5rem !important;
+}
+
+
+.otp-input {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    font-size: 24px;
+    margin: 0 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #e5e7eb;
+}
+
+.otp-input:focus {
+    background-color: #ffffff;
+    border-color: var(--color-yellow-orange);
+    outline: none;
+}
+
+.btn-gradient {
+    background: linear-gradient(to right, #4299e1, #9f7aea);
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.75rem;
+    border: none;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(to right, #9f7aea, #4299e1);
+}
+
+.timer {
+    color: #555;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.resend-button {
+    cursor: not-allowed;
+    opacity: 0.6;
+    text-decoration: none;
+}
+
+.resend-button.enabled {
+    cursor: pointer;
+    opacity: 1;
+    color: var(--color-bright-blue);
+    text-decoration: none;
+}
+
+.text-danger {
+    color: red;
+}
+
+.text-center p {
+    color: #333;
+}
+
+@media screen and (max-width: 420px) {
+    .otp-input-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .rounded-full {
+        width: 100% !important;
+    }
+
+}
+
+
+
+.navbar {
+    background-color: var(--color-light-grey);
+    color: white;
+}
+
+.navbar-brand {
+    color: var(--color-yellow-orange);
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--color-yellow-orange);
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: var(--color-light-grey);
+    border: none;
+}
+
+.navbar-nav .dropdown-item {
+    color: #fff;
+}
+
+.navbar-nav .dropdown-item:hover {
+    color: var(--color-light-grey);
+}
+
+.navbar-nav .nav-link.booking {
+    color: var(--color-yellow-orange);
+}
+
+.navbar .login-no-hover {
+    color: #fff;
+}
+
+.navbar .login-no-hover:hover {
+    background-color: transparent !important;
+
+}
+
+.navbar-search {
+    position: absolute;
+    right: 0;
+    background: var(--color-bright-blue);
+    max-width: 100%;
+    padding: 10px;
+    z-index: 1050;
+}
+
+.navbar-search input {
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+.search-icon:hover {
+    background-color: var(--color-yellow-orange) !important;
+}
+
+
+.active-nav {
+    color: var(--color-yellow-orange) !important;
+    font-weight: 600;
+}
+
+
+
+
+@media screen and (max-width: 992px) {
+    .navbar .navbar-search-mobile {
+        width: 100%;
+        display: flex !important;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .search-icon {
+        display: none !important;
+    }
+}
+
+/* footer section */
+.footer-section {
+    background-color: var(--color-light-grey);
+    color: #fff;
+    padding: 40px 0;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--color-yellow-orange);
+}
+
+.section-title {
+    color: var(--color-yellow-orange);
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.about-house-rent {
+    display: flex;
+    align-items: center;
+
+}
+
+.about-house-rent img {
+    margin-right: 10px;
+
+}
+
+.about-house-rent h2 {
+    color: var(--color-yellow-orange);
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.place-category ul {
+    list-style: none;
+    padding: 0;
+}
+
+.place-category ul li {
+    margin-bottom: 10px;
+}
+
+
+.place-category ul li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.place-category ul li a:hover {
+    color: var(--color-bright-blue) !important;
+    transition: all 0.3s ease-in-out;
+}
