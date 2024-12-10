@@ -5,19 +5,23 @@
 }
 
 :root {
-    --color-bright-blue: #008dd2 !important;
-    --color-light-blue: #e9f5fb !important;
-    --color-yellow-orange: #f39c12 !important;
+    --primary: #008dd2 !important;
+    --body-color: #e9f5fb !important;
+    --secondary: #FF8000 !important;
     --color-purple: #b69cfc !important;
     --color-light-pink: #f7c6c7 !important;
-    --color-light-grey: #1a2b4c !important;
+    --main-primary: #1a2b4c !important;
 }
+
 
 
 body {
-    background-color: var(--color-light-blue);
+    background-color: var(--body-color);
 
 }
+
+
+
 
 .card {
     border-radius: 0.5rem;
@@ -26,9 +30,9 @@ body {
     background-color: #ffffff;
 }
 
-.rounded-full {
+/* .rounded-full {
     border-radius: 10rem !important;
-}
+} */
 
 .btn-gradient {
     background: linear-gradient(to right, #4299e1, #9f7aea);
@@ -58,34 +62,34 @@ body {
 }
 
 .text-primary {
-    color: var(--color-light-grey) !important;
+    color: var(--main-primary) !important;
 }
 
 .form-label {
     font-size: 1rem;
     font-weight: bold;
-    color: var(--color-light-grey)
+    color: var(--main-primary)
 }
 
 .form-control,
 .form-select {
     font-size: 1.1rem;
-    color: var(--color-light-grey);
+    color: var(--main-primary);
 }
 
 .form-control:focus {
-    border-color: var(--color-yellow-orange);
-    box-shadow: 0 0 0 0.01rem var(--color-yellow-orange);
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 0.01rem var(--secondary);
 }
 
 .form-select:focus {
-    border-color: var(--color-yellow-orange);
-    box-shadow: 0 0 0 0.01rem var(--color-yellow-orange);
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 0.01rem var(--secondary);
 }
 
 /* Button Primary Default State */
 .btn-primary {
-    background-color: var(--color-yellow-orange);
+    background-color: var(--secondary);
     border: none;
     color: #fff;
     padding: 10px 20px;
@@ -98,7 +102,8 @@ body {
 
 /* Hover State */
 .btn-primary:hover {
-    background-color: var(--color-bright-blue);
+    background-color: var(--primary);
+    color: #fff !important;
 }
 
 /* Active State (When clicked) */
@@ -113,7 +118,7 @@ body {
 .btn-primary:focus {
     outline: none;
     /* Remove default browser outline */
-    box-shadow: 0 0 0 4px var(--color-light-blue);
+    box-shadow: 0 0 0 4px var(--body-color);
     /* Custom focus indicator */
 }
 
@@ -146,7 +151,7 @@ body {
 }
 
 .register-hover:hover {
-    color: var(--color-bright-blue)!important;
+    color: var(--primary) !important;
     text-decoration: underline !important;
 }
 
@@ -168,7 +173,7 @@ body {
 
 .otp-input:focus {
     background-color: #ffffff;
-    border-color: var(--color-yellow-orange);
+    border-color: var(--secondary);
     outline: none;
 }
 
@@ -200,7 +205,7 @@ body {
 .resend-button.enabled {
     cursor: pointer;
     opacity: 1;
-    color: var(--color-bright-blue);
+    color: var(--primary);
     text-decoration: none;
 }
 
@@ -221,21 +226,20 @@ body {
         gap: 10px;
     }
 
-    .rounded-full {
+    /* .rounded-full {
         width: 100% !important;
-    }
+    } */
 
 }
 
 
-
 .navbar {
-    background-color: var(--color-light-grey);
+    background-color: var(--main-primary);
     color: white;
 }
 
 .navbar-brand {
-    color: var(--color-yellow-orange);
+    color: var(--secondary);
     font-size: 35px;
     font-weight: bold;
 }
@@ -247,13 +251,13 @@ body {
 }
 
 .navbar-nav .nav-link:hover {
-    color: var(--color-yellow-orange);
+    color: var(--primary);
     transform: scale(1.1);
     transition: all 0.3s ease-in-out;
 }
 
 .navbar-nav .dropdown-menu {
-    background-color: var(--color-light-grey);
+    background-color: var(--main-primary);
     border: none;
 }
 
@@ -262,26 +266,32 @@ body {
 }
 
 .navbar-nav .dropdown-item:hover {
-    color: var(--color-light-grey);
+    color: var(--main-primary);
 }
 
 .navbar-nav .nav-link.booking {
-    color: var(--color-yellow-orange);
+    color: var(--secondary);
 }
 
 .navbar .login-no-hover {
     color: #fff;
 }
 
-.navbar .login-no-hover:hover {
-    background-color: transparent !important;
+a.btn.btn-outline-warning.login-no-hover:hover {
+    background-color: var(--primary) !important;
 
 }
+
+a.btn.btn-outline-warning.register-button:hover {
+    background-color: var(--primary) !important;
+    color: #fff;
+}
+
 
 .navbar-search {
     position: absolute;
     right: 0;
-    background: var(--color-bright-blue);
+    background: var(--main-primary);
     max-width: 100%;
     padding: 10px;
     z-index: 1050;
@@ -294,12 +304,12 @@ body {
 }
 
 .search-icon:hover {
-    background-color: var(--color-yellow-orange) !important;
+    background-color: var(--secondary) !important;
 }
 
 
 .active-nav {
-    color: var(--color-yellow-orange) !important;
+    color: var(--secondary) !important;
     font-weight: 600;
 }
 
@@ -321,7 +331,7 @@ body {
 
 /* footer section */
 .footer-section {
-    background-color: var(--color-light-grey);
+    background-color: var(--main-primary);
     color: #fff;
     padding: 40px 0;
 }
@@ -329,11 +339,11 @@ body {
 .footer {
     text-align: center;
     margin-top: 20px;
-    color: var(--color-yellow-orange);
+    color: var(--secondary);
 }
 
 .section-title {
-    color: var(--color-yellow-orange);
+    color: var(--secondary);
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -351,7 +361,7 @@ body {
 }
 
 .about-house-rent h2 {
-    color: var(--color-yellow-orange);
+    color: var(--secondary);
     font-size: 32px;
     font-weight: bold;
 }
@@ -372,6 +382,6 @@ body {
 }
 
 .place-category ul li a:hover {
-    color: var(--color-bright-blue) !important;
+    color: var(--primary) !important;
     transition: all 0.3s ease-in-out;
 }
