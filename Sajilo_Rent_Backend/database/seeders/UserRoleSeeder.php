@@ -14,10 +14,9 @@ class UserRoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['role_names' => 'Super Admin'],
-            ['role_names' => 'Admin'],
-            ['role_names' => 'Tenant'],
-            ['role_names' => 'User']
+            ['role_name' => 'Super Admin'],
+            ['role_name' => 'Admin'],
+            ['role_name' => 'User']
         ];
 
         // Loop through each role and create it in the database

@@ -14,7 +14,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('normal_login_store') }}" method="POST">
+            <form action="{{ route('login.store') }}" method="POST">
                 @csrf
 
                 <!-- Login Field -->
@@ -77,7 +77,7 @@
             </div>
 
             <!-- Google Login -->
-            <a href="{{ route('google_login') }}"
+            <a href="{{ route('google.login') }}"
                 class="btn btn-light rounded-full border w-100 mb-4 d-flex align-items-center justify-content-center p-2">
                 <i class="fab fa-google fa-2x px-3"></i>
                 Sign in with Google

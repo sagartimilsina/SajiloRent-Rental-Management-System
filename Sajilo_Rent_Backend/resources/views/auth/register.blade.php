@@ -4,7 +4,12 @@
     <div class="card-container w-100">
         <div class="card shadow p-4 mx-auto col-12 col-sm-8 col-md-6 col-lg-6 col-xl-4">
             <h2 class="text-center text-primary mb-4">Register Your Account</h2>
-            <form method="POST" action="{{ route('normal_register_store') }}">
+            @if ($errors->has('error'))
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i> {{ $errors->first('error') }}
+                </div>
+            @endif
+            <form method="POST" action="{{ route('register.store') }}">
                 @csrf
                 <div class="form-group mb-4">
                     <div class="d-flex align-items-center">
@@ -32,31 +37,6 @@
                         </div>
                     @enderror
                 </div>
-
-                {{-- <div class="form-group mb-4">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-envelope fa-2x me-2"></i>
-                        <input type="email" name="email" class="form-control rounded-full" placeholder="Email" value="{{ old('email') }}">
-                    </div>
-                    @error('email')
-                        <div class="text-danger m-1 mx-5">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>{{ $message }}</span>
-                        </div>
-                    @enderror
-                </div>
-                <div class="form-group mb-4">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-phone-alt fa-2x me-2"></i>
-                        <input type="text" name="phone" class="form-control rounded-full" placeholder="Phone" value="{{ old('phone') }}">
-                    </div>
-                    @error('phone')
-                        <div class="text-danger m-1 mx-5">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>{{ $message }}</span>
-                        </div>
-                    @enderror
-                </div> --}}
                 <div class="form-group mb-4">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-lock fa-2x me-2"></i>
@@ -90,7 +70,7 @@
                 <hr>
                 <span>OR</span>
             </div>
-            <a href="{{ route('google_login') }}"
+            <a href="{{ route('google.login') }}"
                 class="btn btn-light rounded-full border w-100 mb-3 d-flex align-items-center justify-content-center p-2 ">
                 <i class="fab fa-google fa-2x px-3"></i>
                 Login with Google

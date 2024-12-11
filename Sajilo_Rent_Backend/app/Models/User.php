@@ -21,6 +21,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'google_id',
+        'role_id',
+        'otp_code',
+        'otp_code_send_at',
+        'otp_code_verified_at',
+        'otp_code_expires_at',
+        'otp_is_verified',
+        'email_verified_at',
+        'avatar',
+
     ];
 
     /**
@@ -41,4 +52,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(UserRoleManagement::class, 'role_id');
+    }
 }

@@ -27,7 +27,9 @@
                         <li><a class="dropdown-item  "
                                 href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product
                                 Category 1</a></li>
-                        <li><a class="dropdown-item" href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product Category 2</a></li>
+                        <li><a class="dropdown-item"
+                                href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product
+                                Category 2</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
@@ -38,13 +40,76 @@
                     </a>
                 </li>
             </ul>
-            <div class="login-register">
-                <a href="{{ route('login') }}" class="btn btn-outline-warning login-no-hover">Login</a>
-                <a href="{{ route('register') }}" class="btn btn-warning"
-                    style="background-color: #f39c12;">Register</a>
-                <i class="fa fa-search fa-2x btn  btn-outline-warning search-icon text-white me-2"
-                    aria-hidden="true"></i>
-            </div>
+            @if (Auth::check())
+                <ul class="navbar-nav flex-row align-items-center me-5 ">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link">
+                            <div class="avatar avatar-online">
+                                <!-- Check if avatar is a URL -->
+                                <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('storage/default-avatar.png') }}"
+                                    alt class="rounded-circle" style="width:40px; height:40px;" />
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item " href="#">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-2">
+                                            <div class="avatar avatar-online">
+                                                <!-- Same check for avatar here -->
+                                                <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('storage/default-avatar.png') }}"
+                                                    alt class="rounded-circle" style="width: 40px; height: 40px;" />
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <span class="fw-medium d-block">{{ Auth::user()->name ?? 'User' }}</span>
+                                            <span
+                                                class="fw-medium d-block">{{ Auth::user()->role->role_name ?? 'Role' }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="">
+                                    <i class="bx bx-user me-2"></i>
+                                    <span class="align-middle">Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="">
+                                    <i class="bx bx-cog me-2"></i>
+                                    <span class="align-middle">Change Password</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item" tabindex="0">
+                                        <i class="bx bx-power-off me-2"></i>
+                                        <span class="align-middle">Log Out</span>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div>
+                    <div class="login-register">
+                        <i class="fa fa-search fa-2x btn btn-outline-warning search-icon text-white me-2"
+                            aria-hidden="true"></i>
+                    </div>
+                </div>
+            @else
+                <div class="login-register">
+                    <a href="{{ route('login') }}" class="btn btn-outline-warning login-no-hover">Login</a>
+                    <a href="{{ route('register') }}" class="btn btn-warning"
+                        style="background-color: #f39c12;">Register</a>
+
+                </div>
+            @endif
+
         </div>
     </div>
     <!-- Modal for Submitting Request -->
