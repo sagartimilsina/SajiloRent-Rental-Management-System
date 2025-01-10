@@ -1,5 +1,5 @@
-@include('frontend.layouts.header')
-@include('frontend.layouts.navbar')
+@extends('frontend.layouts.main')
+@section('content')
 @section('title', 'Login')
 
 <div class="container-fluid d-flex justify-content-center align-items-center p-5">
@@ -23,7 +23,7 @@
                         <i class="fas fa-envelope fa-2x me-2"></i>
                         <input type="text" name="login_field" value="{{ old('login_field') }}"
                             class="form-control rounded-full @error('login_field') is-invalid @enderror"
-                            placeholder="Email or Phone">
+                            placeholder="Email">
                     </div>
                     @error('login_field')
                         <div class="text-danger m-1 mx-5">
@@ -63,9 +63,11 @@
                     <a href="{{ route('forgot-password') }}"
                         class="text-primary me-1 register-hover text-decoration-none">Forgot Password</a>
                 </div>
+                <div id="recaptcha-container" class="mb-4 d-flex justify-content-center"></div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary custom-btn w-100 text-dark rounded-full mb-4 p-2">
+                <button type="submit" disabled id="submit"
+                    class="btn btn-primary  w-100 text-dark rounded-full mb-4 p-2">
                     Login
                 </button>
             </form>
@@ -112,5 +114,16 @@
         }
     }
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="module">
+    import {
+        initializeRecaptcha
+    } from "{{ asset('firebase.js') }}";
 
-@include('frontend.layouts.footer')
+    window.onload = function() {
+        initializeRecaptcha();
+    };
+</script>
+
+
+@endsection

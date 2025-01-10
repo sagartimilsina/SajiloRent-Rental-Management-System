@@ -18,7 +18,7 @@
                 <p>OUR ONLINE SUPPORT SERVICE IS ALWAYS 24 HOURS</p>
                 <div class="row align-items-center">
                     <div class="col-lg-6  card ">
-                        <h1 class="text-start p-4 pb-0">Get In Touch with Us</h1>
+                        <h1 class="text-start p-4 pb-0">Get In <span style="color: #f39c12;">Touch</span> with Us</h1>
                         <div class="contact-info p-4 pt-0">
 
                             <form action="" method="post">

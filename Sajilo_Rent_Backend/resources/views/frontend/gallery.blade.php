@@ -72,10 +72,10 @@
                 <!-- Example Video -->
                 <div class="col-md-3 col-sm-6">
                     <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal"
-                        data-src="/assets/videos/video1.mp4" data-type="video"
+                        data-src="{{asset('frontend/assets/videos/video1.mp4')}}" data-type="video"
                         data-title="A person working on the roof of a house">
                         <video muted>
-                            <source src="/assets/videos/video1.mp4" type="video/mp4">
+                            <source src="{{asset('frontend/assets/videos/video1.mp4')}}" type="video/mp4">
                         </video>
                         <div class="overlay">A person working on the roof of a house</div>
                     </div>
@@ -83,10 +83,10 @@
 
                 <div class="col-md-3 col-sm-6">
                     <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal"
-                        data-src="/assets/videos/video1.mp4" data-type="video"
+                        data-src="{{asset('frontend/assets/videos/video1.mp4')}}" data-type="video"
                         data-title="A person working on the roof of a house">
                         <video muted>
-                            <source src="/assets/videos/video1.mp4" type="video/mp4">
+                            <source src="{{asset('frontend/assets/videos/video1.mp4')}}" type="video/mp4">
                         </video>
                         <div class="overlay">A person working on the roof of a house</div>
                     </div>

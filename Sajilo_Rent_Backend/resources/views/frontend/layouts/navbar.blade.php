@@ -1,9 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-dark position-relative">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ route('index') }}">
+        {{-- <a class="navbar-brand" href="{{ route('index') }}">
             <img alt="House Rent Logo" height="60"
                 src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
                 width="60" />
+        </a> --}}
+        <a class="navbar-brand" href="{{ route('index') }}">
+            <img alt="House Rent Logo" height="60"
+                src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
+                width="60" class="img-fluid rounded-circle">
         </a>
         <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button">
@@ -14,12 +19,15 @@
         </form>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active-nav" href="{{ route('index') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('blog') }}">Blogs</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('gallery') }}">Gallery</a></li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('index') ? 'active-nav' : '' }}"
+                        href="{{ route('index') }}">Home</a>
+                </li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('about') ? 'active-nav' : '' }}" href="{{ route('about') }}">About</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('blog') ? 'active-nav' : '' }}"  href="{{ route('blog') }}">Blogs</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('gallery') ? 'active-nav' : '' }}" href="{{ route('gallery') }}">Gallery</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" role="button"
+                    <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownPages" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Product
                     </a>
@@ -32,7 +40,7 @@
                                 Category 2</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('contact') ? 'active-nav' : '' }}" href="{{ route('contact') }}">Contact</a></li>
 
                 <li class="nav-item">
                     <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
@@ -41,18 +49,24 @@
                 </li>
             </ul>
             @if (Auth::check())
-                <ul class="navbar-nav flex-row align-items-center me-5 ">
-                    <li class="nav-item dropdown ">
+                <ul class="navbar-nav flex-row align-items-center">
+                    <li class="nav-item dropdown me-0">
                         <a class="nav-link">
                             <div class="avatar avatar-online">
                                 <!-- Check if avatar is a URL -->
                                 <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('storage/default-avatar.png') }}"
                                     alt class="rounded-circle" style="width:40px; height:40px;" />
+                                    <span 
+                                    class="text-white ms-1 " 
+                                    title="{{ Auth::user()->name }}">
+                                    {{ strtok(Auth::user()->name, ' ') }}
+                                </span>
+                                
                             </div>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-start dropdown-menu-dark ">
                             <li>
-                                <a class="dropdown-item " href="#">
+                                <a class="dropdown-item" href="#">
                                     <div class="d-flex align-items-center">
                                         <div class="me-2">
                                             <div class="avatar avatar-online">
@@ -62,7 +76,7 @@
                                             </div>
                                         </div>
                                         <div class="">
-                                            <span class="fw-medium d-block">{{ Auth::user()->name ?? 'User' }}</span>
+                                            <span class="fw-medium d-block text-wrap" >{{ Auth::user()->name ?? 'User' }}</span>
                                             <span
                                                 class="fw-medium d-block">{{ Auth::user()->role->role_name ?? 'Role' }}</span>
                                         </div>
@@ -72,13 +86,19 @@
 
                             <li>
                                 <a class="dropdown-item" href="">
-                                    <i class="bx bx-user me-2"></i>
+                                    <i class="fa fa-user me-2"></i>
                                     <span class="align-middle">Profile</span>
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="">
-                                    <i class="bx bx-cog me-2"></i>
+                                    <i class="fa fa-home me-2"></i>
+                                    <span class="align-middle">Go to Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('change.password') }}">
+                                    <i class="fa fa-cog me-2"></i>
                                     <span class="align-middle">Change Password</span>
                                 </a>
                             </li>
@@ -87,7 +107,7 @@
                                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                                     @csrf
                                     <button type="submit" class="dropdown-item" tabindex="0">
-                                        <i class="bx bx-power-off me-2"></i>
+                                        <i class="fa fa-power-off me-2"></i>
                                         <span class="align-middle">Log Out</span>
                                     </button>
                                 </form>
@@ -109,7 +129,6 @@
 
                 </div>
             @endif
-
         </div>
     </div>
     <!-- Modal for Submitting Request -->
@@ -118,8 +137,20 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
+                    <style>
+                        .modal {
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                        }
+
+                        .btn-close {
+                            display: inline-block !important;
+                            visibility: visible !important;
+                        }
+                    </style>
                     <h5 class="modal-title" id="submitRequestModalLabel">Request to List Your Property</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close "
+                        style="color: #f39c12;"></button>
                 </div>
                 <div class="modal-body">
                     <form id="requestForm" enctype="multipart/form-data">

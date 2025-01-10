@@ -1,0 +1,169 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail UI Design</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .email-list {
+            height: calc(100vh - 60px);
+            overflow-y: scroll;
+        }
+
+        .email-content {
+            height: calc(100vh - 60px);
+            overflow-y: scroll;
+        }
+
+        .nav-link.active {
+            background-color: #e2e6ea;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="container-fluid">
+        <div class="row">
+         
+            <nav class="col-md-2 col-lg-2 d-md-block bg-light sidebar p-0">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a class="btn btn-primary w-100" href="#" role="button">Compose</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">
+                                <i class="bi bi-inbox"></i> Inbox
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-star"></i> Starred
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-send"></i> Sent
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-trash"></i> Trash
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+          
+            <header class="navbar navbar-light bg-light shadow-sm col-md-10 offset-md-2">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Gmail UI</a>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </header>
+
+         
+            <main class="col-md-10 offset-md-2">
+                <div class="row">
+                    
+                    <div class="col-md-4 border-end email-list">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span><strong>John Doe</strong></span>
+                                    <small>2:30 PM</small>
+                                </div>
+                                <p class="mb-0 text-truncate">Subject of the email goes here...</p>
+                                <small class="text-muted">Preview of the email content...</small>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span><strong>Jane Smith</strong></span>
+                                    <small>1:15 PM</small>
+                                </div>
+                                <p class="mb-0 text-truncate">Another email subject...</p>
+                                <small class="text-muted">Preview of the email content...</small>
+                            </li>
+                         
+                        </ul>
+                    </div>
+
+    
+                    <div class="col-md-8 email-content">
+                        <div class="p-3">
+                            <h4>Email Subject</h4>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>From: John Doe &lt;john@example.com&gt;</span>
+                                <small>2:30 PM, Today</small>
+                            </div>
+                            <p>Hello,</p>
+                            <p>This is a sample email content area where the full email body will be displayed. You can
+                                add more text, images, and other elements as needed to simulate a real email reading
+                                pane.</p>
+                            <p>Thank you!</p>
+                            <hr>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-outline-secondary me-2">Reply</button>
+                                <button class="btn btn-outline-secondary">Forward</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The fieldset element</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<h1>The fieldset element</h1>
+
+<form action="/action_page.php">
+ <fieldset>
+  <legend>Personalia:</legend>
+  <label for="fname">First name:</label>
+  <input type="text" id="fname" name="fname"><br><br>
+  <label for="lname">Last name:</label>
+  <input type="text" id="lname" name="lname"><br><br>
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email"><br><br>
+  <label for="birthday">Birthday:</label>
+  <input type="date" id="birthday" name="birthday"><br><br>
+  <input type="submit" value="Submit">
+ </fieldset>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,650 @@
+{{-- {{-- <div class="app-sidebar sidebar-shadow">
+    <div class="app-header__logo">
+        <div class="logo-src"></div>
+        <div class="header__pane ml-auto">
+            <div>
+                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="app-header__menu">
+        <span>
+            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                <span class="btn-icon-wrapper">
+                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                </span>
+            </button>
+        </span>
+    </div>
+    <div class="scrollbar-sidebar">
+        <div class="app-sidebar__inner">
+            @if (Auth::guard('admin')->check())
+                <ul class="vertical-nav-menu">
+                    <li class="app-sidebar__heading">Admin Dashboard</li>
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="{{ request()->routeIs('admin.dashboard') ? 'mm-active' : '' }}">
+                            <i class="fa fa-home mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/employees*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-users mr-3"></i>
+                            Employees
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/employees*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('employees.index') }}"
+                                    class="{{ request()->routeIs('employees.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Empoloyee List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('employees.create') }}"
+                                    class="{{ request()->routeIs('employees.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-user-plus mr-2"></i>
+                                    Add New Employee
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="{{ request()->is('admin/project-category*') || request()->is('admin/projects*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-tasks mr-3"></i>
+                            Projects
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul
+                            class="mm-collapse {{ request()->is('admin/project-category*') || request()->is('admin/projects*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('project-category.index') }}"
+                                    class="{{ request()->routeIs('project-category.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Project Category Lists
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('projects.index') }}"
+                                    class="{{ request()->routeIs('projects.index') ? 'mm-active' : '' }} text-wrap">
+                                    <i class="fa fa-list-alt mr-2"></i>Project List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('projects.create') }}"
+                                    class="{{ request()->routeIs('projects.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add New Project
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/customers*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-users mr-3"></i>
+                            Customers
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/customers*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('customers.index') }}"
+                                    class="{{ request()->routeIs('daily-activity.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Customers List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('customers.create') }}"
+                                    class="{{ request()->routeIs('customers.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-user-plus mr-2"></i>
+                                    Add New Customer
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/vacancy*') ? 'mm-active' : '' }}">
+                            <i class="fa-brands fa-hire-a-helper mr-3"></i>
+                            Vacancy
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/vacancy*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('vacancy.index') }}"
+                                    class="{{ request()->routeIs('vacancy.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Vacancy List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('vacancy.create') }}"
+                                    class="{{ request()->routeIs('vacancy.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add New Vacancy
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/key-files*') ? 'mm-active' : '' }}">
+                            <i class="fa-solid fa-key mr-3"></i>
+                            Key Files
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/key-files*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('key-files.index') }}"
+                                    class="{{ request()->routeIs('key-files.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Key Files List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('key-files.create') }}"
+                                    class="{{ request()->routeIs('key-files.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add New Key File
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/customer-followup*') ? 'mm-active' : '' }} ">
+                            <i class="fa fa-arrow-up mr-3" aria-hidden="true"></i>
+                            Followup
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/customer-followup*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('service-categories.index') }}"
+                                    class="{{ request()->routeIs('service-categories.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Service Category
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('customer-followup.index') }}"
+                                    class="{{ request()->routeIs('customer-followup.index') ? 'mm-active' : '' }}">
+                                    <i class="fa  fa-list-alt mr-2"></i>
+                                    Follow Up List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('customer-followup.create') }}"
+                                    class="{{ request()->routeIs('customer-followup.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Follow Up Create
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                </ul>
+            @elseif (Auth::guard('employee')->check())
+                <ul class="vertical-nav-menu">
+                    <li class="app-sidebar__heading">Employee Dashboard</li>
+                    <li>
+                        <a href="{{ route('employee.dashboard') }}"
+                            class="{{ request()->routeIs('employee.dashboard') ? 'mm-active' : '' }}">
+                            <i class="fa fa-home mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('employee-profile') }}"
+                            class="{{ request()->routeIs('employee-profile') ? 'mm-active' : '' }}">
+                            <i class="fa fa-user mr-3"></i>
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="{{ request()->is('employee/daily-activity*') ? 'mm-active' : '' }} ">
+                            <i class="fa fa-tasks mr-3"></i>
+                            Daily Activity
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('employee/daily-activity*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('daily-activity.index') }}"
+                                    class="{{ request()->routeIs('daily-activity.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Tasks Activity Lists
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('daily-activity.create') }}"
+                                    class="{{ request()->routeIs('daily-activity.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add Activity
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"
+                            class="{{ request()->is('employee/employee-key-files*') ? 'mm-active' : '' }}">
+                            <i class="fa-solid fa-key mr-3"></i>
+                            Key Files
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('employee/employee-key-files*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('employee-key-files.index') }}"
+                                    class="{{ request()->routeIs('employee-key-files.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Key Files List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('employee-key-files.create') }}"
+                                    class="{{ request()->routeIs('employee-key-files.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add New Key File
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            @elseif (Auth::guard('customer')->check())
+                <ul class="vertical-nav-menu">
+                    <li class="app-sidebar__heading">Customer Dashboard</li>
+                    <li>
+                        <a href="{{ route('customer.dashboard') }}"
+                            class="{{ request()->routeIs('customer.dashboard') ? 'mm-active' : '' }}">
+                            <i class="fa fa-home mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('customer-profile') }}"
+                            class="{{ request()->routeIs('customer-profile') ? 'mm-active' : '' }}">
+                            <i class="fa fa-user mr-3"></i>
+                            Profile
+                        </a>
+                    </li>
+                    <li class="{{ request()->is('customer/customer-projects*') ? 'mm-active' : '' }}">
+                        <a href="{{ route('customer-projects.index') }}"
+                            class="">
+                            <i class="fa fa-tasks mr-3"></i>
+                            Projects
+
+                        </a>
+
+                    </li>
+                    <!-- Customer Error Assign Section -->
+                    <li>
+                        <a href="#" class="{{ request()->is('customer/error-assign*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-exclamation-triangle mr-3"></i>
+                            Error Assign
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('customer/error-assign*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('error-assign.index') }}"
+                                    class="{{ request()->routeIs('error-assign.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Error Assign List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('error-assign.create') }}"
+                                    class="{{ request()->routeIs('error-assign.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Assign Error
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+            @endif
+            </li>
+
+
+            </ul>
+
+        </div>
+    </div>
+</div> 
+<div class="app-sidebar sidebar-shadow">
+    <div class="app-header__logo">
+        <div class="logo-src"></div>
+        <div class="header__pane ml-auto">
+            <div>
+                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="app-header__menu">
+        <span>
+            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                <span class="btn-icon-wrapper">
+                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                </span>
+            </button>
+        </span>
+    </div>
+    <div class="scrollbar-sidebar">
+        <div class="app-sidebar__inner">
+            @if (Auth::guard('admin')->check())
+                <ul class="vertical-nav-menu">
+                    <li class="app-sidebar__heading">Admin Dashboard</li>
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="{{ request()->routeIs('admin.dashboard') ? 'mm-active' : '' }}">
+                            <i class="fa fa-home mr-3"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/employees*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-users mr-3"></i> Employees
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/employees*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('employees.index') }}"
+                                    class="{{ request()->routeIs('employees.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i> Employee List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('employees.create') }}"
+                                    class="{{ request()->routeIs('employees.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-user-plus mr-2"></i> Add New Employee
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="{{ request()->is('admin/project-category*') || request()->is('admin/projects*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-tasks mr-3"></i> Projects
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul
+                            class="mm-collapse {{ request()->is('admin/project-category*') || request()->is('admin/projects*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('project-category.index') }}"
+                                    class="{{ request()->routeIs('project-category.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i> Project Category Lists
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('projects.index') }}"
+                                    class="{{ request()->routeIs('projects.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i> Project List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('projects.create') }}"
+                                    class="{{ request()->routeIs('projects.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i> Add New Project
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/customers*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-users mr-3"></i>
+                            Customers
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/customers*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('customers.index') }}"
+                                    class="{{ request()->routeIs('daily-activity.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Customers List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('customers.create') }}"
+                                    class="{{ request()->routeIs('customers.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-user-plus mr-2"></i>
+                                    Add New Customer
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/vacancy*') ? 'mm-active' : '' }}">
+                            <i class="fa-brands fa-hire-a-helper mr-3"></i>
+                            Vacancy
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/vacancy*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('vacancy.index') }}"
+                                    class="{{ request()->routeIs('vacancy.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Vacancy List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('vacancy.create') }}"
+                                    class="{{ request()->routeIs('vacancy.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add New Vacancy
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/key-files*') ? 'mm-active' : '' }}">
+                            <i class="fa-solid fa-key mr-3"></i>
+                            Key Files
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/key-files*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('key-files.index') }}"
+                                    class="{{ request()->routeIs('key-files.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Key Files List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('key-files.create') }}"
+                                    class="{{ request()->routeIs('key-files.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Add New Key File
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="{{ request()->is('admin/customer-followup*') || request()->is('admin/service-categories*') ? 'mm-show' : '' }}">
+                            <i class="fa fa-arrow-up mr-3" aria-hidden="true"></i>
+                            Followup
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+
+                        <ul
+                            class="mm-collapse {{ request()->is('admin/customer-followup*') || request()->is('admin/service-categories*') ? 'mm-active' : '' }}">
+                            <li>
+                                <a href="{{ route('service-categories.index') }}"
+                                    class="{{ request()->routeIs('service-categories*') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Service Category
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('customer-followup.index') }}"
+                                    class="{{ request()->routeIs('customer-followup*') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Follow Up List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('customer-followup.create') }}"
+                                    class="{{ request()->routeIs('customer-followup/create*') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Follow Up Create
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="{{ request()->is('admin/error-assign*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-exclamation-circle mr-3" aria-hidden="true"></i>
+                            Error Assign
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('admin/error-assign*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('project-error-assign.index') }}"
+                                    class="{{ request()->routeIs(' project-error-assign.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Error Assign List
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('login-activity.index*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-sign-in-alt mr-3" aria-hidden="true"></i>
+                            Login Activity
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('login-activity.index*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('login-activity.index') }}"
+                                    class="{{ request()->routeIs('login-activity.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Login Activity List
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" class="{{ request()->is('mail-status.index*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-envelope mr-3" aria-hidden="true"></i>
+                            Mail Status
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('mail-status.index*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('mail-status.index') }}"
+                                    class="{{ request()->routeIs('mail-status.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list mr-2"></i>
+                                    Mail Status List
+                                </a>
+                            </li>
+                            <!-- Add more items as needed -->
+                        </ul>
+                    </li>
+
+
+
+
+                    <!-- Additional Admin Sections -->
+
+                </ul>
+            @elseif (Auth::guard('employee')->check())
+                <ul class="vertical-nav-menu">
+                    <li class="app-sidebar__heading">Employee Dashboard</li>
+                    <li>
+                        <a href="{{ route('employee.dashboard') }}"
+                            class="{{ request()->routeIs('employee.dashboard') ? 'mm-active' : '' }}">
+                            <i class="fa fa-home mr-3"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('employee-profile') }}"
+                            class="{{ request()->routeIs('employee-profile') ? 'mm-active' : '' }}">
+                            <i class="fa fa-user mr-3"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ request()->is('employee/daily-activity*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-tasks mr-3"></i> Daily Activity
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('employee/daily-activity*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('daily-activity.index') }}"
+                                    class="{{ request()->routeIs('daily-activity.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i> Tasks Activity Lists
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('daily-activity.create') }}"
+                                    class="{{ request()->routeIs('daily-activity.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i> Add Activity
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            @elseif (Auth::guard('customer')->check())
+                <ul class="vertical-nav-menu">
+                    <li class="app-sidebar__heading">Customer Dashboard</li>
+                    <li class="{{ request()->is('customer') ? 'mm-active' : '' }}">
+                        <a href="{{ route('customer.dashboard') }}"
+                            class="{{ request()->routeIs('customer.dashboard') ? 'mm-active' : '' }}">
+                            <i class="fa fa-home mr-3"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="{{ request()->is('customer/profile*') ? 'mm-active' : '' }}">
+                        <a href="{{ route('customer-profile') }}"
+                            class="{{ request()->routeIs('customer-profile') ? 'mm-active' : '' }}">
+                            <i class="fa fa-user mr-3"></i> Profile
+                        </a>
+                    </li>
+                    <li class="{{ request()->is('customer/customer-projects*') ? 'mm-active' : '' }}">
+                        <a href="{{ route('customer-projects.index') }}">
+                            <i class="fa fa-tasks mr-3"></i> Projects
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="{{ request()->is('customer/error-enrollment*') ? 'mm-active' : '' }}">
+                            <i class="fa fa-exclamation-triangle mr-3"></i>
+                            Support Error Assign
+                            <i class="fa fa-angle-down ml-5"></i>
+                        </a>
+                        <ul class="mm-collapse {{ request()->is('customer/error-enrollment*') ? 'mm-show' : '' }}">
+                            <li>
+                                <a href="{{ route('error-enrollment.index') }}"
+                                    class="{{ request()->routeIs('error-enrollment.index') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-list-alt mr-2"></i>
+                                    Error Lists
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('error-enrollment.create') }}"
+                                    class="{{ request()->routeIs('error-enrollment.create') ? 'mm-active' : '' }}">
+                                    <i class="fa fa-plus mr-2"></i>
+                                    Assign Error
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                </ul>
+            @endif
+        </div>
+
+    </div>
+
+</div> --}}

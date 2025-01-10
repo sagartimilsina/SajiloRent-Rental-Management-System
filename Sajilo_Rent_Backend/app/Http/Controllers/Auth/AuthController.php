@@ -8,12 +8,14 @@ use App\Mail\OTPMail;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\UserRoleManagement;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Psy\CodeCleaner\FunctionReturnInWriteContextPass;
 
 class AuthController extends Controller
@@ -37,14 +39,13 @@ class AuthController extends Controller
 
     public function register_store(Request $request)
     {
-
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email_or_phone' => [
                 'required',
                 function ($attribute, $value, $fail) {
                     if (!filter_var($value, FILTER_VALIDATE_EMAIL) && !preg_match('/^[0-9]{10,15}$/', $value)) {
-                        $fail("The {$attribute} must be a valid email or phone number.");
+                        $fail("The {$attribute} must be a valid email.");
                     }
 
                     // Check uniqueness across email and phone columns
@@ -60,7 +61,7 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
         ], [
-            'email_or_phone.required' => 'Either email or phone is required.',
+            'email_or_phone.required' => 'Email Field is required.',
         ]);
 
         // Create a new user instance
@@ -93,19 +94,19 @@ class AuthController extends Controller
         if (!empty($user->email)) {
             Mail::to($user->email)->send(new OTPMail($otp_code, $user->name));
         } else {
-            $sid = 'AC8565260e8d93857d460fed75146ae02c';
-            $token = 'd6f7ff90bb46d865eda6359aca75898c';
-            $from = '+19549515486';
-            $client = new Client($sid, $token);
-            $phoneNumber = !preg_match('/^\+977/', $user->phone) ? '+977' . ltrim($user->phone, '0') : $user->phone;
+            // $sid = 'AC8565260e8d93857d460fed75146ae02c';
+            // $token = 'd6f7ff90bb46d865eda6359aca75898c';
+            // $from = '+19549515486';
+            // $client = new Client($sid, $token);
+            // $phoneNumber = !preg_match('/^\+977/', $user->phone) ? '+977' . ltrim($user->phone, '0') : $user->phone;
 
-            $client->messages->create(
-                $phoneNumber,
-                [
-                    'from' => $from,
-                    'body' => "Your OTP code is: $otp_code",
-                ]
-            );
+            // $client->messages->create(
+            //     $phoneNumber,
+            //     [
+            //         'from' => $from,
+            //         'body' => "Your OTP code is: $otp_code",
+            //     ]
+            // );
         }
         session()->put('email', $user->email);
 
@@ -186,20 +187,103 @@ class AuthController extends Controller
         return redirect()->route('otp', ['user' => $user->id])->with('success', 'OTP code sent successfully');
     }
 
+    // public function login_store(Request $request)
+    // {
+    //     // Define the rate limiter key based on the user's IP address
+    //     $key = 'login-attempts:' . $request->ip();
+
+
+    //     // Define maximum attempts and decay time (e.g., 4 attempts per 5 minutes)
+    //     $maxAttempts = 5;
+    //     $decaySeconds = 120; // 2 minutes
+
+    //     // Check if the user has exceeded the login attempt limit
+    //     if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+    //         $seconds = RateLimiter::availableIn($key);
+    //         $minutes = ceil($seconds / 60);
+    //         return redirect()->back()->withErrors([
+    //             'error' => "Too many attempts. Please try again after {$minutes} minute(s)."
+    //         ])->withInput();
+    //     }
+
+    //     // Validate input with custom error messages
+    //     $validated = $request->validate([
+    //         'login_field' => ['required'],
+    //         'password' => ['required'],
+    //     ], [
+    //         'login_field.required' => 'The email  field is required.',
+    //         'password.required' => 'The password field is required.',
+    //     ]);
+
+    //     // Determine if the login_field is an email or phone
+    //     $loginType = filter_var($validated['login_field'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+
+    //     try {
+    //         // Attempt to log in the user
+    //         if (Auth::attempt([$loginType => $validated['login_field'], 'password' => $validated['password']])) {
+
+    //             $user = Auth::user();
+    //             // Check if OTP is verified
+    //             if ($user->otp_is_verified) {
+    //                 // Clear the rate limiter on successful login
+    //                 RateLimiter::clear($key);
+
+    //                 // Redirect to the dashboard
+
+    //                 $user_role_name = UserRoleManagement::where('id', $user->role_id)->first()->role_name;
+    //                 switch ($user_role_name) {
+    //                     case 'Super Admin':
+    //                         return redirect()->route('super.admin.dashboard')->with('success', $user->name . ', ' . 'Login successfully');
+    //                         break;
+
+    //                     case 'Admin':
+    //                         return redirect()->route('admin.dashboard')->with('success', $user->name . ', ' . 'Login successfully');
+    //                         break;
+
+    //                     case 'User':
+    //                         return redirect()->route('index')->with('success', $user->name . ', ' . 'Login successfully');
+    //                         break;
+
+    //                     default:
+    //                         return redirect()->route('index')->with('success', $user->name . ', ' . 'Login successfully');
+    //                         break;
+    //                 }
+
+
+    //                 if ($user->role_id == 1) {
+
+    //                 }
+    //                 return redirect()->route('index')->with('success', $user->name . ', ' . 'Login successfully');
+    //             } else {
+    //                 // If OTP is not verified, log out the user and redirect to OTP page
+    //                 Auth::logout();
+    //                 return redirect()->route('otp', ['user' => $user->id])
+    //                     ->with('info', 'Please verify the OTP to complete your login.');
+    //             }
+    //         } else {
+    //             // Increment the rate limiter on failed login attempt
+    //             RateLimiter::hit($key, $decaySeconds);
+    //             return redirect()->back()->withErrors([
+    //                 'error' => "The provided credentials are incorrect.",
+    //             ])->withInput();
+    //         }
+    //     } catch (\Exception $e) {
+    //         // Handle unexpected exceptions
+    //         return redirect()->back()->withErrors([
+    //             'error' => 'An unexpected error occurred. Please try again later.',
+    //         ])->withInput();
+    //     }
+    // }
+
 
 
 
     public function login_store(Request $request)
     {
-        // Define the rate limiter key based on the user's IP address
-        $key = 'login-attempts:' . $request->ip();
+        $key = 'login-attempts:' . $request->ip() . ':' . $request->login_field;
+        $maxAttempts = 5;
+        $decaySeconds = 120;
 
-
-        // Define maximum attempts and decay time (e.g., 4 attempts per 5 minutes)
-        $maxAttempts = 4;
-        $decaySeconds = 300; // 5 minutes
-
-        // Check if the user has exceeded the login attempt limit
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
             $seconds = RateLimiter::availableIn($key);
             $minutes = ceil($seconds / 60);
@@ -208,54 +292,60 @@ class AuthController extends Controller
             ])->withInput();
         }
 
-        // Validate input with custom error messages
         $validated = $request->validate([
-            'login_field' => ['required'],
+            'login_field' => ['required', 'string', 'max:255'],
             'password' => ['required'],
         ], [
             'login_field.required' => 'The email or phone field is required.',
             'password.required' => 'The password field is required.',
         ]);
 
-        // Determine if the login_field is an email or phone
-        $loginType = filter_var($validated['login_field'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        $loginType = $this->determineLoginType($validated['login_field']);
 
         try {
-            // Attempt to log in the user
             if (Auth::attempt([$loginType => $validated['login_field'], 'password' => $validated['password']])) {
-
                 $user = Auth::user();
-                dd($user);
 
-                // Check if OTP is verified
                 if ($user->otp_is_verified) {
-                    // Clear the rate limiter on successful login
                     RateLimiter::clear($key);
+                    $userRole = cache()->remember("role_name_{$user->role_id}", now()->addMinutes(30), function () use ($user) {
+                        return UserRoleManagement::where('id', $user->role_id)->value('role_name');
+                    });
 
-                    // Redirect to the dashboard
-                    return redirect()->route('dashboard')->with('success', 'Login successful');
+                    switch ($userRole) {
+                        case 'Super Admin':
+                            return redirect()->route('super.admin.dashboard')->with('success', "{$user->name}, Login successfully");
+                        case 'Admin':
+                            return redirect()->route('admin.dashboard')->with('success', "{$user->name}, Login successfully");
+                        case 'User':
+                            return redirect()->route('index')->with('success', "{$user->name}, Login successfully");
+                        default:
+                            Log::warning("Unexpected role ID: {$user->role_id}");
+                            return redirect()->route('index')->with('success', "{$user->name}, Login successfully");
+                    }
                 } else {
-                    // If OTP is not verified, log out the user and redirect to OTP page
                     Auth::logout();
-                    return redirect()->route('otp', ['user' => $user->id])
+                    return redirect()->route('otp', ['user' => encrypt($user->id)])
                         ->with('info', 'Please verify the OTP to complete your login.');
                 }
             } else {
-                // Increment the rate limiter on failed login attempt
                 RateLimiter::hit($key, $decaySeconds);
-
                 return redirect()->back()->withErrors([
-                    'login_field' => 'Invalid email/phone or password.',
+                    'error' => 'The provided credentials are incorrect.',
                 ])->withInput();
             }
         } catch (\Exception $e) {
-            // Handle unexpected exceptions
+            Log::error('Login error: ' . $e->getMessage());
             return redirect()->back()->withErrors([
                 'error' => 'An unexpected error occurred. Please try again later.',
             ])->withInput();
         }
     }
 
+    private function determineLoginType($loginField)
+    {
+        return filter_var($loginField, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+    }
 
     public function logout(Request $request)
     {
@@ -263,27 +353,27 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->flush();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('success', 'Logout successfully');
+        return redirect()->route('index')->with('success', 'Logout Successfully');
     }
 
-    private function sendOtpToPhone($phone, $otp_code)
-    {
+    // private function sendOtpToPhone($phone, $otp_code)
+    // {
 
-        $sid = 'VA1f7ba1b6972703339187b29702f80658';
-        $token = 'f187698ee55755622dc6bf81b7364a67';
-        $from = '9819113548';
+    //     $sid = 'VA1f7ba1b6972703339187b29702f80658';
+    //     $token = 'f187698ee55755622dc6bf81b7364a67';
+    //     $from = '9819113548';
 
-        $client = new Client($sid, $token);
+    //     $client = new Client($sid, $token);
 
-        $client->messages->create(
-            $phone, // The phone number where you want to send the OTP
-            [
-                'from' => $from,
-                'body' => "Your OTP code is: $otp_code"
-            ]
-        );
-        return true;
-    }
+    //     $client->messages->create(
+    //         $phone, // The phone number where you want to send the OTP
+    //         [
+    //             'from' => $from,
+    //             'body' => "Your OTP code is: $otp_code"
+    //         ]
+    //     );
+    //     return true;
+    // }
 
     public function redirectToGoogle()
     {
@@ -345,62 +435,76 @@ class AuthController extends Controller
 
     public function changePassword()
     {
-        return view('backend.auth.empolyee-change-password');
+        return view('auth.change-password');
     }
+    // Validate input
+    // $request->validate([
+    //     'current_password' => 'required|min:8',
+    //     'new_password' => [
+    //         'required',
+    //         'min:8',
+    //         'different:current_password',
+    //         'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
+    //     ],
+    //     'password_confirmation' => 'required|min:8|same:new_password',
+    // ], [
+    //     'new_password.regex' => 'The password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character (e.g., @$!%*?&).'
+    // ]);
 
     public function changePasswordPost(Request $request)
     {
-
         $key = 'change-password-attempts:' . $request->ip();
-        if (RateLimiter::tooManyAttempts($key, 4)) {
+
+        // Check rate limiting
+        if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
             return back()->with(['error' => 'Too many attempts. Please try again after ' . ceil($seconds / 60) . ' minutes.']);
         }
+
         try {
+            // Validate request inputs
             $request->validate([
                 'current_password' => 'required|min:8',
-                'new_password' => 'required|min:8',
-                'confirm_password' => 'required|min:8|same:new_password',
+                'new_password' => [
+                    'required',
+                    'min:8',
+                    'different:current_password',
+                ],
+                'password_confirmation' => 'required|min:8|same:new_password',
             ]);
-            if (!Hash::check($request->current_password, auth()->guard('employee')->user()->password)) {
-                RateLimiter::hit($key, 300); // Set the lockout period to 300 seconds (5 minutes)
-                return back()->withErrors(['current_password' => 'Current password is incorrect']);
+
+            // Check if the current password entered by the user matches the stored password
+            if (!Hash::check($request->current_password, Auth::user()->password)) {
+                RateLimiter::hit($key, 120); // Lockout after failure for 2 minutes
+                dd(Hash::check($request->current_password, Auth::user()->password));
+                return back()->with(['error' => 'Current password is incorrect.'])->withErrors(['current_password' => 'Current password is incorrect'])->withInput();
             }
-            RateLimiter::hit($key, 300);
-            auth()->guard('employee')->user()->update(['password' => Hash::make($request->new_password)]);
+
+            // Save the new password and clear the rate limiter
+            Auth::user()->update(['password' => Hash::make($request->new_password)]);
             RateLimiter::clear($key);
-            Auth::guard('employee')->logout();
+
+            Auth::logout();
             $request->session()->invalidate();
             $request->session()->flush();
 
-            return redirect()->route('employee-login')->with('success', 'Password changed successfully. Please login again.');
+            // Redirect to the login page
+
+            return redirect()->route('login')->with('success', 'Password changed successfully. Please login again.');
         } catch (ValidationException $e) {
-            RateLimiter::hit($key, 300);
+            RateLimiter::hit($key, 120); // Rate limiter on validation failure
             throw $e;
         } catch (\Exception $e) {
-            RateLimiter::hit($key, 300);
+            RateLimiter::hit($key, 120); // Rate limiter on unexpected failure
+            // Log the error for debugging in production
+            Log::error('Password change error: ' . $e->getMessage());
             return back()->withErrors(['error' => 'An unexpected error occurred. Please try again later.']);
         }
     }
 
-    // public function logout(Request $request)
-    // {
-    //     $user = Auth::guard('employee')->user();
-    //     if ($user) {
-    //         LoginActivities::where('user_id', $user->id)
-    //             ->where('user_type', 'employee')
-    //             ->whereNull('logout_time')
-    //             ->latest()
-    //             ->first()
-    //             ->update([
-    //                 'logout_time' => now()
-    //             ]);
-    //     }
-    //     Auth::guard('employee')->logout();
-    //     $request->session()->invalidate();
-    //     $request->session()->flush();
-    //     return redirect()->route('employee-login')->with('success', 'You have successfully logged out.');
-    // }
+
+
+
 
     public function showVerificationPage()
     {
@@ -408,125 +512,15 @@ class AuthController extends Controller
     }
 
 
-    // public function email_verify(Request $request)
-    // {
-    //     // Validate the email
-    //     $request->validate([
-    //         'email' => 'required|email|exists:empolyee_users,email',
-    //     ]);
-
-    //     // Find the user by email
-    //     $user = EmpolyeeUsers::where('email', $request->email)->first();
-
-    //     if ($user) {
-    //         // Generate a six-digit OTP code
-    //         $otp_code = rand(100000, 999999);
-
-    //         // Save OTP code and set expiration time (e.g., 10 minutes from now)
-    //         $user->otp_code = $otp_code;
-    //         $user->otp_expires_at = Carbon::now()->addMinutes(10); // OTP expires in 10 minutes
-    //         $user->otp_is_verified = 0; // Set as unverified initially
-    //         $user->save();
-
-    //         // Prepare email data
-    //         $email = $request->email;
-    //         $subject = "OTP Verification";
-    //         $message = "Your OTP code is: " . $otp_code . ". This code will expire in 10 minutes.";
-
-    //         // Send email with OTP code
-    //         Mail::send([], [], function ($message) use ($email, $subject, $otp_code) {
-    //             $message->to($email)
-    //                 ->subject($subject)
-    //                 ->setBody("Your OTP code is: " . $otp_code . ". It will expire in 10 minutes.", 'text/html');
-    //         });
-
-    //         return redirect()->route('employee.otp.verification')->with('success', 'OTP has been sent to your email. Please check and verify.');
-    //     }
-    //     return redirect()->back()->withErrors(['email' => 'There was an issue verifying the email.']);
-    // }
 
 
-    public function email_verify(Request $request)
-    {
-        // Validate the email
-        $request->validate([
-            'email' => 'required|email|exists:empolyee_users,email',
-        ]);
-
-        // Find the user by email
-        $user = EmpolyeeUsers::where('email', $request->email)->first();
-
-        if ($user) {
-            // Generate a six-digit OTP code
-            $otp_code = rand(100000, 999999);
-
-            // Save OTP code and set expiration time (e.g., 10 minutes from now)
-            $user->otp_code = $otp_code;
-            $user->otp_expires_at = now()->addMinutes(10); // OTP expires in 10 minutes
-            $user->otp_is_verified = 0; // Set as unverified initially
-            $user->save();
-
-            // Prepare email data
-            $email = $request->email;
-            $subject = "OTP Verification";
-
-            // Send email with OTP code
-            Mail::send([], [], function (Message $message) use ($email, $subject, $otp_code) {
-                $message->to($email)
-                    ->subject($subject)
-                    ->html("Your OTP code is: " . $otp_code . ". It will expire in 10 minutes.");
-            });
-
-            $request->session()->put('email', $email);
-
-            return redirect()->route('employee.otp.verification')->with('success', 'OTP has been sent to your email. Please check and verify the OTP code.');
-        }
-
-        return redirect()->back()->withErrors(['email' => 'There was an issue verifying the email.']);
-    }
 
 
     public function showOtpVerificationPage()
     {
         return view('backend.auth.otp-verification');
     }
-    public function resendOtp(Request $request)
-    {
 
-
-        // Get the user's email from the session or request
-        $email = $request->session()->get('email'); // Assuming email is stored in session
-
-
-        if (!$email) {
-            return redirect()->route('employee-login')->withErrors(['email' => 'Email not found in session.']);
-        }
-
-        // Find the user by email
-        $user = EmpolyeeUsers::where('email', $email)->first();
-
-        if ($user) {
-            // Generate a new six-digit OTP code
-            $otp_code = rand(100000, 999999);
-
-            // Update OTP code and expiration time (e.g., 10 minutes from now)
-            $user->otp_code = $otp_code;
-            $user->otp_expires_at = Carbon::now()->addMinutes(10); // OTP expires in 10 minutes
-            $user->otp_is_verified = 0; // Set as unverified initially
-            $user->save();
-
-            // Send OTP via email
-            Mail::send([], [], function (Message $message) use ($email, $otp_code) {
-                $message->to($email)
-                    ->subject("Resend OTP Verification")
-                    ->html("Your new OTP code is: " . $otp_code . ". It will expire in 10 minutes.");
-            });
-
-            return redirect()->route('employee.otp.verification')->with('success', 'OTP has been resent to your email. Please check and verify the OTP code.');
-        }
-
-        return redirect()->route('employee-login')->withErrors(['email' => 'User not found.']);
-    }
     // public function otp_verify(Request $request)
     // {
 
@@ -556,24 +550,24 @@ class AuthController extends Controller
 
         return view('backend.auth.new-password');
     }
-    public function changeCredentials(Request $request)
-    {
+    // public function changeCredentials(Request $request)
+    // {
 
-        $request->validate([
-            'email' => 'required|email|exists:empolyee_users,email',
-            'password' => 'required|min:8',
-            'confirm_password' => 'required|min:8|same:password',
-        ]);
+    //     $request->validate([
+    //         'email' => 'required|email|exists:empolyee_users,email',
+    //         'password' => 'required|min:8',
+    //         'confirm_password' => 'required|min:8|same:password',
+    //     ]);
 
-        $user = EmpolyeeUsers::where('email', $request->email)->select('id')->first();
+    //     $user = EmpolyeeUsers::where('email', $request->email)->select('id')->first();
 
-        $user->update([
-            'password' => Hash::make($request->password),
-        ]);
-        Auth::guard('employee')->logout();
-        $request->session()->invalidate();
-        $request->session()->flush();
-        return redirect()->route('employee-login')->with('success', 'Password changed successfully. Please login again as employee.');
-    }
+    //     $user->update([
+    //         'password' => Hash::make($request->password),
+    //     ]);
+    //     Auth::guard('employee')->logout();
+    //     $request->session()->invalidate();
+    //     $request->session()->flush();
+    //     return redirect()->route('employee-login')->with('success', 'Password changed successfully. Please login again as employee.');
+    // }
 
 }

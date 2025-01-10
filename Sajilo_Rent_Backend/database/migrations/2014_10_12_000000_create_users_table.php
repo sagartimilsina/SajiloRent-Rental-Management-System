@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->boolean('is_seeded')->default(0)->nullable();
+            $table->boolean('status')->default(1)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

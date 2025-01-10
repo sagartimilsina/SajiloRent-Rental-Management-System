@@ -37,7 +37,7 @@
                             </p>
 
                             <h5 class="blog-card-title">
-                                <a href="{{ route('blog_details', ['id' => '1']) }}"> Finding best places to visit in
+                                <a href="{{ route('blog.details', ['id' => '1']) }}"> Finding best places to visit in
                                     California </a>
                             </h5>
 
@@ -56,7 +56,7 @@
                             </p>
 
                             <h5 class="blog-card-title">
-                                <a href="{{ route('blog_details', ['id' => '1']) }}"> Finding best places to visit in
+                                <a href="{{ route('blog.details', ['id' => '1']) }}"> Finding best places to visit in
                                     California </a>
                             </h5>
 
@@ -75,7 +75,7 @@
                             </p>
 
                             <h5 class="blog-card-title">
-                                <a href="{{ route('blog_details', ['id' => '1']) }}"> Finding best places to visit in
+                                <a href="{{ route('blog.details', ['id' => '1']) }}"> Finding best places to visit in
                                     California </a>
                             </h5>
 
@@ -94,7 +94,7 @@
                             </p>
 
                             <h5 class="blog-card-title">
-                                <a href="{{ route('blog_details', ['id' => '1']) }}"> Finding best places to visit in
+                                <a href="{{ route('blog.details', ['id' => '1']) }}"> Finding best places to visit in
                                     California </a>
                             </h5>
 
@@ -113,7 +113,7 @@
                             </p>
 
                             <h5 class="blog-card-title">
-                                <a href="{{ route('blog_details', ['id' => '1']) }}"> Finding best places to visit in
+                                <a href="{{ route('blog.details', ['id' => '1']) }}"> Finding best places to visit in
                                     California </a>
                             </h5>
 

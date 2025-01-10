@@ -23,6 +23,9 @@ class SuperAdminSeeder extends Seeder
             'role_id' => $role_id,
             'email_verified_at' => now(),
             'is_seeded' => 1,
+            'otp_is_verified' => 1,
+            'otp_code_verified_at' => now(),
+            'status' => 1,
         ]);
     }
 }

@@ -4,13 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,8 +30,10 @@ class User extends Authenticatable
         'otp_code_verified_at',
         'otp_code_expires_at',
         'otp_is_verified',
-        'email_verified_at',
         'avatar',
+        'status',
+
+
 
     ];
 
@@ -42,6 +45,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+
     ];
 
     /**
@@ -56,5 +60,31 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(UserRoleManagement::class, 'role_id');
+    }
+
+
+    public function category()
+    {
+        return $this->hasMany(Categories::class, 'created_by');
+    }
+
+    public function property()
+    {
+        return $this->hasMany(Propeerty::class, 'created_by');
+    }
+
+    public function subcategory()
+    {
+        return $this->hasMany(SubCategories::class, 'created_by');
+    }
+
+    public function user_property()
+    {
+        return $this->hasMany(Users_Property::class, 'user_id');
+    }
+
+    public function property_review()
+    {
+        return $this->hasMany(Property_Review::class, 'user_id');
     }
 }

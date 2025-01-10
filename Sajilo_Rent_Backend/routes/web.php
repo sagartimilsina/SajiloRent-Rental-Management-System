@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 | which contains the "web" middleware group. Now, let's build something great!
 |
 */
+Route::get('/send-otp', function () {
+    return view('welcome');
+});
 
 // Auth Routes
 Route::prefix('auth')->group(function () {
@@ -39,13 +44,13 @@ Route::prefix('auth/google')->group(function () {
 });
 
 // Authenticated User Routes
-Route::middleware(['auth', 'role:User'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 
     // User account settings
     Route::get('/change-password', [AuthController::class, 'changePassword'])->name('change.password');
-    Route::post('/change-password', [AuthController::class, 'changePasswordPost'])->name('change.password.post');
+    Route::post('/change-password', [AuthController::class, 'changePasswordPost'])->name('change_password.store');
     Route::get('/email-verify', [AuthController::class, 'showVerificationPage'])->name('email.verify');
     Route::post('/email-verify', [AuthController::class, 'email_verify'])->name('email.verify.post');
     Route::get('/otp-verify', [AuthController::class, 'showOtpVerificationPage'])->name('otp.verify');
@@ -64,3 +69,15 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/gallery', 'gallery')->name('gallery');
     Route::get('/product/{categoryId}/{subcategoryId}', 'product')->name('product');
 });
+
+
+Route::prefix('superAdmin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'super_admin_dashboard'])->name('super.admin.dashboard');
+    Route::get('/users/{type}', [UsersController::class, 'index'])->name('superadmin.users.index');
+    Route::get('/companies/{type}', [DashboardController::class, 'companies'])->name('superadmin.companies.index');
+    Route::get('/user/{type}/search', [UsersController::class, 'search'])->name('superadmin.users.search');
+
+    Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('superadmin.users.updateRole');
+    Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('superadmin.users.destroy');
+});
+

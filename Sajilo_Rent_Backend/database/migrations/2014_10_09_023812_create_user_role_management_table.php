@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('user_role_management', function (Blueprint $table) {
             $table->id();
-            $table->string('role_name')->unique();
+            $table->enum('role_name',['Super Admin', 'Admin', 'User'])->unique();
             $table->timestamps();
         });
     }
