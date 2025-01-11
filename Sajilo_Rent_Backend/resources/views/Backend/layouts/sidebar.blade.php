@@ -3,7 +3,7 @@
         @if (Auth::check())
             @php
                 $userRole = Auth::user()->role->role_name;
-                
+
             @endphp
 
             @if ($userRole == 'Super Admin')
@@ -141,44 +141,45 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index')  || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Content Management</div>
                 </a>
-                <ul class="menu-sub {{ request()->is('superadmin.companies.index*') ? 'show' : '' }}">
-                    <li class="menu-item {{ request()->type === 'super-admin' ? 'active' : '' }}">
+                <ul class="menu-sub {{ request()->is('superadmin/*') ? 'show' : '' }}">
+                    <li
+                        class="menu-item {{ request()->is('superadmin/users') && request('type') == 'super-admin' ? 'active' : '' }}">
                         <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
                             Gallery
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('blogs.index') ? 'active' : '' }}">
+                        <a href="{{ route('blogs.index') }}" class="menu-link">
                             Blogs
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('teams.index') ? 'active' : '' }}">
+                        <a href="{{ route('teams.index') }}" class="menu-link">
                             Teams
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('testimonials.index') ? 'active' : '' }}">
+                        <a href="{{ route('testimonials.index') }}" class="menu-link">
                             Testimonials
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('abouts.index') ? 'active' : '' }}">
+                        <a href="{{ route('abouts.index') }}" class="menu-link">
                             About Us
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('faqs.index') ? 'active' : '' }}">
+                        <a href="{{ route('faqs.index') }}" class="menu-link">
                             FAQ Lists
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('sites.index') ? 'active' : '' }}">
+                        <a href="{{ route('sites.index') }}" class="menu-link">
                             Site Management
                         </a>
                     </li>

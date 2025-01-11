@@ -1,10 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FAQController;
+use App\Http\Controllers\BlogsController;
+use App\Http\Controllers\TeamsController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\AboutsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\UsersController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiteManagerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,5 +85,38 @@ Route::prefix('superAdmin')->group(function () {
 
     Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('superadmin.users.updateRole');
     Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('superadmin.users.destroy');
+
+
+
+    Route::resource('/testimonials', TestimonialsController::class);
+    Route::get('/testimonial/trash-view', [TestimonialsController::class, 'trashView'])->name('testimonial.trash-view');
+    Route::delete('/testimonial/trash/{id}', [TestimonialsController::class, 'trashDelete'])->name('testimonial.trash');
+    Route::delete('/testimonial/{id}', [TestimonialsController::class, 'delete'])->name('testimonial.delete');
+    Route::get('/testimonial/restore/{id}', [TestimonialsController::class, 'restore'])->name('testimonial.restore');
+    Route::patch('/testimonial/{id}/publish', [TestimonialsController::class, 'publish'])->name('testimonial.publish');
+    Route::patch('/testimonial/{id}/unpublish', [TestimonialsController::class, 'unpublish'])->name('testimonial.unpublish');
+    // Route::resource('category', CategoryController::class);
+    Route::resource('/blogs', BlogsController::class);
+    Route::get('/blog/trash-view', action: [BlogsController::class, 'trashView'])->name('blogs.trash-view');
+    Route::delete('/blog/trash/{id}', [BlogsController::class, 'trashDelete'])->name('blog.trash');
+    Route::get('/blog/restore/{id}', [BlogsController::class, 'restore'])->name('blog.restore');
+    Route::patch('/blog/{id}/publish', [BlogsController::class, 'publish'])->name('blog.publish');
+    Route::patch('/blog/{id}/unpublish', [BlogsController::class, 'unpublish'])->name('blog.unpublish');
+
+    Route::resource('faqs', FAQController::class);
+    Route::get('/faq/trash-view', action: [FAQController::class, 'trashView'])->name('faqs.trash-view');
+    Route::delete('/faq/trash/{id}', [FAQController::class, 'trashDelete'])->name('faq.trash');
+    Route::delete('/faq/{id}', [FAQController::class, 'delete'])->name('faq.delete');
+    Route::get('/faq/restore/{id}', [FAQController::class, 'restore'])->name('faq.restore');
+    Route::patch('/faq/{id}/publish', [FAQController::class, 'publish'])->name('faq.publish');
+    Route::patch('/faq/{id}/unpublish', [FAQController::class, 'unpublish'])->name('faq.unpublish');
+
+
+
+    Route::resource('teams', TeamsController::class);
+    
+    Route::resource('abouts', AboutsController::class);
+
+    Route::resource('sites', SiteManagerController::class);
 });
 
