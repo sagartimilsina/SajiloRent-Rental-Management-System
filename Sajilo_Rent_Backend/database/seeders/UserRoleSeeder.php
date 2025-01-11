@@ -14,14 +14,15 @@ class UserRoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['role_name' => 'Super Admin'],
-            ['role_name' => 'Admin'],
-            ['role_name' => 'User']
+            ['role_name' => 'Super Admin', 'created_by' => 'System'],
+            ['role_name' => 'Admin', 'created_by' => 'Super Admin'],
+            ['role_name' => 'User', 'created_by' => 'Super Admin'],
         ];
 
-        // Loop through each role and create it in the database
+        // Insert roles into the database
         foreach ($roles as $role) {
             UserRoleManagement::create($role);
         }
     }
+
 }

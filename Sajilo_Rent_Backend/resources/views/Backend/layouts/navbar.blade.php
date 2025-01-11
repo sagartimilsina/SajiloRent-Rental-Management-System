@@ -54,7 +54,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                         <a class="dropdown-item" href="#">
-                            <span class="fw-medium d-block">{{ Auth::user()->name }}</span>
+                            <span class="fw-medium d-block">{{ @Auth::user()->name }}</span>
                             <small class="text-muted">{{ $userRole }}</small>
                         </a>
                     </li>

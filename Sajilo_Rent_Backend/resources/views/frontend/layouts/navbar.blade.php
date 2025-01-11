@@ -46,11 +46,22 @@
                 <li class="nav-item"><a class="nav-link {{ Route::is('contact') ? 'active-nav' : '' }}"
                         href="{{ route('contact') }}">Contact</a></li>
 
-                <li class="nav-item">
-                    <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
-                        List your Property
-                    </a>
-                </li>
+                @php
+                    // Fetch the latest application status for the authenticated user
+                    $application = DB::table('request_owner_lists')
+                        ->where('user_id', @Auth::user()->id)
+                        ->orderBy('created_at', 'desc') // Get the latest entry by date
+                        ->first();
+                @endphp
+
+                @if (is_null($application) || in_array($application->status, ['rejected', 'expired']))
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
+                            List your Property
+                        </a>
+                    </li>
+                @endif
+
             </ul>
             @if (Auth::check())
                 <ul class="navbar-nav flex-row align-items-center">
@@ -154,6 +165,8 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h3 class="modal-title text-center" style="color: #f39c12;">Application Form to List Your Property
+                    </h3>
                     <style>
                         .modal {
                             visibility: visible !important;
@@ -165,89 +178,168 @@
                             visibility: visible !important;
                         }
                     </style>
-                    <h5 class="modal-title" id="submitRequestModalLabel">Request to List Your Property</h5>
-                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close "
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"
                         style="color: #f39c12;"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="requestForm" enctype="multipart/form-data">
+                    <form id="requestForm" enctype="multipart/form-data" action="{{ route('request_submit') }}"
+                        method="POST">
+                        @csrf
+                        @if ($errors->any())
+                            <script>
+                                var myModal = new bootstrap.Modal(document.getElementById('listPropertyModal'), {
+                                    backdrop: 'static',
+                                    keyboard: false
+                                });
+                                myModal.show();
+                            </script>
+                        @endif
                         <div class="accordion" id="userTypeAccordion">
-                            <!-- Normal User Section -->
+
+                            <!-- Personal Information Section -->
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingNormalUser">
+                                <h2 class="accordion-header" id="headingPersonalInfo">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseNormalUser" aria-expanded="true"
-                                        aria-controls="collapseNormalUser">
-                                        Normal User
+                                        data-bs-target="#collapsePersonalInfo" aria-expanded="true"
+                                        aria-controls="collapsePersonalInfo">
+                                        1. Personal Information
                                     </button>
                                 </h2>
-                                <div id="collapseNormalUser" class="accordion-collapse collapse show"
-                                    aria-labelledby="headingNormalUser" data-bs-parent="#userTypeAccordion">
+                                <div id="collapsePersonalInfo" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingPersonalInfo" data-bs-parent="#userTypeAccordion">
                                     <div class="accordion-body">
                                         <div class="row">
-                                            <div class="mb-3 col-md-6 col-12 ">
+                                            <input type="hidden" name="user_id" value="{{ @Auth::user()->id }}">
+                                            <div class="mb-3 col-md-6">
                                                 <label for="fullName" class="form-label">Full Name</label>
                                                 <input type="text" class="form-control" id="fullName"
-                                                    placeholder="Enter your full name" required>
+                                                    name="full_name" placeholder="Enter your full name"
+                                                    value="{{ old('full_name', @Auth::user()->name) }}">
+
+                                                @error('full_name')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
+
                                             </div>
-                                            <div class="mb-3 col-md-6 col-12">
-                                                <label for="contactNumber" class="form-label">Contact
-                                                    Number</label>
-                                                <input type="text" class="form-control" id="contactNumber"
-                                                    placeholder="+(00)0-9999-9999" required>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="contactNumber" class="form-label">Phone Number</label>
+                                                <input type="tel" class="form-control" id="contactNumber"
+                                                    name="phone_number" placeholder="Enter your phone number"
+                                                    value="{{ old('phone_number', @Auth::user()->phone_number) }}">
+
+                                                @error('phone_number')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
+
                                             </div>
-                                            <div class="mb-3 col-md-6 col-12">
+                                            <div class="mb-3 col-md-6">
                                                 <label for="emailAddress" class="form-label">Email Address</label>
                                                 <input type="email" class="form-control" id="emailAddress"
-                                                    placeholder="example@domain.com" required>
+                                                    name="email_address" placeholder="Enter your email address"
+                                                    value="{{ old('email_address', @Auth::user()->email) }}">
+
+                                                @error('email_address')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="mb-3 col-md-6 col-12">
-                                                <label for="govtId" class="form-label">Government-Issued
+                                            <div class="mb-3 col-md-6">
+                                                <label for="residentialAddress" class="form-label">Residential
+                                                    Address</label>
+                                                <input type="text" class="form-control" id="residentialAddress"
+                                                    name="residential_address"
+                                                    placeholder="Enter your residential address"
+                                                    value="{{ old('residential_address') }}">
+
+                                                @error('residential_address')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
+
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="nationalId" class="form-label">National Identification
+                                                    Number</label>
+                                                <input type="text" class="form-control" id="nationalId"
+                                                    name="national_id"
+                                                    placeholder="Enter your Citizenship ID or National Identification Number"
+                                                    value="{{ old('national_id') }}">
+
+                                                @error('national_id')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
+
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="govtIdProof" class="form-label">Government-Issued
                                                     ID</label>
-                                                <input type="file" class="form-control" id="govtId"
-                                                    accept=".pdf,.jpg,.jpeg,.png" required>
+                                                <input type="file" class="form-control" id="govtIdProof"
+                                                    name="govt_id_proof" accept=".pdf,.jpg,.jpeg,.png"
+                                                    value="{{ old('govt_id_proof') }}">
+
+                                                @error('govt_id_proof')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Company Section -->
+                            <!-- Business Information Section -->
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingCompany">
+                                <h2 class="accordion-header" id="headingBusinessInfo">
                                     <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseCompany"
-                                        aria-expanded="false" aria-controls="collapseCompany">
-                                        Company
+                                        data-bs-toggle="collapse" data-bs-target="#collapseBusinessInfo"
+                                        aria-expanded="false" aria-controls="collapseBusinessInfo">
+                                        2. Business Information (if applicable)
                                     </button>
                                 </h2>
-                                <div id="collapseCompany" class="accordion-collapse collapse"
-                                    aria-labelledby="headingCompany" data-bs-parent="#userTypeAccordion">
+                                <div id="collapseBusinessInfo" class="accordion-collapse collapse"
+                                    aria-labelledby="headingBusinessInfo" data-bs-parent="#userTypeAccordion">
                                     <div class="accordion-body">
                                         <div class="row">
-                                            <div class="mb-3 col-12 col-md-6">
+                                            <div class="mb-3 col-md-6">
                                                 <label for="businessName" class="form-label">Business/Company
                                                     Name</label>
                                                 <input type="text" class="form-control" id="businessName"
-                                                    placeholder="Enter business or company name" required>
+                                                    name="business_name" placeholder="Enter business or company name"
+                                                    value="{{ old('business_name') }}">
+
+                                                @error('business_name')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="mb-3 col-12 col-md-6">
-                                                <label for="ownershipProof" class="form-label">Proof of
-                                                    Ownership/Business Registration</label>
-                                                <input type="file" class="form-control" id="ownershipProof"
-                                                    accept=".pdf,.jpg,.jpeg,.png" required>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="panId" class="form-label">PAN Registration ID</label>
+                                                <input type="text" class="form-control" id="panId"
+                                                    name="pan_registration_id" placeholder="Enter PAN registration ID"
+                                                    value="{{ old('pan_registration_id') }}">
+
+                                                @error('pan_registration_id')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="mb-3 col-12 col-md-6">
-                                                <label for="addressProof" class="form-label">Proof of
-                                                    Address</label>
-                                                <input type="file" class="form-control" id="addressProof"
-                                                    accept=".pdf,.jpg,.jpeg,.png" required>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="businessType" class="form-label">Type of Business</label>
+                                                <input type="text" class="form-control" id="businessType"
+                                                    name="business_type"
+                                                    placeholder="e.g., Sole Proprietor, Partnership"
+                                                    value="{{ old('business_type') }}">
+
+                                                @error('business_type')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="mb-3 col-12 col-md-6">
-                                                <label for="govtIdCompany" class="form-label">Government-Issued
-                                                    ID</label>
-                                                <input type="file" class="form-control" id="govtIdCompany"
-                                                    accept=".pdf,.jpg,.jpeg,.png" required>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="businessProof" class="form-label">Proof of Business
+                                                    Registration</label>
+                                                <input type="file" class="form-control" id="businessProof"
+                                                    name="business_proof" accept=".pdf,.jpg,.jpeg,.png"
+                                                    value="{{ old('business_proof') }}">
+
+                                                @error('business_proof')
+                                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                                @enderror
+
                                             </div>
                                         </div>
                                     </div>
@@ -257,18 +349,27 @@
 
                         <!-- Agreement Checkbox -->
                         <div class="mb-3 mt-3">
-                            <input type="checkbox" id="agreeTerms" required>
+                            <input type="checkbox" id="agreeTerms" name="agree_terms">
                             <label for="agreeTerms" class="form-label">I agree to the terms and conditions of the
                                 system.</label>
+                            <div>
+                                @error('agree_terms')
+                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary">Submit Request</button>
                     </form>
                 </div>
+
+
+
             </div>
         </div>
     </div>
+
 
 
 </nav>
@@ -287,5 +388,86 @@
         searchIcon.addEventListener("click", () => {
             searchForm.classList.toggle("d-none");
         });
+    });
+</script>
+<script>
+    document.querySelectorAll('.form-control[type="file"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+            const inputId = e.target.id; // Get the ID of the current input
+            let fileList = document.getElementById(`${inputId}FileList`);
+
+            // If fileList doesn't exist for the current input, create it
+            if (!fileList) {
+                fileList = document.createElement('div');
+                fileList.id = `${inputId}FileList`;
+                fileList.style.display = 'flex';
+                fileList.style.flexWrap = 'wrap';
+                fileList.style.gap = '10px';
+                fileList.style.marginTop = '10px';
+                e.target.closest('.mb-3').appendChild(fileList);
+            }
+
+            fileList.innerHTML = ''; // Clear previous previews for the current input
+
+            const files = Array.from(e.target.files); // Get selected files
+
+            files.forEach(file => {
+                const fileContainer = document.createElement('div');
+                fileContainer.style.display = 'flex';
+                fileContainer.style.flexDirection = 'column';
+                fileContainer.style.alignItems = 'center';
+                fileContainer.style.width = '120px';
+                fileContainer.style.margin = '10px';
+                fileContainer.style.border = '1px solid #ddd';
+                fileContainer.style.borderRadius = '5px';
+                fileContainer.style.padding = '5px';
+                fileContainer.style.textAlign = 'center';
+                fileContainer.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+
+                if (file.type.startsWith('image/')) {
+                    // Handle image files
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.style.width = '100%';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+                    img.style.marginBottom = '5px';
+                    img.onload = () => URL.revokeObjectURL(img.src); // Free memory
+                    fileContainer.appendChild(img);
+                } else if (file.type === 'application/pdf') {
+                    // Handle PDF files
+                    const pdfLink = document.createElement('a');
+                    pdfLink.href = URL.createObjectURL(file);
+                    pdfLink.textContent = file.name;
+                    pdfLink.target = '_blank';
+                    pdfLink.style.color = '#007bff';
+                    pdfLink.style.textDecoration = 'none';
+                    fileContainer.appendChild(pdfLink);
+                } else {
+                    // Handle other files
+                    const fileName = document.createElement('span');
+                    fileName.textContent = file.name;
+                    fileName.style.fontSize = '12px';
+                    fileName.style.color = '#555';
+                    fileContainer.appendChild(fileName);
+                }
+
+                fileList.appendChild(fileContainer);
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check for validation errors
+        @if ($errors->any())
+            var myModal = new bootstrap.Modal(document.getElementById('listPropertyModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            myModal.show();
+        @endif
+
     });
 </script>

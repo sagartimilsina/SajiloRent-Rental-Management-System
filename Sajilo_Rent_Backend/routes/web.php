@@ -8,9 +8,10 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AboutsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SiteManagerController;
 use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\SiteManagerController;
+use App\Http\Controllers\RequestOwnerListsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,17 +43,17 @@ Route::prefix('auth')->group(function () {
     Route::post('/verify-otp', [AuthController::class, 'otp_verify'])->name('verify.otp');
     Route::get('/resend-otp/{user_id}', [AuthController::class, 'resend_otp_page'])->name('resend.otp');
 });
-
 // Google Login Routes
 Route::prefix('auth/google')->group(function () {
     Route::get('/', [AuthController::class, 'redirectToGoogle'])->name('google.login');
     Route::get('/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
 });
-
 // Authenticated User Routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'user'])->group(function () {
+
     Route::get('/', [FrontendController::class, 'index'])->name('index');
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('user.dashboard');
+    Route::post('/request/submit', [FrontendController::class, 'submitRequest'])->name('request_submit');
 
     // User account settings
     Route::get('/change-password', [AuthController::class, 'changePassword'])->name('change.password');
@@ -76,8 +77,8 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/product/{categoryId}/{subcategoryId}', 'product')->name('product');
 });
 
-
-Route::prefix('superAdmin')->group(function () {
+// Super Admin Routes
+Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'super_admin_dashboard'])->name('super.admin.dashboard');
     Route::get('/users/{type}', [UsersController::class, 'index'])->name('superadmin.users.index');
     Route::get('/companies/{type}', [DashboardController::class, 'companies'])->name('superadmin.companies.index');
@@ -108,12 +109,38 @@ Route::prefix('superAdmin')->group(function () {
     Route::patch('/faq/{id}/publish', [FAQController::class, 'publish'])->name('faq.publish');
     Route::patch('/faq/{id}/unpublish', [FAQController::class, 'unpublish'])->name('faq.unpublish');
 
-
+    Route::resource('/RequestOwnerLists', RequestOwnerListsController::class);
+    Route::patch('/RequestOwnerLists/approve/{id}', action: [RequestOwnerListsController::class, 'approve'])->name('RequestOwnerLists.approve');
+    Route::patch('/RequestOwnerLists/reject/{id}', action: [RequestOwnerListsController::class, 'reject'])->name('RequestOwnerLists.reject');
+    Route::get('/RequestOwnerList/trashed', [RequestOwnerListsController::class, 'trash'])->name('RequestOwnerLists.trash');
+    Route::get('/RequestOwnerList/restore/{id}', [RequestOwnerListsController::class, 'restore'])->name('request_owner_lists.restore');
+    Route::delete('/RequestOwnerList/delete/{id}', [RequestOwnerListsController::class, 'delete'])->name('request_owner_lists.delete');
 
     Route::resource('teams', TeamsController::class);
 
     Route::resource('abouts', AboutsController::class);
 
     Route::resource('sites', SiteManagerController::class);
+
+
 });
+
+
+
+
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'admin_dashboard'])->name('admin.dashboard');
+    Route::get('/users/{type}', [UsersController::class, 'index'])->name('admin.users.index');
+    Route::get('/companies/{type}', [DashboardController::class, 'companies'])->name('admin.companies.index');
+    Route::get('/user/{type}/search', [UsersController::class, 'search'])->name('admin.users.search');
+
+    Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('admin.users.destroy');
+
+
+});
+
+
 

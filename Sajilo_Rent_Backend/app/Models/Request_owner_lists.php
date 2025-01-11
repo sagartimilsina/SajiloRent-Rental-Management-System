@@ -11,7 +11,19 @@ class Request_owner_lists extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'request_owner_lists';
-    protected $fillable = ['user_id', 'company_name', 'company_address', 'company_contact', 'government_issued_id', 'business_registration_file', 'status'];
+    protected $fillable = [
+        'user_id',
+        'residential_address',
+        'national_id',
+        'govt_id_proof',
+        'agree_terms',
+        'business_name',
+        'pan_registration_id',
+        'business_type',
+        'business_proof',
+        'status',
+        'reason',
+    ];
 
     public function user()
     {

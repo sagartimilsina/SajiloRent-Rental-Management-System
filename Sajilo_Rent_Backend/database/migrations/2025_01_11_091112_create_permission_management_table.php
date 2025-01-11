@@ -4,16 +4,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('user_role_management', function (Blueprint $table) {
+        Schema::create('permission_management', function (Blueprint $table) {
             $table->id();
-            $table->enum('role_name', ['Super Admin', 'Admin', 'User'])->unique();
-            $table->string('created_by');
             $table->timestamps();
         });
     }
@@ -23,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_role_management');
+        Schema::dropIfExists('permission_management');
     }
 };
