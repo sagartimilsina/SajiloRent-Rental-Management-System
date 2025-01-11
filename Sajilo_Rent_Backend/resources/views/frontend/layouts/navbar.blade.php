@@ -23,9 +23,12 @@
                     <a class="nav-link {{ Route::is('index') ? 'active-nav' : '' }}"
                         href="{{ route('index') }}">Home</a>
                 </li>
-                <li class="nav-item"><a class="nav-link {{ Route::is('about') ? 'active-nav' : '' }}" href="{{ route('about') }}">About</a></li>
-                <li class="nav-item"><a class="nav-link {{ Route::is('blog') ? 'active-nav' : '' }}"  href="{{ route('blog') }}">Blogs</a></li>
-                <li class="nav-item"><a class="nav-link {{ Route::is('gallery') ? 'active-nav' : '' }}" href="{{ route('gallery') }}">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('about') ? 'active-nav' : '' }}"
+                        href="{{ route('about') }}">About</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('blog') ? 'active-nav' : '' }}"
+                        href="{{ route('blog') }}">Blogs</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('gallery') ? 'active-nav' : '' }}"
+                        href="{{ route('gallery') }}">Gallery</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownPages" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,7 +43,8 @@
                                 Category 2</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link {{ Route::is('contact') ? 'active-nav' : '' }}" href="{{ route('contact') }}">Contact</a></li>
+                <li class="nav-item"><a class="nav-link {{ Route::is('contact') ? 'active-nav' : '' }}"
+                        href="{{ route('contact') }}">Contact</a></li>
 
                 <li class="nav-item">
                     <a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#listPropertyModal">
@@ -56,12 +60,10 @@
                                 <!-- Check if avatar is a URL -->
                                 <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('storage/default-avatar.png') }}"
                                     alt class="rounded-circle" style="width:40px; height:40px;" />
-                                    <span 
-                                    class="text-white ms-1 " 
-                                    title="{{ Auth::user()->name }}">
+                                <span class="text-white ms-1 " title="{{ Auth::user()->name }}">
                                     {{ strtok(Auth::user()->name, ' ') }}
                                 </span>
-                                
+
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-start dropdown-menu-dark ">
@@ -76,7 +78,8 @@
                                             </div>
                                         </div>
                                         <div class="">
-                                            <span class="fw-medium d-block text-wrap" >{{ Auth::user()->name ?? 'User' }}</span>
+                                            <span
+                                                class="fw-medium d-block text-wrap">{{ Auth::user()->name ?? 'User' }}</span>
                                             <span
                                                 class="fw-medium d-block">{{ Auth::user()->role->role_name ?? 'Role' }}</span>
                                         </div>
@@ -91,10 +94,24 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="">
-                                    <i class="fa fa-home me-2"></i>
-                                    <span class="align-middle">Go to Dashboard</span>
-                                </a>
+                                @if (Auth::user()->role->role_name == 'Admin')
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        <i class="fa fa-home me-2"></i>
+                                        <span class="align-middle text-wrap">Go to Admin Dashboard</span>
+                                    </a>
+                                @elseif(Auth::user()->role->role_name == 'User')
+                                    <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                        <i class="fa fa-home me-2"></i>
+                                        <span class="align-middle text-wrap">Go to User Dashboard</span>
+                                    </a>
+                                @elseif(Auth::user()->role->role_name == 'Super Admin')
+                                    <a class="dropdown-item" href="{{ route('super.admin.dashboard') }}">
+                                        <i class="fa fa-home me-2"></i>
+                                        <span class="align-middle text-wrap">Go to Super Admin Dashboard</span>
+                                    </a>
+                                @else
+                                @endif
+
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('change.password') }}">

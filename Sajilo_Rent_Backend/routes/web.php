@@ -85,9 +85,6 @@ Route::prefix('superAdmin')->group(function () {
 
     Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('superadmin.users.updateRole');
     Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('superadmin.users.destroy');
-
-
-
     Route::resource('/testimonials', TestimonialsController::class);
     Route::get('/testimonial/trash-view', [TestimonialsController::class, 'trashView'])->name('testimonial.trash-view');
     Route::delete('/testimonial/trash/{id}', [TestimonialsController::class, 'trashDelete'])->name('testimonial.trash');
@@ -114,7 +111,7 @@ Route::prefix('superAdmin')->group(function () {
 
 
     Route::resource('teams', TeamsController::class);
-    
+
     Route::resource('abouts', AboutsController::class);
 
     Route::resource('sites', SiteManagerController::class);
