@@ -8,7 +8,6 @@
                 <div class="card">
                     {{-- <div class="card-body">
                         <a href="{{ route('.create') }}" class="btn btn-primary btn-sm btn-block"> Add Employees</a>
-                        <a href="{{ route('.create') }}" class="btn btn-primary btn-sm btn-block"> Add Employees</a>
                         <a href="{{ route('projects.create') }}" class="btn btn-primary btn-sm btn-block"> Add Projects</a>
                         <a href="{{ route('customers.create') }}" class="btn btn-primary btn-sm btn-block"> Add Customers</a>
                         <a href="{{ route('customer-followup.create') }}" class="btn btn-primary btn-sm btn-block">Add
@@ -24,18 +23,12 @@
                             <div class="col-sm-6">
                                 <div class="card-body">
                                     <h5 class="card-body text-primary ">Congratulations
-                                    <h5 class="card-body text-primary ">Congratulations
                                         {{ Auth::user()->name }}! 🎉</h5>
-
 
                                 </div>
                             </div>
                             <div class="col-sm-6 text-center text-sm-left">
                                 <div class="card-body pb-0 px-0 px-md-4">
-                                    {{-- <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('sneat_backend/assets/img/avatars/1.png') }}"
-                                        height="100" alt="View Badge User"
-                                        data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                        data-app-light-img="illustrations/man-with-laptop-light.png" /> --}}
                                     {{-- <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('sneat_backend/assets/img/avatars/1.png') }}"
                                         height="100" alt="View Badge User"
                                         data-app-dark-img="illustrations/man-with-laptop-dark.png"
@@ -51,51 +44,9 @@
                 </div>
                 <div class="col-lg-6 mb-4 order-0">
                     <div class="card p-2">
-                        <div class="renewal-projects-section">
-                            <span class="d-block mb-1 fw-bold">Renewal Projects</span>
-                            <div class="alert alert-warning" role="alert">
-                                <i class="bx bx-bell"></i> Reminder: Some projects are up for renewal soon. Please take
-                                action!
-                            </div>
-                            <div class="table-responsive text-nowrap" style="max-height: 150px; overflow-y: auto;">
-                                <table class="table">
-                                    <ul class="list-group">
-                                        {{-- @foreach ($renewalprojects as $item)
-                                            <a href="{{ route('projects.show', $item->id) }}">
-                                                <li
-                                                    class="list-group-item d-flex justify-content-between align-items-center">
-                                                    {{ $item->project_name }}
-                                                    @if (isset($item->days_remaining))
-                                                        {{-- Badge color logic based on remaining days 
-                                                        @if ($item->days_remaining > 10)
-                                                            <span class="badge bg-success"> {{ $item->days_remaining }} days
-                                                                remaining</span>
-                                                        @elseif ($item->days_remaining <= 10 && $item->days_remaining > 0)
-                                                            <span class="badge bg-warning"> {{ $item->days_remaining }} days
-                                                                remaining</span>
-                                                        @else
-                                                            <span class="badge bg-danger"> {{ $item->days_remaining }} days
-                                                                remaining</span>
-                                                        @endif
-                                                    @elseif (isset($item->days_overdue))
-                                                        {{-- Overdue case, always show in danger 
-                                                        <span class="badge bg-danger"> {{ $item->days_overdue }} days
-                                                            overdue</span>
-                                                    @endif
-                                                </li>
-                                            </a>
-                                        @endforeach --}}
-                                    </ul>
-                                </table>
-
-                            </div>
-                        </div>
+                        <canvas id="userEnrollmentChart" style="height: 300px;"></canvas>
                     </div>
                 </div>
-
-
-
-
 
 
 
@@ -153,41 +104,8 @@
                                                         <div class="avatar flex-shrink-0">
                                                             <i class="bx bx-user"
                                                                 style="font-size: 2rem; color: #FF9800;"></i>
-
-                    <div class="col-lg-12 col-md-4 col-sm-6 order-1">
-                        <div class="row">
-                            <div class="container-fluid mt-4">
-                                <div class="row">
-                                    <!-- Total Users Card -->
-                                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <div class="card-body">
-                                                <div class="card-title d-flex align-items-center justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <i class="bx bx-user" style="font-size: 2rem; color: #4CAF50;"></i>
-                                                    </div>
-                                                    <h3 class="card-title mb-1 text-danger">{{ $total_users }}</h3>
-                                                </div>
-                                                <span class="fw-medium d-block mb-1 text-center text-primary">Total
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Super Admin Users Card -->
-                                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <a href="{{ route('superadmin.users.index', ['type' => 'Super Admin']) }}">
-                                                <div class="card-body">
-                                                    <div
-                                                        class="card-title d-flex align-items-center justify-content-between">
-                                                        <div class="avatar flex-shrink-0">
-                                                            <i class="bx bx-user"
-                                                                style="font-size: 2rem; color: #FF5722;"></i>
                                                         </div>
                                                         <h3 class="card-title mb-1 text-danger">{{ $total_admins }}</h3>
-                                                        <h3 class="card-title mb-1 text-danger">{{ $total_super_admins }}
-                                                        </h3>
                                                     </div>
                                                     <span class="fw-medium d-block mb-1 text-center text-primary">Admin
                                                         Users</span>
@@ -233,43 +151,6 @@
                                                             <i class="bx bx-hourglass text-primary"
                                                                 style="font-size: 2rem; "></i>
                                                             <!-- Pending Icon -->
-                                                    <span class="fw-medium d-block mb-1 text-center text-primary">Super
-                                                        Admin Users</span>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <!-- Admin Users Card -->
-                                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}">
-                                                <div class="card-body">
-                                                    <div
-                                                        class="card-title d-flex align-items-center justify-content-between">
-                                                        <div class="avatar flex-shrink-0">
-                                                            <i class="bx bx-user"
-                                                                style="font-size: 2rem; color: #FF9800;"></i>
-                                                        </div>
-                                                        <h3 class="card-title mb-1 text-danger">{{ $total_admins }}</h3>
-                                                    </div>
-                                                    <span class="fw-medium d-block mb-1 text-center text-primary">Admin
-                                                        Users</span>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <!-- Regular Users Card -->
-                                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <a href="{{ route('superadmin.users.index', ['type' => 'user']) }}">
-                                                <div class="card-body">
-                                                    <div
-                                                        class="card-title d-flex align-items-center justify-content-between">
-                                                        <div class="avatar flex-shrink-0">
-                                                            <i class="bx bx-user"
-                                                                style="font-size: 2rem; color: #2196F3;"></i>
                                                         </div>
 
 
@@ -351,17 +232,11 @@
                                                     <span class="fw-medium d-block mb-1 text-center "
                                                         style=" color: #FFC107;">Expired Request Applications</span>
                                                 </div>
-                                                <span class="fw-medium d-block mb-1 text-center "
-                                                    style=" color: #FFC107;">Expired Request Applications</span>
                                             </div>
                                         </a>
-                                        </div>
                                     </div>
-
-                                </div> --}}
+                                </div>
                             </div>
-
-
 
 
                             <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">

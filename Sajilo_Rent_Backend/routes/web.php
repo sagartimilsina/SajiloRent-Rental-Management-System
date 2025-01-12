@@ -6,16 +6,8 @@ use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AboutsController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FAQController;
-use App\Http\Controllers\BlogsController;
-use App\Http\Controllers\TeamsController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\AboutsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SiteManagerController;
-use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\SiteManagerController;
 use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\Frontend\FrontendController;
@@ -60,8 +52,6 @@ Route::prefix('auth/google')->group(function () {
 // Authenticated User Routes
 Route::middleware(['auth', 'user'])->group(function () {
 
-Route::middleware(['auth', 'user'])->group(function () {
-
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('user.dashboard');
     Route::post('/request/submit', [FrontendController::class, 'submitRequest'])->name('request_submit');
@@ -88,8 +78,6 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/product/{categoryId}/{subcategoryId}', 'product')->name('product');
 });
 
-// Super Admin Routes
-Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function () {
 // Super Admin Routes
 Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'super_admin_dashboard'])->name('super.admin.dashboard');
