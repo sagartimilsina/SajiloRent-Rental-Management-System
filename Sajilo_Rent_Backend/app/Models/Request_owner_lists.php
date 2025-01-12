@@ -30,6 +30,11 @@ class Request_owner_lists extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function agreement()
+    {
+        return $this->hasOne(TenantAgreementwithSystem::class);
+    }
+
 
 
 }

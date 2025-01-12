@@ -225,7 +225,7 @@
                                                 <label for="contactNumber" class="form-label">Phone Number</label>
                                                 <input type="tel" class="form-control" id="contactNumber"
                                                     name="phone_number" placeholder="Enter your phone number"
-                                                    value="{{ old('phone_number', @Auth::user()->phone_number) }}">
+                                                    value="{{ old('phone_number', @Auth::user()->phone) }}">
 
                                                 @error('phone_number')
                                                     <span class="text-danger mt-2">{{ $message }}</span>
@@ -272,7 +272,7 @@
                                                 <label for="govtIdProof" class="form-label">Government-Issued
                                                     ID</label>
                                                 <input type="file" class="form-control" id="govtIdProof"
-                                                    name="govt_id_proof" accept=".pdf,.jpg,.jpeg,.png"
+                                                    name="govt_id_proof" accept=".jpg,.jpeg,.png"
                                                     value="{{ old('govt_id_proof') }}">
 
                                                 @error('govt_id_proof')
@@ -333,7 +333,7 @@
                                                 <label for="businessProof" class="form-label">Proof of Business
                                                     Registration</label>
                                                 <input type="file" class="form-control" id="businessProof"
-                                                    name="business_proof" accept=".pdf,.jpg,.jpeg,.png"
+                                                    name="business_proof" accept=".jpg,.jpeg,.png"
                                                     value="{{ old('business_proof') }}">
 
                                                 @error('business_proof')

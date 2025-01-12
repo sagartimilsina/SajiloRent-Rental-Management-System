@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Property_Review::class, 'user_id');
     }
+
+    public function tenant_agreement()
+    {
+        return $this->hasMany(TenantAgreementwithSystem::class, 'user_id');
+    }
 }

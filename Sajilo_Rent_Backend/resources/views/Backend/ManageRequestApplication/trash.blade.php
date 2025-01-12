@@ -18,7 +18,7 @@
                 <!-- DataTable with Buttons -->
                 <div class="card shadow-sm border-0 rounded-lg">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0 text-primary">Request List</h4>
+                        <h4 class="mb-0 text-primary">Request List Trashed List</h4>
                         <div class="d-flex flex-wrap align-items-center">
 
 

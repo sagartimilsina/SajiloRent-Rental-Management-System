@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\UserRoleManagement;
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Mail;
+use App\Models\TenantAgreementwithSystem;
 
 class RequestOwnerListsController extends Controller
 {
@@ -20,17 +21,27 @@ class RequestOwnerListsController extends Controller
     {
         $userroles = UserRoleManagement::whereIn('role_name', ['Admin', 'User'])->get();
 
-        // Get the status from the request
+        // Get the status and search term from the request
         $status = $request->get('status', null); // Default to null if not provided
-
-        // Get the search term from the request
         $search = $request->get('search', null); // Default to null if not provided
 
-        // Filter request lists based on the status and search term
+        // Define colors for each status
+        $statusColors = [
+            'pending' => 'primary',
+            'approved' => 'success',
+            'rejected' => 'danger',
+            'expired' => 'warning',
+            'all' => 'secondary',
+        ];
+
+        $currentStatus = $status ?? 'all'; // Default to 'all' if status is null
+        $statusColor = $statusColors[$currentStatus] ?? 'secondary'; // Default to 'secondary' if status is unknown
+
+        // Filter request lists based on status and search term
         $request_lists = Request_owner_lists::orderBy('created_at', 'desc')
             ->with('user:id,name,email,phone,role_id');
 
-        if ($status) {
+        if ($status && $status !== 'all') {
             $request_lists->where('status', $status);
         }
 
@@ -43,15 +54,23 @@ class RequestOwnerListsController extends Controller
 
         $request_lists = $request_lists->paginate(20);
 
-        return view('Backend.ManageRequestApplication.lists', compact('request_lists', 'userroles'));
+        return view('Backend.ManageRequestApplication.lists', compact(
+            'request_lists',
+            'userroles',
+            'currentStatus',
+            'statusColor'
+        ));
     }
+
 
     public function approve(Request $request, $id)
     {
+       
         $request->validate([
             'status' => 'required|in:pending,approved,rejected,expired',
             'user_id' => 'required|exists:users,id',
             'role_id' => 'required|exists:user_role_management,id',
+            'agreement_text' => 'required|string',
         ]);
 
         try {
@@ -74,6 +93,13 @@ class RequestOwnerListsController extends Controller
             $request_status->status = $request->status;
             $request_status->save();
 
+            if ($request->filled('agreement_text')) {
+                TenantAgreementwithSystem::create([
+                    'request_id' => $request_status->id,
+                    'user_id' => $request->user_id,
+                    'agreement' => $request->agreement_text,
+                ]);
+            }
             // Send email notification
             Mail::to($user_role->email)->send(new ApproveMail($user_role));
 
@@ -173,11 +199,11 @@ class RequestOwnerListsController extends Controller
         $search = $request->input('search');
 
         // Build a base query for trashed records
-        $query = Request_owner_lists::onlyTrashed()->with('user:id,name,email');
+        $query = Request_owner_lists::onlyTrashed()->with('user:id,name,email,role_id,phone');
 
         // Apply a search filter for the user's name
         if (!empty($search)) {
-            $query->whereHas('user', function ($subQuery) use ($search) {
+            $query->whereHas('user:id,name,email,role_id,phone,', function ($subQuery) use ($search) {
                 $subQuery->where('name', 'LIKE', '%' . $search . '%');
             });
         }
