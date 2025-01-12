@@ -14,16 +14,27 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('company_name')->nullable();
-            $table->string('company_address')->nullable();
-            $table->string('company_contact')->nullable();
-            $table->string('government_issued_id')->nullable();
-            $table->string('business_registration_file')->nullable();
+            $table->string('residential_address');
+            $table->string('national_id');
+            $table->string('govt_id_proof');
+            $table->boolean('agree_terms');
+
+            $table->string('business_name')->nullable();
+            $table->string('pan_registration_id')->nullable();
+            $table->string('business_type')->nullable();
+            $table->string('business_proof')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected', 'completed', 'expired'])->default('pending');
+
+            $table->longText('reason')->nullable();
             $table->softDeletes();
 
             $table->timestamps();
         });
+
+
+
+
+
     }
 
     /**

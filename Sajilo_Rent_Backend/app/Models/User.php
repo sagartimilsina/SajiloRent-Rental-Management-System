@@ -32,9 +32,7 @@ class User extends Authenticatable
         'otp_is_verified',
         'avatar',
         'status',
-
-
-
+        'company_id',
     ];
 
     /**

@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('company_id')->nullable();
             $table->string('name');
             $table->string('google_id')->nullable();
             $table->unsignedBigInteger('role_id');

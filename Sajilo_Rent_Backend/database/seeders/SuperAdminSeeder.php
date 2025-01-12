@@ -26,6 +26,7 @@ class SuperAdminSeeder extends Seeder
             'otp_is_verified' => 1,
             'otp_code_verified_at' => now(),
             'status' => 1,
+            
         ]);
     }
 }
