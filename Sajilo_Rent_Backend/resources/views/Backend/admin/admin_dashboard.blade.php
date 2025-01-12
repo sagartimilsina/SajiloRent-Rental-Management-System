@@ -140,86 +140,100 @@
                                 <div class="row">
                                     <!-- Pending Request Applications Card -->
                                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <div class="card-body">
-                                                <div class="card-title d-flex align-items-center justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <i class="bx bx-hourglass text-primary"
-                                                            style="font-size: 2rem; "></i>
-                                                        <!-- Pending Icon -->
+                                        <a href="{{ route('RequestOwnerLists.index', ['status' => 'pending']) }}">
+
+
+                                            <div class="card shadow-sm border-0 rounded-3">
+                                                <div class="card-body">
+                                                    <div
+                                                        class="card-title d-flex align-items-center justify-content-between">
+                                                        <div class="avatar flex-shrink-0">
+                                                            <i class="bx bx-hourglass text-primary"
+                                                                style="font-size: 2rem; "></i>
+                                                            <!-- Pending Icon -->
+                                                        </div>
+
+
+                                                        <h3 class="card-title mb-1 text-warning">
+                                                            {{ $pending_request_applications }}</h3>
+
                                                     </div>
-
-
-                                                    <h3 class="card-title mb-1 text-warning">
-                                                        {{ $pending_request_applications }}</h3>
-
+                                                    <span class="fw-medium d-block mb-1 text-center text-primary">Pending
+                                                        Request Applications</span>
                                                 </div>
-                                                <span class="fw-medium d-block mb-1 text-center text-primary">Pending
-                                                    Request Applications</span>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
 
                                     <!-- Approved Request Applications Card -->
                                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <div class="card-body">
-                                                <div class="card-title d-flex align-items-center justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <i class="bx bx-check-circle"
-                                                            style="font-size: 2rem; color: #4CAF50;"></i>
-                                                        <!-- Approved Icon -->
+                                        <a href="{{ route('RequestOwnerLists.index', ['status' => 'approved']) }}">
+                                            <div class="card shadow-sm border-0 rounded-3">
+                                                <div class="card-body">
+                                                    <div
+                                                        class="card-title d-flex align-items-center justify-content-between">
+                                                        <div class="avatar flex-shrink-0">
+                                                            <i class="bx bx-check-circle"
+                                                                style="font-size: 2rem; color: #4CAF50;"></i>
+                                                            <!-- Approved Icon -->
+                                                        </div>
+
+                                                        <h3 class="card-title mb-1 text-success">
+                                                            {{ $approved_request_applications }}</h3>
+
                                                     </div>
-
-                                                    <h3 class="card-title mb-1 text-success">
-                                                        {{ $approved_request_applications }}</h3>
-
+                                                    <span class="fw-medium d-block mb-1 text-center text-success">Approved
+                                                        Request Applications</span>
                                                 </div>
-                                                <span class="fw-medium d-block mb-1 text-center text-success">Approved
-                                                    Request Applications</span>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
 
                                     <!-- Rejected Request Applications Card -->
                                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <div class="card-body">
-                                                <div class="card-title d-flex align-items-center justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <i class="bx bx-x-circle"
-                                                            style="font-size: 2rem; color: #F44336;"></i>
-                                                        <!-- Rejected Icon -->
+                                        <a href="{{ route('RequestOwnerLists.index', ['status' => 'rejected']) }}">
+                                            <div class="card shadow-sm border-0 rounded-3">
+                                                <div class="card-body">
+                                                    <div
+                                                        class="card-title d-flex align-items-center justify-content-between">
+                                                        <div class="avatar flex-shrink-0">
+                                                            <i class="bx bx-x-circle"
+                                                                style="font-size: 2rem; color: #F44336;"></i>
+                                                            <!-- Rejected Icon -->
+                                                        </div>
+
+
+
+                                                        <h3 class="card-title mb-1 text-danger">
+                                                            {{ $rejected_request_applications }}</h3>
+
                                                     </div>
-
-
-
-                                                    <h3 class="card-title mb-1 text-danger">
-                                                        {{ $rejected_request_applications }}</h3>
-
+                                                    <span class="fw-medium d-block mb-1 text-center text-danger">Rejected
+                                                        Request Applications</span>
                                                 </div>
-                                                <span class="fw-medium d-block mb-1 text-center text-danger">Rejected
-                                                    Request Applications</span>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                     <!-- Expired Request Applications Card -->
                                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                                        <div class="card shadow-sm border-0 rounded-3">
-                                            <div class="card-body">
-                                                <div class="card-title d-flex align-items-center justify-content-between">
-                                                    <div class="avatar flex-shrink-0">
-                                                        <i class="bx bx-timer"
-                                                            style="font-size: 2rem; color: #FFC107;"></i>
-                                                        <!-- Expired Icon -->
+                                        <a href="{{ route('RequestOwnerLists.index', ['status' => 'expired']) }}">
+                                            <div class="card shadow-sm border-0 rounded-3">
+                                                <div class="card-body">
+                                                    <div
+                                                        class="card-title d-flex align-items-center justify-content-between">
+                                                        <div class="avatar flex-shrink-0">
+                                                            <i class="bx bx-timer"
+                                                                style="font-size: 2rem; color: #FFC107;"></i>
+                                                            <!-- Expired Icon -->
+                                                        </div>
+                                                        <h3 class="card-title mb-1 text-warning">
+                                                            {{ $expired_request_applications }}</h3>
                                                     </div>
-                                                    <h3 class="card-title mb-1 text-warning">
-                                                        {{ $expired_request_applications }}</h3>
+                                                    <span class="fw-medium d-block mb-1 text-center "
+                                                        style=" color: #FFC107;">Expired Request Applications</span>
                                                 </div>
-                                                <span class="fw-medium d-block mb-1 text-center "
-                                                    style=" color: #FFC107;">Expired Request Applications</span>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

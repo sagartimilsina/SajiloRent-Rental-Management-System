@@ -46,18 +46,19 @@ class FrontendController extends Controller
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'full_name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:15',
+          'phone_number' => 'required|string|max:15|unique:users,phone,' . $request->input('user_id'),
+
             'email_address' => 'required|email|max:255',
             'residential_address' => 'required|string|max:255',
             'national_id' => 'required|string|max:255',
-            'govt_id_proof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'govt_id_proof' => 'required|image|mimes:jpg,jpeg,png|max:5120',
             'agree_terms' => 'accepted|required',
 
             // Optional fields
             'business_name' => 'nullable|string|max:255',
             'pan_registration_id' => 'nullable|string|max:255',
             'business_type' => 'nullable|string|max:255',
-            'business_proof' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'business_proof' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $data = $validated;
@@ -66,7 +67,10 @@ class FrontendController extends Controller
         } else {
             $data['agree_terms'] = false;
         }
+
+
         if ($request->has('phone_number')) {
+
             $user_id = $request->input('user_id');
             $phone_number = $request->input('phone_number');
             $user = User::find($user_id);
