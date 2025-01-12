@@ -7,6 +7,11 @@ use App\Mail\RejectMail;
 use App\Mail\ApproveMail;
 use Illuminate\Http\Request;
 use App\Models\UserRoleManagement;
+use App\Models\User;
+use App\Mail\RejectMail;
+use App\Mail\ApproveMail;
+use Illuminate\Http\Request;
+use App\Models\UserRoleManagement;
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TenantAgreementwithSystem;
@@ -16,6 +21,8 @@ class RequestOwnerListsController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function index(Request $request)
 
     public function index(Request $request)
     {
