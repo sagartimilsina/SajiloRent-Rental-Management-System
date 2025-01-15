@@ -33,7 +33,8 @@
                                 </div>
                             </form>
                             <!-- End Search Form -->
-
+                            <a href="{{ route('faqs.index') }}" class="btn btn-info ms-2 shadow-sm">
+                                <i class="bx bx-refresh me-1"></i>
                             <!-- Add New Mock Test Button -->
                             <a href="{{ route('faqs.create') }}" class="btn btn-primary ms-2 shadow-sm">
                                 <i class="bx bx-plus me-1"></i> Add FAQ
@@ -55,7 +56,7 @@
                                 <tr>
                                     <th>SN</th>
                                     <th>Category</th>
-                                  
+
                                     <th>Question</th>
                                     <th>Answer</th>
                                     <th> Publish Status</th>
@@ -72,13 +73,13 @@
                                         @else
                                             <td>N/A</td>
                                         @endif
-                                        
+
 
                                         <td>
                                             {{ $item->question }}
                                         </td>
                                         <td>{!! $item->answer !!}</td>
-                                        @if ($item->publish_status == 1)
+                                        @if ($item->faq_publish_status == 1)
                                             <td><span class="badge bg-success">Published</span></td>
                                         @else
                                             <td><span class="badge bg-danger">Unpublished</span></td>
@@ -90,8 +91,8 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                  
-                                                    @if ($item->publish_status == 1)
+
+                                                    @if ($item->faq_publish_status == 1)
                                                         <li>
                                                             <button class="dropdown-item text-danger" data-bs-toggle="modal"
                                                                 data-bs-target="#unpublishModal{{ $item->id }}">
@@ -147,6 +148,10 @@
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('PATCH')
+                                                                    @if ($item->faq_publish_status === 0)
+                                                                        <input type="hidden" name="faq_publish_status"
+                                                                            value="1">
+                                                                    @endif
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit"
@@ -180,6 +185,10 @@
                                                                     method="POST">
                                                                     @method('PATCH')
                                                                     @csrf
+                                                                    @if ($item->faq_publish_status === 1)
+                                                                        <input type="hidden" name="faq_publish_status"
+                                                                            value="0">
+                                                                    @endif
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit"
@@ -223,7 +232,7 @@
                                                 </div>
 
                                             </div>
-                                           
+
                                         </td>
                                     </tr>
                                 @endforeach

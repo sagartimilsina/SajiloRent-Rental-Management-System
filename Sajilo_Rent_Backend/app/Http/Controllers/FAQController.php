@@ -94,10 +94,83 @@ class FAQController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
-     /**
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        try {
+            $faq = FAQ::onlyTrashed()->findOrFail($id);
+            $faq->forceDelete();
+
+            return redirect()->back()->with('success', 'FAQ deleted permanently.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+        /**
+     * Publish the FAQ.
+     */
+    public function publish(Request $request, $id)
+    {
+        try {
+            // Manually validating the incoming request
+            $validatedData = $request->validate([
+                'faq_publish_status' => 'required|in:1,0',
+            ]);
+
+            // Find faq or fail
+            $faq = FAQ::findOrFail($id);
+
+            // Update the publish status
+            $faq->faq_publish_status = $request->faq_publish_status;
+            $faq->save();
+
+
+
+            return redirect()->route('faqs.index')->with('success', 'faq published successfully.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle the validation failure case
+            $errors = implode(', ', array_map(function ($error) {
+                return implode(', ', $error);
+            }, $e->errors())); // Convert errors array to a string
+
+
+            // Redirect back with the error notification and input
+            return redirect()->back()->with('error', $errors)->withInput();
+
+        } catch (\Exception $e) {
+            // General exception handling
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+
+    /**
+     * Unpublish the FAQ.
+     */
+    public function unpublish(Request $request, $id)
+    {
+        $request->validate([
+            'faq_publish_status' => 'required|in:1,0',
+        ]);
+
+        try {
+            $faq = FAQ::findOrFail($id);
+            $faq->faq_publish_status = $request->faq_publish_status;
+            $faq->save();
+
+            return redirect()->route('faqs.index', $faq->id)->with('success', 'FAQ unpublished successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    /**
      * Remove the specified resource from storage (soft delete).
      */
-    public function trashDelete($id)
+    public function trashDelete(Request $request,$id)
     {
         try {
             $faq = FAQ::findOrFail($id);
@@ -124,25 +197,10 @@ class FAQController extends Controller
 
         return view('Backend.faqs.trash_view', compact('faqs_trash'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(F$id)
-    {
-        try {
-            $faq = FAQ::onlyTrashed()->findOrFail($id);
-            $faq->forceDelete();
-
-            return redirect()->back()->with('success', 'FAQ deleted permanently.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-    /**
+/**
      * Restore a trashed FAQ.
      */
-    public function restore($id)
+    public function restore(Request $request, $id)
     {
         try {
             $faq = FAQ::onlyTrashed()->findOrFail($id);
@@ -153,42 +211,5 @@ class FAQController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
-    /**
-     * Publish the FAQ.
-     */
-    public function publish(Request $request, $id)
-    {
-        try {
-            $request->validate([
-                'faq_publish_status' => 'required|in:1,0',
-            ]);
 
-            $faq = FAQ::findOrFail($id);
-            $faq->faq_publish_status = $request->faq_publish_status;
-            $faq->save();
-
-            return redirect()->route('faqs.index')->with('success', 'FAQ published successfully.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-/**
-     * Unpublish the FAQ.
-     */
-    public function unpublish(Request $request, $id)
-    {
-        $request->validate([
-            'faq_publish_status' => 'required|in:1,0',
-        ]);
-
-        try {
-            $faq = FAQ::findOrFail($id);
-            $faq->faq_publish_status = $request->faq_publish_status;
-            $faq->save();
-
-            return redirect()->route('faqs.index')->with('success', 'FAQ unpublished successfully.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
 }

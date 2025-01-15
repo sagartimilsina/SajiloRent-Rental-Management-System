@@ -7,6 +7,8 @@ use App\Mail\RejectMail;
 use App\Mail\ApproveMail;
 use Illuminate\Http\Request;
 use App\Models\UserRoleManagement;
+
+
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TenantAgreementwithSystem;
@@ -16,7 +18,6 @@ class RequestOwnerListsController extends Controller
     /**
      * Display a listing of the resource.
      */
-
     public function index(Request $request)
     {
         $userroles = UserRoleManagement::whereIn('role_name', ['Admin', 'User'])->get();
@@ -65,7 +66,11 @@ class RequestOwnerListsController extends Controller
 
     public function approve(Request $request, $id)
     {
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> 184a5f4146e4c263ab674d856a43a6ddf0ca16df
         $request->validate([
             'status' => 'required|in:pending,approved,rejected,expired',
             'user_id' => 'required|exists:users,id',
@@ -143,6 +148,7 @@ class RequestOwnerListsController extends Controller
         //     return redirect()->route('RequestOwnerLists.index')->with('error', 'Error: ' . $e->getMessage());
         // }
     }
+
     /**
      * Show the form for creating a new resource.
      */
