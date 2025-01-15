@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\FAQ;
 use Illuminate\Http\Request;
+
 
 class FAQController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+        $faqs = FAQ::when($search, function ($query, $search) {
+            $query->where('question', 'like', '%' . $search . '%');
+        })
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+
+        return view('Backend.faqs.lists', compact('faqs'));
     }
 
     /**
@@ -20,7 +29,7 @@ class FAQController extends Controller
      */
     public function create()
     {
-        //
+        return view('Backend.faqs.create');
     }
 
     /**
@@ -28,9 +37,24 @@ class FAQController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+            'faq_publish_status' => 'nullable|boolean',
+        ]);
 
+        try {
+            FAQ::create([
+                'question' => $request->input('question'),
+                'answer' => $request->input('answer'),
+                'faq_publish_status' => $request->input('faq_publish_status', false),
+            ]);
+
+            return redirect()->route('faqs.index')->with('success', 'FAQ created successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
     /**
      * Display the specified resource.
      */
@@ -42,24 +66,129 @@ class FAQController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(FAQ $fAQ)
+    public function edit(FAQ $faq)
     {
-        //
+        return view('Backend.faqs.create', compact('faq'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, FAQ $fAQ)
+    public function update(Request $request, FAQ $faq)
     {
-        //
+        $request->validate([
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
+            'faq_publish_status' => 'nullable|boolean',
+        ]);
+
+        try {
+            $faq->update([
+                'question' => $request->input('question'),
+                'answer' => $request->input('answer'),
+                'faq_publish_status' => $request->input('faq_publish_status', false),
+            ]);
+
+            return redirect()->route('faqs.index')->with('success', 'FAQ updated successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+     /**
+     * Remove the specified resource from storage (soft delete).
+     */
+    public function trashDelete($id)
+    {
+        try {
+            $faq = FAQ::findOrFail($id);
+            $faq->delete();
+
+            return redirect()->route('faqs.index')->with('success', 'FAQ moved to trash successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    /**
+     * Display trashed FAQs.
+     */
+    public function trashView(Request $request)
+    {
+        $search = $request->input('search');
+
+        $faqs_trash = FAQ::onlyTrashed()
+            ->when($search, function ($query, $search) {
+                return $query->where('question', 'like', '%' . $search . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+
+        return view('Backend.faqs.trash_view', compact('faqs_trash'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(FAQ $fAQ)
+    public function destroy(F$id)
     {
-        //
+        try {
+            $faq = FAQ::onlyTrashed()->findOrFail($id);
+            $faq->forceDelete();
+
+            return redirect()->back()->with('success', 'FAQ deleted permanently.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    /**
+     * Restore a trashed FAQ.
+     */
+    public function restore($id)
+    {
+        try {
+            $faq = FAQ::onlyTrashed()->findOrFail($id);
+            $faq->restore();
+
+            return redirect()->route('faqs.index')->with('success', 'FAQ restored successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    /**
+     * Publish the FAQ.
+     */
+    public function publish(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'faq_publish_status' => 'required|in:1,0',
+            ]);
+
+            $faq = FAQ::findOrFail($id);
+            $faq->faq_publish_status = $request->faq_publish_status;
+            $faq->save();
+
+            return redirect()->route('faqs.index')->with('success', 'FAQ published successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+/**
+     * Unpublish the FAQ.
+     */
+    public function unpublish(Request $request, $id)
+    {
+        $request->validate([
+            'faq_publish_status' => 'required|in:1,0',
+        ]);
+
+        try {
+            $faq = FAQ::findOrFail($id);
+            $faq->faq_publish_status = $request->faq_publish_status;
+            $faq->save();
+
+            return redirect()->route('faqs.index')->with('success', 'FAQ unpublished successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

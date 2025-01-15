@@ -1,6 +1,6 @@
 @extends('backend.layouts.main')
 
-@section('title', isset($faq) ? 'Edit faq' : 'Create faq')
+@section('title', isset($faq) ? 'Edit FAQ' : 'Create FAQ')
 
 @section('content')
     <div class="container py-5">
@@ -10,7 +10,7 @@
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h5 class="mb-0">{{ isset($faq) ? 'Edit FAQ' : 'Create FAQ' }}</h5>
                         <div class="d-flex align-items-center">
-                            <small class="text-muted">Fill in faq details</small>
+                            <small class="text-muted">Fill in the details below</small>
                         </div>
                     </div>
                     <div class="card-body">
@@ -19,75 +19,65 @@
                                 {{ session('success') }}
                             </div>
                         @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger mb-3">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
                         <form id="faq-form"
-                            action="{{ isset($faq) ? route('faqs.update', $faq->id) : route('faqs.store') }}" method="POST"
-                            enctype="multipart/form-data">
+                            action="{{ isset($faq) ? route('faqs.update', $faq->id) : route('faqs.store') }}" method="POST">
                             @csrf
                             @if (isset($faq))
                                 @method('PUT')
                             @endif
 
-                            <!-- Name Input -->
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="category_id" class="form-label">Category</label>
-                                        <div class="input-group">
-                                            <select id="category_id" name="category_id"
-                                                class="form-select @error('category_id') is-invalid @enderror">
-                                                <option value="" selected>Select a category</option>
-                                                <option value="0" {{ old('category_id') == 0 ? 'selected' : '' }}>
-                                                    Pricing</option>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                        {{ (isset($faq) && $faq->category_id == $category->id) || old('category_id') == $category->id ? 'selected' : '' }}>
-                                                        {{ $category->name }}
-                                                    </option>
-                                                @endforeach
-
-                                            </select>
-                                        </div>
-                                        @error('category_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 col-md-6">
-                                    <label for="question" class="form-label">Question</label>
-                                    <input type="text" id="question" name="question"
-                                        class="form-control @error('question') is-invalid @enderror"
-                                        value="{{ old('question', isset($faq) ? $faq->question : '') }}" required autofocus
-                                        placeholder="Enter question">
-                                    @error('question')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <!-- Question Input -->
+                            <div class="mb-3">
+                                <label for="question" class="form-label">Question</label>
+                                <input type="text" id="question" name="question"
+                                    class="form-control @error('question') is-invalid @enderror"
+                                    value="{{ old('question', isset($faq) ? $faq->question : '') }}" required
+                                    placeholder="Enter the FAQ question">
+                                @error('question')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <!-- answer Textarea -->
+                            <!-- Answer Textarea -->
                             <div class="mb-3">
                                 <label for="answer" class="form-label">Answer</label>
-                                <textarea id="answer" name="answer" class="form-control @error('answer') is-invalid @enderror">{{ old('answer', isset($faq) ? $faq->answer : '') }}</textarea>
+                                <textarea id="answer" name="answer"
+                                    class="form-control @error('answer') is-invalid @enderror" required
+                                    placeholder="Provide a detailed answer">{{ old('answer', isset($faq) ? $faq->answer : '') }}</textarea>
                                 @error('answer')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            <!-- Publish Status -->
+                            <div class="form-check form-switch mb-3">
+                                <input type="checkbox" class="form-check-input" id="faq_publish_status" name="faq_publish_status"
+                                    value="1"
+                                    {{ old('faq_publish_status', isset($faq) && $faq->faq_publish_status ? 'checked' : '') }}>
+                                <label for="faq_publish_status" class="form-check-label">Publish this FAQ</label>
+                            </div>
+
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary btn-sm">
+                            <button type="submit" class="btn btn-primary">
                                 {{ isset($faq) ? 'Update FAQ' : 'Create FAQ' }}
                             </button>
+                            <a href="{{ route('faqs.index') }}" class="btn btn-secondary">Cancel</a>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         $(document).ready(function() {
-         
-            // Summernote Initialization
+            // Initialize Summernote
             $('#answer').summernote({
                 placeholder: 'Enter a detailed answer...',
                 tabsize: 2,
