@@ -68,11 +68,7 @@
                                 @foreach ($faqs as $item)
                                     <tr class="align-middle">
                                         <td>{{ $loop->iteration }}</td>
-                                        @if ($item->category)
-                                            <td>{{ $item->category->name }}</td>
-                                        @else
-                                            <td>N/A</td>
-                                        @endif
+                                       
 
 
                                         <td>
