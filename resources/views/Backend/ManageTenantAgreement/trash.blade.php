@@ -107,7 +107,7 @@
                                             <tr class="align-middle">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td class="text-wrap">
-                                                    <strong>{{ $item->request->business_name ? $item->request->business_name : 'N/A' }}</strong>
+                                                    <strong>{{ @$item->request->business_name ? @$item->request->business_name : 'N/A' }}</strong>
                                                 </td>
                                                 <td class="text-wrap"><strong>{{ $item->user->name }}</strong></td>
                                                 <td class="text-capitalize">
@@ -138,17 +138,17 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if ($item->request->status == 'pending')
+                                                    @if (@$item->request->status == 'pending')
                                                         <span class="badge bg-warning">Pending</span>
-                                                    @elseif($item->request->status == 'approved')
+                                                    @elseif(@$item->request->status == 'approved')
                                                         <span class="badge bg-success">Approved</span>
-                                                    @elseif($item->request->status == 'rejected')
+                                                    @elseif(@$item->request->status == 'rejected')
                                                         <span class="badge bg-danger">Rejected</span>
-                                                    @elseif($item->request->status == 'expired')
+                                                    @elseif(@$item->request->status == 'expired')
                                                         <span class="badge bg-primary">Expired</span>
                                                     @else
                                                         <span
-                                                            class="badge bg-primary">{{ ucfirst($item->request->status) }}</span>
+                                                            class="badge bg-primary">{{ ucfirst(@$item->request->status) }}</span>
                                                         <!-- For any other status -->
                                                     @endif
                                                 </td>

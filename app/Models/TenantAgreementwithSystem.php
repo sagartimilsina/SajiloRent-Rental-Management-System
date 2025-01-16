@@ -26,6 +26,6 @@ class TenantAgreementwithSystem extends Model
 
     public function request()
     {
-        return $this->belongsTo(Request_owner_lists::class);
+        return $this->belongsTo(Request_owner_lists::class, 'request_id');
     }
 }

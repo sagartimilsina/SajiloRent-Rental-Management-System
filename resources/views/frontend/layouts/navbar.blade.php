@@ -108,17 +108,17 @@
                                 @if (Auth::user()->role->role_name == 'Admin')
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                         <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap">Go to Admin Dashboard</span>
+                                        <span class="align-middle text-wrap"> Admin Dashboard</span>
                                     </a>
                                 @elseif(Auth::user()->role->role_name == 'User')
                                     <a class="dropdown-item" href="{{ route('user.dashboard') }}">
                                         <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap">Go to User Dashboard</span>
+                                        <span class="align-middle text-wrap"> User Dashboard</span>
                                     </a>
                                 @elseif(Auth::user()->role->role_name == 'Super Admin')
                                     <a class="dropdown-item" href="{{ route('super.admin.dashboard') }}">
                                         <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap">Go to Super Admin Dashboard</span>
+                                        <span class="align-middle text-wrap"> Super Admin Dashboard</span>
                                     </a>
                                 @else
                                 @endif

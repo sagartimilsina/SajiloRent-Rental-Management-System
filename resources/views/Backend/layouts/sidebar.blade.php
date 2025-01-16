@@ -236,9 +236,8 @@
                             Your agreement Lists
                         </a>
                     </li>
-                    <li
-                        class="menu-item {{ request()->routeIs('tenants-agreements.index') || request()->routeIs('tenants-agreements.trash*') ? 'active' : '' }}">
-                        <a href="{{ route('tenants-agreements.index') }}" class="menu-link">
+                    <li class="menu-item ">
+                        <a href="#" class="menu-link">
                             Customer Agreements
                         </a>
                     </li>

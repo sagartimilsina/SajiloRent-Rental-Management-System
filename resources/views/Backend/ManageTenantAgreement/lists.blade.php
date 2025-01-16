@@ -201,38 +201,83 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            @if (Auth::user()->role->role_name == 'Admin')
+
+                                                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                                                {{-- <li>
+                                                                    <button type="button"
+                                                                        class="dropdown-item text-primary"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modalToggle{{ $item->id }}">
+                                                                        <i class="bx bx-show me-1"></i> View
+                                                                    </button>
+                                                                </li> --}}
                                                                 <li>
                                                                     <button type="button"
                                                                         class="dropdown-item text-primary"
                                                                         data-bs-toggle="modal"
-                                                                        data-bs-target="#modalToggle3{{ $item->id }}">
-                                                                        <i class="bx bx-edit me-1"></i> Update
+                                                                        data-bs-target="#modalToggle{{ $item->id }}">
+                                                                        <i class="bx bx-show me-1"></i>View Or Verify
                                                                     </button>
-
                                                                 </li>
-                                                            @endif
-                                                            <li>
-                                                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                                                <li>
+                                                                    <button type="button" class="dropdown-item text-danger"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#deleteModal{{ $item->id }}">
+                                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                                    </button>
+                                                                </li>
+                                                                <li>
                                                                     <form
                                                                         action="{{ route('superadmin.generateAgreementPDF', $item->id) }}"
                                                                         method="GET">
-                                                                    @elseif(Auth::user()->role->role_name == 'Admin')
-                                                                        <form
-                                                                            action="{{ route('admin.generateAgreementPDF', $item->id) }}"
-                                                                            method="GET">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id"
+                                                                            value="{{ $item->id }}">
+                                                                        <input type="hidden" name="user_id"
+                                                                            value="{{ $item->user_id }}">
+                                                                        <input type="hidden" name="request_id"
+                                                                            value="{{ $item->request_id }}">
+                                                                        <button type="submit"
+                                                                            class="dropdown-item text-primary">
+                                                                            <i class="bx bx-download me-1"></i> Generate
+                                                                            PDF
+                                                                        </button>
+                                                                    </form>
+                                                                </li>
+                                                            @elseif(Auth::user()->role->role_name == 'Admin')
+                                                                @if (Auth::user()->role->role_name == 'Admin' && $item->agreement_status == '0')
+                                                                    <li>
+                                                                        <button type="button"
+                                                                            class="dropdown-item text-primary"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#modalToggle3{{ $item->id }}">
+                                                                            <i class="bx bx-edit me-1"></i> Update
+                                                                        </button>
+
+                                                                    </li>
                                                                 @endif
-                                                                @csrf
-                                                                <input type="hidden" name="id"
-                                                                    value="{{ $item->id }}">
-                                                                <input type="hidden" name="user_id"
-                                                                    value="{{ $item->user_id }}">
-                                                                <input type="hidden" name="request_id"
-                                                                    value="{{ $item->request_id }}">
-                                                                <button type="submit" class="dropdown-item text-primary">
-                                                                    <i class="bx bx-download me-1"></i> Generate PDF
-                                                                </button>
+                                                                <li>
+                                                                    <form
+                                                                        action="{{ route('admin.generateAgreementPDF', $item->id) }}"
+                                                                        method="GET">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id"
+                                                                            value="{{ $item->id }}">
+                                                                        <input type="hidden" name="user_id"
+                                                                            value="{{ $item->user_id }}">
+                                                                        <input type="hidden" name="request_id"
+                                                                            value="{{ $item->request_id }}">
+                                                                        <button type="submit"
+                                                                            class="dropdown-item text-primary">
+                                                                            <i class="bx bx-download me-1"></i> Generate
+                                                                            PDF
+                                                                        </button>
+                                                                </li>
                                                                 </form>
+                                                            @else
+                                                                <p class="dropdown-item text-danger">You do not have
+                                                                    permission to generate this PDF.</p>
+                                                            @endif
                                                             </li>
                                                             <li>
                                                                 <button type="button" class="dropdown-item text-primary"
@@ -241,23 +286,8 @@
                                                                     <i class="bx bx-file me-1"></i> View PDF file
                                                                 </button>
                                                             </li>
-                                                            <li>
-                                                                <button type="button" class="dropdown-item text-primary"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#modalToggle{{ $item->id }}">
-                                                                    <i class="bx bx-show me-1"></i> View
-                                                                </button>
-                                                            </li>
-                                                            @if (Auth::user()->role->role_name == 'Super Admin')
-                                                                <li>
-                                                                    <button type="button"
-                                                                        class="dropdown-item text-danger"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteModal{{ $item->id }}">
-                                                                        <i class="bx bx-trash me-1"></i> Delete
-                                                                    </button>
-                                                                </li>
-                                                            @endif
+
+
                                                         </ul>
                                                         <div class="modal fade" id="deleteModal{{ $item->id }}"
                                                             tabindex="-1"
@@ -304,7 +334,8 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
-                                                                        id="modalToggleLabel{{ $item->id }}">View
+                                                                        id="modalToggleLabel{{ $item->id }}">View or
+                                                                        Verify
                                                                         Agreement
                                                                         Details</h5>
                                                                     <button type="button" class="btn-close"
@@ -317,12 +348,20 @@
                                                                             <label for="agreement_text"
                                                                                 class="form-label">Agreement Text
                                                                             </label>
-                                                                            <textarea class="form-control" id="agreement_text{{ $item->id }}" name="agreement_text" rows="2"
+                                                                            <textarea class="form-control" id="agreement_text_1{{ $item->id }}" name="agreement_text" rows="2"
                                                                                 placeholder="Enter Agreement Text" required>{{ $item->agreement }}</textarea>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="modal-footer">
+                                                                        @if (Auth::user()->role->role_name == 'Super Admin' && $item->agreement_status == '0')
+                                                                            <button type="button"
+                                                                                class="btn btn-primary "
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modalToggle4{{ $item->id }}">
+                                                                                <i class="bx bx-edit me-1"></i> Verify
+                                                                            </button>
+                                                                        @endif
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-bs-dismiss="modal">Close</button>
 
@@ -331,6 +370,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="modal fade" id="modalToggle2{{ $item->id }}"
                                                         aria-labelledby="modalToggleLabel2{{ $item->id }}"
                                                         tabindex="-1" aria-hidden="true">
@@ -360,6 +400,56 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="modal fade" id="modalToggle4{{ $item->id }}"
+                                                        aria-labelledby="modalToggleLabel4{{ $item->id }}"
+                                                        tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="modalToggleLabel2{{ $item->id }}">
+                                                                        View or Verify Agreement File
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <form
+                                                                    action="{{ route('systemandtenant-agreements.verify', $item->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('patch')
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="user_id"
+                                                                            value="{{ $item->user_id }}">
+                                                                        <!-- Adjust iframe to display the PDF -->
+                                                                        <div class="mb-3">
+                                                                            <label for=""
+                                                                                class="form-label">Agrement Statue</label>
+                                                                            <select class="form-select form-select"
+                                                                                name="agreement_status" id="">
+                                                                                <option selected>Select one</option>
+                                                                                <option value="1">Approved</option>
+                                                                                <option value="0">Rejected</option>
+
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-target="#modalToggle{{ $item->id }}"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-dismiss="modal">Back</button>
+                                                                        <button type="submit" class="btn btn-primary"
+                                                                            data-bs-dismiss="modal">Update</button>
+
+                                                                        <button type="button" class="btn btn-danger"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="modal fade" id="modalToggle3{{ $item->id }}"
                                                         aria-labelledby="modalToggleLabel3{{ $item->id }}"
                                                         tabindex="-1" aria-hidden="true">
@@ -369,22 +459,71 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
                                                                         id="modalToggleLabel3{{ $item->id }}">
-                                                                        View Agreement PDF File
+                                                                        Update Agreement File
                                                                     </h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
                                                                 </div>
+                                                                <style>
+                                                                    .marquee {
+                                                                        width: 100%;
+                                                                        overflow: hidden;
+                                                                        white-space: nowrap;
+                                                                        box-sizing: border-box;
+                                                                    }
+
+                                                                    .marquee h5 {
+                                                                        display: inline-block;
+                                                                        padding: 0 100%;
+                                                                        animation: marquee 10s linear infinite;
+                                                                        white-space: nowrap;
+                                                                        color: red;
+                                                                    }
+
+                                                                    @keyframes marquee {
+                                                                        from {
+                                                                            transform: translateX(0%);
+                                                                        }
+
+                                                                        to {
+                                                                            transform: translateX(-50%);
+                                                                        }
+                                                                    }
+                                                                </style>
+
                                                                 <div class="modal-body">
-                                                                    <!-- Adjust iframe to display the PDF -->
-                                                                    <iframe
-                                                                        src="{{ asset('storage/' . $item->agreement_file) }}"
-                                                                        frameborder="0" width="100%" height="500px">
-                                                                    </iframe>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <div class="marquee">
+                                                                        <h5>Do your signature in the given insert signature
+                                                                            image here field
+                                                                            and update it.</h5>
+                                                                    </div>
+                                                                    <form method="POST"
+                                                                        action="{{ route('admin.agreement.update', $item->id) }}"
+                                                                        enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        @method('PATCH')
+                                                                        <input type="hidden" name="user_id"
+                                                                            value="{{ $item->user_id }}">
+
+                                                                        <div class="mb-3">
+                                                                            <label for="agreement_file"
+                                                                                class="form-label">Agreement
+                                                                                Text</label>
+                                                                            <label for="agreement_text"
+                                                                                class="form-label">Agreement Text
+                                                                            </label>
+                                                                            <textarea class="form-control" id="agreement_text_2{{ $item->id }}" name="agreement_text" rows="2"
+                                                                                placeholder="Enter Agreement Text" required>{{ $item->agreement }}</textarea>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Update</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -416,7 +555,7 @@
         $(document).ready(function() {
 
             @foreach ($agreement_lists as $item)
-                $('#agreement_text{{ $item->id }}')
+                $('#agreement_text_1{{ $item->id }},#agreement_text_2{{ $item->id }}')
                     .summernote({
                         placeholder: 'Enter a detailed description...',
                         tabsize: 2,

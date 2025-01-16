@@ -124,9 +124,10 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::resource('sites', SiteManagerController::class);
     Route::resource('/tenants-agreements', TenantAgreementwithSystemController::class);
     Route::get('/tenant-agreements/trashed', [TenantAgreementwithSystemController::class, 'trash'])->name('tenants-agreements.trash');
-    Route::get('/generateAgreementPDF/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('superadmin.generateAgreementPDF');
+    Route::get('/generateAgreementPDF-superadmin/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('superadmin.generateAgreementPDF');
     Route::delete('/tenant-agreement/delete/{id}', [TenantAgreementwithSystemController::class, 'delete'])->name('tenant-agreements.delete');
     Route::get('/tenant-agreement/restore/{id}', [TenantAgreementwithSystemController::class, 'restore'])->name('tenant_agreement.restore');
+    Route::patch('/tenant-agreement/{id}/verify', [TenantAgreementwithSystemController::class, 'verify'])->name('systemandtenant-agreements.verify');
 });
 
 
@@ -142,7 +143,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('admin.users.updateRole');
     Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('agreement', [TenantAgreementwithSystemController::class, 'index'])->name('admin.agreement.index');
-    Route::get('/generateAgreementPDF/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('admin.generateAgreementPDF');
+    Route::get('/generateAgreementPDF-admin/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('admin.generateAgreementPDF');
+    Route::patch('/agreement/{id}/update', [TenantAgreementwithSystemController::class, 'update_agreement'])->name('admin.agreement.update');
 
 
 });

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\UserRoleManagement;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\TenantAgreementwithSystem;
-use App\Models\UserRoleManagement;
+use Illuminate\Support\Facades\Mail;
 
 class TenantAgreementwithSystemController extends Controller
 {
@@ -166,6 +168,7 @@ class TenantAgreementwithSystemController extends Controller
 
     public function generateAgreementPDF(Request $request)
     {
+
         // Validate the incoming request
         $request->validate([
             'request_id' => 'required|exists:request_owner_lists,id',
@@ -212,7 +215,92 @@ class TenantAgreementwithSystemController extends Controller
         $tenantAgreementwithSystem->save();
 
         // Return a JSON response
-        return redirect()->route('tenants-agreements.index')->with('success', 'Agreement PDF generated successfully');
+
+        return redirect()->back()->with('success', 'Agreement PDF generated successfully');
+    }
+
+
+    public function update_agreement(Request $request, $id)
+    {
+        $request->validate([
+            'agreement_text' => 'required',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // try {
+            // Find the user and validate existence
+            $user = User::find($request->user_id);
+            if (!$user) {
+                return redirect()->back()->with('error', 'User not found');
+            }
+
+            // Find the agreement and validate existence
+            $agreement = TenantAgreementwithSystem::find($id);
+            if (!$agreement) {
+                return redirect()->back()->with('error', 'Agreement not found');
+            }
+
+            // Update the agreement
+            $agreement->agreement = $request->agreement_text;
+            $agreement->save();
+
+            // Admin email address
+            $adminEmail = 'timilsinasagar.tukisoft@gmail.com'; // Replace with the actual admin email address
+
+            // Send email notification to admin
+            $details = [
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+            ];
+
+            Mail::send('emails.Agreement.agreement_file_update_for_admin', $details, function ($message) use ($adminEmail) {
+                $message->to($adminEmail)
+                    ->subject('User Agreement Updated');
+            });
+
+            return redirect()->back()->with('success', 'Agreement updated successfully and admin notified.');
+        // } catch (\Exception $e) {
+        //     return redirect()->back()->with('error', 'Failed to update agreement: ' . $e->getMessage());
+        // }
+    }
+
+
+    public function verify(Request $request, $id)
+    {
+
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'agreement_status' => 'required|in:1,0',
+        ]);
+        // try {
+        $user = User::where('id', $request->user_id)->select('name', 'email')->first();
+
+        $tenantAgreementwithSystem = TenantAgreementwithSystem::where('id', $id)
+            ->orWhere('user_id', $request->user_id)
+            ->first();
+
+        $tenantAgreementwithSystem->agreement_status = $request->agreement_status;
+
+        $tenantAgreementwithSystem->save();
+        $loginRoute = route('login');
+
+        $details = [
+            'user' => $user,
+            'loginRoute' => $loginRoute
+        ];
+
+        Mail::send('emails.Agreement.agreement_file_approved', $details, function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Your Agreement Has Been Approved');
+        });
+
+        // } catch (\Exception $e) {
+        //     return redirect()->back()->with('error', 'Failed to verify agreement: ' . $e->getMessage());
+        // }
+
+
+        return redirect()->route('tenants-agreements.index')->with('success', 'Agreement Approved Successfully');
     }
 
 
@@ -296,6 +384,7 @@ class TenantAgreementwithSystemController extends Controller
         $agreement_lists = TenantAgreementwithSystem::orderBy('created_at', 'desc')
             ->with('user:id,name,email,phone,role_id', 'request:id,user_id,status,business_name')
             ->onlyTrashed();
+
 
         if ($status && $status !== 'all') {
             $agreement_lists->where('status', $status);
