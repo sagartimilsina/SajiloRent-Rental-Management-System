@@ -21,13 +21,13 @@
                         <h5 class="mb-0 text-primary">FAQ List</h5>
                         <div class="d-flex flex-wrap align-items-center">
                             <!-- Search Form -->
-                            <form id="search-form" class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                            <form action ="{{route('faqs.index')}}" id="search-form"
+                                class="d-flex align-items-center me-3 mb-2 mb-sm-0">
                                 <div class="input-group">
-                                    <input type="text" id="search-input" name="search"
+                                    <input type="search" id="search-input" name="search"
                                         class="form-control form-control-md" placeholder="Search mock tests..."
                                         aria-label="Search" onkeyup="liveSearch()">
-                                    <button type="button" class="btn btn-outline-primary" id="search-button"
-                                        onclick="liveSearch()">
+                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
                                         <i class="bx bx-search"></i>
                                     </button>
                                 </div>
@@ -35,17 +35,17 @@
                             <!-- End Search Form -->
                             <a href="{{ route('faqs.index') }}" class="btn btn-info ms-2 shadow-sm">
                                 <i class="bx bx-refresh me-1"></i>
-                            <!-- Add New Mock Test Button -->
-                            <a href="{{ route('faqs.create') }}" class="btn btn-primary ms-2 shadow-sm">
-                                <i class="bx bx-plus me-1"></i> Add FAQ
-                            </a>
+                                <!-- Add New Mock Test Button -->
+                                <a href="{{ route('faqs.create') }}" class="btn btn-primary ms-2 shadow-sm">
+                                    <i class="bx bx-plus me-1"></i> Add FAQ
+                                </a>
 
 
-                            <!-- Recycle Bin Button -->
-                            <a href="{{ route('faqs.trash-view') }}" class="btn btn-danger ms-2 shadow-sm">
-                                <i class="bx bx-trash me-1"></i> Recycle Bin
-                            </a>
-                            <!-- End Recycle Bin Button -->
+                                <!-- Recycle Bin Button -->
+                                <a href="{{ route('faqs.trash-view') }}" class="btn btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-trash me-1"></i> Recycle Bin
+                                </a>
+                                <!-- End Recycle Bin Button -->
                         </div>
 
 
@@ -109,8 +109,7 @@
                                                         </li>
                                                     @endif
                                                     <li>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('faqs.edit', $item->id) }}">
+                                                        <a class="dropdown-item" href="{{ route('faqs.edit', $item->id) }}">
                                                             <i class="bx bx-edit-alt me-1"></i> Edit
                                                         </a>
                                                     </li>
@@ -143,8 +142,7 @@
                                                                 <strong>{{ $item->name }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form
-                                                                    action="{{ route('faq.publish', $item->id) }}"
+                                                                <form action="{{ route('faq.publish', $item->id) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('PATCH')
@@ -180,8 +178,7 @@
                                                                 <strong>{{ $item->name }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form
-                                                                    action="{{ route('faq.unpublish', $item->id) }}"
+                                                                <form action="{{ route('faq.unpublish', $item->id) }}"
                                                                     method="POST">
                                                                     @method('PATCH')
                                                                     @csrf
@@ -256,7 +253,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+
+
+    @endsection
+
+    {{-- <script>
         $(document).ready(function() {
             // Handle pricing dropdown change
             $('#pricing').change(function() {
@@ -343,10 +344,10 @@
             @endforeach
 
         });
-    </script>
+    </script> --}}
 
 
-    <script>
+    {{-- <script>
         function liveSearch() {
             const input = document.getElementById('search-input').value.toLowerCase();
             const tableBody = document.getElementById('mock-test-table-body');
@@ -368,6 +369,4 @@
             }
         }
         }
-    </script>
-
-@endsection
+    </script> --}}
