@@ -30,7 +30,7 @@
 
                             <!-- Name Input -->
                             <div class="row">
-                                <div class="col-6">
+                                {{-- <div class="col-6">
                                     <div class="mb-3">
                                         <label for="category_id" class="form-label">Category</label>
                                         <div class="input-group">
@@ -52,7 +52,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="question" class="form-label">Question</label>
                                     <input type="text" id="question" name="question"
@@ -86,7 +86,7 @@
     </div>
     <script>
         $(document).ready(function() {
-         
+
             // Summernote Initialization
             $('#answer').summernote({
                 placeholder: 'Enter a detailed answer...',

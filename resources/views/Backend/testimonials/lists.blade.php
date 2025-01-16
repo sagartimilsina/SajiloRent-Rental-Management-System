@@ -54,9 +54,10 @@
                             <thead class="table-light ">
                                 <tr>
                                     <th>SN</th>
-                                    <th>Category</th>
+                                    {{-- <th>Category</th> --}}
                                     <th>Name</th>
                                     <th>Position</th>
+                                    <th>Rating</th>
                                     <th>Thumbnail</th>
                                     <th> Publish Status</th>
                                     <th>Action</th>
@@ -67,13 +68,14 @@
                                 @foreach ($testimonials as $item)
                                     <tr class="align-middle">
                                         <td>{{ $loop->iteration }}</td>
-                                        @if ($item->category)
+                                        {{-- @if ($item->category)
                                             <td>{{ $item->category->name }}</td>
                                         @else
                                             <td>N/A</td>
-                                        @endif
+                                        @endif --}}
                                         <td><strong>{{ $item->name }}</strong></td>
                                         <td>{{ $item->position }}</td>
+                                        <td>{{ $item->rating }}</td>
 
                                         <td>
                                             @if (!empty($item->image) && Storage::disk('public')->exists($item->image))

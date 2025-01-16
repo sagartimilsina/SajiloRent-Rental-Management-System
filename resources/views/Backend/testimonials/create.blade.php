@@ -19,6 +19,16 @@
                                 {{ session('success') }}
                             </div>
                         @endif
+                        <!-- Validation Errors -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
                         <form id="testimonial-form"
                             action="{{ isset($testimonial) ? route('testimonials.update', $testimonial->id) : route('testimonials.store') }}"
@@ -30,7 +40,7 @@
 
                             <!-- Name Input -->
                             <div class="row">
-                                <div class="col-6">
+                                {{-- <div class="col-6">
                                     <div class="mb-3">
                                         <label for="category_id" class="form-label">Category</label>
                                         <div class="input-group">
@@ -50,8 +60,8 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="form-group mb-3 col-md-6">
+                                </div> --}}
+                                <div class="form-group mb-3 col-md-12">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" id="name" name="name"
                                         class="form-control @error('name') is-invalid @enderror"
@@ -97,6 +107,16 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <!-- Rating Input -->
+                            <div class="form-group mb-3">
+                                <label for="rating" class="form-label">Rating (1-5)</label>
+                                <input type="number" id="rating" name="rating"
+                                    class="form-control @error('rating') is-invalid @enderror"
+                                    value="{{ old('rating', isset($testimonial) ? $testimonial->rating : '') }}"
+                                    required min="1" max="5" placeholder="Enter rating (1-5)">
+                                @error('rating')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">

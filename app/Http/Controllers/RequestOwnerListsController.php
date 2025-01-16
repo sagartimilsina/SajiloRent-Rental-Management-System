@@ -66,7 +66,7 @@ class RequestOwnerListsController extends Controller
 
     public function approve(Request $request, $id)
     {
-
+       
         $request->validate([
             'status' => 'required|in:pending,approved,rejected,expired',
             'user_id' => 'required|exists:users,id',
