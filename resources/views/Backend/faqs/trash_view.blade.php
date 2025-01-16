@@ -5,12 +5,12 @@
 @section('content')
     <div class="container py-5">
         <!-- Success Alert -->
-        @if (session('success'))
+        {{-- @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        @endif --}}
         <!-- End of Success Alert -->
 
         <div class="row">

@@ -26,8 +26,7 @@
                                     <input type="text" id="search-input" name="search"
                                         class="form-control form-control-md" placeholder="Search mock tests..."
                                         aria-label="Search" onkeyup="liveSearch()">
-                                    <button type="button" class="btn btn-outline-primary" id="search-button"
-                                        onclick="liveSearch()">
+                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
                                         <i class="bx bx-search"></i>
                                     </button>
                                 </div>
@@ -47,7 +46,6 @@
                             <thead class="table-light ">
                                 <tr>
                                     <th>SN</th>
-                                    <th>Category</th>
                                     <th>Name</th>
                                     <th>Position</th>
                                     <th>Thumbnail</th>
@@ -60,11 +58,6 @@
                                 @foreach ($testimonials as $item)
                                     <tr class="align-middle">
                                         <td>{{ $loop->iteration }}</td>
-                                        @if ($item->category)
-                                        <td>{{ $item->category->name }}</td>
-                                    @else
-                                        <td>N/A</td>
-                                    @endif
                                         <td><strong>{{ $item->name }}</strong></td>
                                         <td>{{ $item->position }}</td>
 
@@ -133,7 +126,7 @@
                                                                     action="{{ route('testimonial.restore', $item->id) }}"
                                                                     method="GET">
                                                                     @csrf
-                                                                   
+
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit"
@@ -165,7 +158,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <form
-                                                                    action="{{ route('testimonial.delete',  $item->id) }}"
+                                                                    action="{{ route('testimonials.destroy', $item->id) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')

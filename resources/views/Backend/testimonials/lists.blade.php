@@ -26,8 +26,7 @@
                                     <input type="text" id="search-input" name="search"
                                         class="form-control form-control-md" placeholder="Search mock tests..."
                                         aria-label="Search" onkeyup="liveSearch()">
-                                    <button type="button" class="btn btn-outline-primary" id="search-button"
-                                        onclick="liveSearch()">
+                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
                                         <i class="bx bx-search"></i>
                                     </button>
                                 </div>
@@ -86,7 +85,7 @@
                                                     alt="Default Thumbnail" class="img-thumbnail" style="max-width: 60px;">
                                             @endif
                                         </td>
-                                        @if ($item->publish_status == 1)
+                                        @if ($item->testimonials_publish_status == 1)
                                             <td><span class="badge bg-success">Published</span></td>
                                         @else
                                             <td><span class="badge bg-danger">Unpublished</span></td>
@@ -105,7 +104,7 @@
                                                             <i class="bx bx-show me-1"></i> View
                                                         </button>
                                                     </li>
-                                                    @if ($item->publish_status == 1)
+                                                    @if ($item->testimonials_publish_status == 1)
                                                         <li>
                                                             <button class="dropdown-item text-danger" data-bs-toggle="modal"
                                                                 data-bs-target="#unpublishModal{{ $item->id }}">
@@ -161,6 +160,11 @@
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('PATCH')
+                                                                    @if ($item->testimonials_publish_status === 0)
+                                                                        <input type="hidden"
+                                                                            name="testimonials_publish_status"
+                                                                            value="1">
+                                                                    @endif
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit"
@@ -195,6 +199,11 @@
                                                                     method="POST">
                                                                     @method('PATCH')
                                                                     @csrf
+                                                                    @if ($item->testimonials_publish_status === 1)
+                                                                        <input type="hidden"
+                                                                            name="testimonials_publish_status"
+                                                                            value="0">
+                                                                    @endif
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit"
