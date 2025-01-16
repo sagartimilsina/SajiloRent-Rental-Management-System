@@ -6,13 +6,22 @@
 
             @endphp
 
-            @if ($userRole == 'Super Admin')
-                <a href="{{ route('super.admin.dashboard') }}" class="app-brand-link">
+            @php
+                $routes = [
+                    'Super Admin' => 'super.admin.dashboard',
+                    'Admin' => 'admin.dashboard',
+                    'User' => 'user.dashboard',
+                ];
+                $logoUrl =
+                    'https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg';
+            @endphp
+
+            @if (array_key_exists($userRole, $routes))
+                <a href="{{ route($routes[$userRole]) }}" class="app-brand-link">
                     <span class="app-brand-logo demo m-auto align-middle d-block">
-                        <img src="{{ asset('https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg') }}"
-                            alt="Logo" style="width: 100px; height: 100px">
+                        <img src="{{ asset($logoUrl) }}" alt="Logo" style="width: 100px; height: 100px">
                     </span>
-                    {{-- <span class="app-brand-text  menu-text fw-bolder ms-2">Super Admin Dashboard</span> --}}
+                    {{-- Optional text rendering here --}}
                 </a>
             @endif
         @endif
@@ -101,28 +110,6 @@
 
                 </ul>
             </li>
-
-            {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
-                <a href="#" class="menu-link menu-toggle">
-                    <i class="menu-icon bx bx-user"></i>
-                    <div data-i18n="Layouts">Application and Agreements</div>
-                </a>
-                <ul class="menu-sub {{ request()->is('superadmin.companies.index*') ? 'show' : '' }}">
-                    <li class="menu-item {{ request()->type === 'super-admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
-                            Tenant Application
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
-                            Tenant Agreements
-                        </a>
-                    </li>
-                </ul>
-            </li> --}}
-
-
-
             <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
@@ -214,57 +201,45 @@
                     </li>
                 </ul>
             </li>
-        @elseif(Auth::check() && Auth::user()->role->role_name == 'Admin')
+        </ul>
+    @elseif(Auth::check() && Auth::user()->role->role_name == 'Admin')
+        <ul class="menu-inner py-1">
             <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active open' : '' }}">
                 <a href="{{ route('admin.dashboard') }}" class="menu-link text-wrap">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
                     <div data-i18n="Dashboards">Dashboard</div>
                 </a>
             </li>
-            <li class="menu-item {{ request()->is('superAdmin/users*') ? 'active open' : '' }}">
+            <li class="menu-item {{ request()->is('admin.users.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Users Management</div>
                 </a>
-                <ul class="menu-sub {{ request()->is('superAdmin/users*') ? 'show' : '' }}">
-                    <li class="menu-item {{ request()->type === 'Super Admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'Super Admin']) }}" class="menu-link">
-                            Super Admin Lists
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
-                            Admin Lists
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->type === 'user' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'user']) }}" class="menu-link">
+                <ul class="menu-sub {{ request()->is('admin.users.index*') ? 'show' : '' }}">
+
+                    <li class="menu-item {{ request()->routeIs('admin.users.index') ? 'active' : '' }}	 ">
+                        <a href="{{ route('admin.users.index', ['type' => 'admin']) }}" class="menu-link">
                             User Lists
                         </a>
                     </li>
                 </ul>
             </li>
-            <li
-                class="menu-item {{ request()->routeIs('RequestOwnerLists.*') || request()->routeIs('tenants-agreements.*') ? 'active open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('admin.agreement.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
-                    <div data-i18n="Layouts">Application and Agreements</div>
+                    <div data-i18n="Layouts">Agreements</div>
                 </a>
-
-                <ul
-                    class="menu-sub {{ request()->routeIs('RequestOwnerLists.*') || request()->routeIs('tenants-agreements.*') ? 'show' : '' }}">
+                <ul class="menu-sub {{ request()->routeIs('admin.agreement.index*') ? 'show' : '' }}">
                     <!-- Request Application -->
-                    <li
-                        class="menu-item {{ request()->routeIs('RequestOwnerLists.index') || request()->routeIs('RequestOwnerLists.trash*') ? 'active' : '' }}">
-                        <a href="{{ route('RequestOwnerLists.index') }}" class="menu-link">
-                            Request Application
+                    <li class="menu-item {{ request()->routeIs('admin.agreement.index*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.agreement.index') }}" class="menu-link">
+                            Your agreement Lists
                         </a>
                     </li>
-                    <!-- Tenant Agreements -->
                     <li
                         class="menu-item {{ request()->routeIs('tenants-agreements.index') || request()->routeIs('tenants-agreements.trash*') ? 'active' : '' }}">
                         <a href="{{ route('tenants-agreements.index') }}" class="menu-link">
-                            Tenant Agreements
+                            Customer Agreements
                         </a>
                     </li>
                 </ul>
@@ -291,9 +266,10 @@
 
                 </ul>
             </li>
-        @elseif(Auth::check() && Auth::user()->role->role_name == 'User')
+        </ul>
+    @elseif(Auth::check() && Auth::user()->role->role_name == 'User')
     @endif
 
-    </ul>
+
 </aside>
 <!-- END: Main Menu-->

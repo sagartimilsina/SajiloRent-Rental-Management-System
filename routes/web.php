@@ -124,7 +124,7 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::resource('sites', SiteManagerController::class);
     Route::resource('/tenants-agreements', TenantAgreementwithSystemController::class);
     Route::get('/tenant-agreements/trashed', [TenantAgreementwithSystemController::class, 'trash'])->name('tenants-agreements.trash');
-    Route::get('/generateAgreementPDF/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('generateAgreementPDF');
+    Route::get('/generateAgreementPDF/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('superadmin.generateAgreementPDF');
     Route::delete('/tenant-agreement/delete/{id}', [TenantAgreementwithSystemController::class, 'delete'])->name('tenant-agreements.delete');
     Route::get('/tenant-agreement/restore/{id}', [TenantAgreementwithSystemController::class, 'restore'])->name('tenant_agreement.restore');
 });
@@ -136,11 +136,13 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin_dashboard'])->name('admin.dashboard');
-    Route::get('/users/{type}', [UsersController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{type?}', [UsersController::class, 'index'])->name('admin.users.index');
     Route::get('/companies/{type}', [DashboardController::class, 'companies'])->name('admin.companies.index');
     Route::get('/user/{type}/search', [UsersController::class, 'search'])->name('admin.users.search');
     Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('admin.users.updateRole');
     Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('agreement', [TenantAgreementwithSystemController::class, 'index'])->name('admin.agreement.index');
+    Route::get('/generateAgreementPDF/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('admin.generateAgreementPDF');
 
 
 });

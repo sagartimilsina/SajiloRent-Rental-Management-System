@@ -5,20 +5,64 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserRoleManagement;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
-    public function index(Request $request, $type)
-    {
-        $role = UserRoleManagement::where('role_name', $type)->first();
-        $users = User::orderBy('created_at', 'desc')->where('role_id', $role->id)->select('id', 'name', 'email', 'role_id', 'phone', 'avatar', 'is_seeded', 'status')->paginate(30);
-        $all_role = UserRoleManagement::where('role_name', '!=', $type)->get();
-        $all_roles = UserRoleManagement::all();
-        return view('Backend.ManageUsers.users', compact('users', 'type', 'all_roles'));
 
+    public function index(Request $request, $type = null)
+    {
+        // Retrieve all roles for display
+        $all_roles = UserRoleManagement::all();
+
+        // Get the currently authenticated user's role
+        $currentUserRole = Auth::user()->role->role_name;
+        $currentUserId = Auth::id();
+
+        // Determine the selected role for filtering
+        $role = UserRoleManagement::where('role_name', $type)->first();
+        if (!$role) {
+            return redirect()->back()->with('error', 'Invalid role type specified.');
+        }
+
+        if ($currentUserRole == 'Super Admin') {
+            // If Super Admin, fetch all users by the specified role
+            $users = User::orderBy('created_at', 'desc')
+                ->where('role_id', $role->id)
+                ->select('id', 'name', 'email', 'role_id', 'phone', 'avatar', 'is_seeded', 'status')
+                ->paginate(30);
+
+        } elseif ($currentUserRole == 'Admin') {
+            return 'after frontend is finished , need to code';
+            //need to code after frontend.
+            // // If Admin, fetch users created by this admin or involved in their products
+
+            // // Fetch users created by this admin
+            // $createdByAdmin = User::where('company_id', $currentUserId)->pluck('id');
+
+            // // Fetch users involved with this admin's products (reviews/rentals)
+            // $productRelatedUsers = DB::table('property__reviews')
+            //     ->where('user_id', $currentUserId)  // Assuming admin_id tracks the product owner
+            //     ->orWhere('property_id', $currentUserId)  // Assuming rented_by indicates the user who rented
+            //     ->pluck('user_id');
+
+            // // Combine user IDs and fetch unique users
+            // $userIds = $createdByAdmin->merge($productRelatedUsers)->unique();
+
+            // // Fetch the user data
+            // $users = User::whereIn('id', $userIds)
+            //     ->orderBy('created_at', 'desc')
+            //     ->select('id', 'name', 'email', 'role_id', 'phone', 'avatar', 'is_seeded', 'status')
+            //     ->paginate(30);
+        } else {
+            return redirect()->back()->with('error', 'You are not authorized to view this resource.');
+        }
+
+        return view('Backend.ManageUsers.users', compact('users', 'type', 'all_roles'));
     }
+
 
     public function search(Request $request, $type)
     {
@@ -85,6 +129,14 @@ class UsersController extends Controller
         }
         $user->delete();
         return redirect()->back()->with('success', 'User deleted successfully');
+    }
+
+    public function admin_index_users(Request $request)
+    {
+
+
+        $users = User::orderBy('created_at', 'desc')->select('id', 'name', 'email', 'role_id', 'phone', 'avatar', 'is_seeded', 'status')->paginate(30);
+        return view('Backend.ManageUsers.users', compact('users'));
     }
 }
 

@@ -19,64 +19,104 @@
                 <div class="card shadow-sm border-0 rounded-lg">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-{{ $statusColor }}">
-                            {{ ucfirst($currentStatus) }} Tenant Agreements
+
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                {{ ucfirst($currentStatus) }}
+                            @elseif(Auth::user()->role->role_name == 'Admin')
+                                {{ ucfirst($currentStatus) }} Your
+                            @endif
+                            Tenant Agreements
                         </h4>
                         <div class="d-flex flex-wrap align-items-center">
 
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                <form action="{{ route('tenants-agreements.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
 
+                                <!-- End Search Form -->
+                                <a href="{{ route('tenants-agreements.index') }}"
+                                    class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                                <a href="{{ route('tenants-agreements.index', ['status' => 'pending']) }}"
+                                    class="btn btn-sm btn-primary ms-2 shadow-sm">
+                                    <i class="bx bx-hourglass text-white me-1"></i> Pending
+                                </a>
+                                <a href="{{ route('tenants-agreements.index', ['status' => 'approved']) }}"
+                                    class="btn btn-sm btn-success ms-2 shadow-sm">
+                                    <i class="bx bx-check-circle text-white me-1"></i> Approved
+                                </a>
+                                <a href="{{ route('tenants-agreements.index', ['status' => 'rejected']) }}"
+                                    class="btn btn-sm btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-x-circle text-white me-1"></i> Rejected
+                                </a>
+                                <a href="{{ route('tenants-agreements.index', ['status' => 'expired']) }}"
+                                    class="btn btn-sm btn-warning ms-2 shadow-sm">
+                                    <i class="bx bx-timer text-white me-1"></i> Expired
+                                </a>
+                                <a href="{{ route('tenants-agreements.trash') }}"
+                                    class="btn btn-sm btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-trash me-1"></i>
+                                </a>
+                            @elseif(Auth::user()->role->role_name == 'Admin')
+                                <a href="{{ route('admin.agreement.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                                <a href="{{ route('admin.agreement.index', ['status' => 'pending']) }}"
+                                    class="btn btn-sm btn-primary ms-2 shadow-sm">
+                                    <i class="bx bx-hourglass text-white me-1"></i> Pending
+                                </a>
+                                <a href="{{ route('admin.agreement.index', ['status' => 'approved']) }}"
+                                    class="btn btn-sm btn-success ms-2 shadow-sm">
+                                    <i class="bx bx-check-circle text-white me-1"></i> Approved
+                                </a>
+                                <a href="{{ route('admin.agreement.index', ['status' => 'rejected']) }}"
+                                    class="btn btn-sm btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-x-circle text-white me-1"></i> Rejected
+                                </a>
+                                <a href="{{ route('admin.agreement.index', ['status' => 'expired']) }}"
+                                    class="btn btn-sm btn-warning ms-2 shadow-sm">
+                                    <i class="bx bx-timer text-white me-1"></i> Expired
+                                </a>
+                            @endif
 
-                            <form action="{{ route('tenants-agreements.index') }}" method="GET"
-                                class="d-flex align-items-center me-3 mb-2 mb-sm-0">
-                                <div class="input-group">
-                                    <input type="search" id="search-input" name="search"
-                                        class="form-control-sm form-control " placeholder="Search by name..."
-                                        aria-label="Search" value="{{ request('search') }}">
-                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
-                                        <i class="bx bx-search"></i>
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- End Search Form -->
-                            <a href="{{ route('tenants-agreements.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
-                                <i class="bx bx-refresh me-1"></i>
-                            </a>
-                            <a href="{{ route('tenants-agreements.index', ['status' => 'pending']) }}"
-                                class="btn btn-sm btn-primary ms-2 shadow-sm">
-                                <i class="bx bx-hourglass text-white me-1"></i> Pending
-                            </a>
-                            <a href="{{ route('tenants-agreements.index', ['status' => 'approved']) }}"
-                                class="btn btn-sm btn-success ms-2 shadow-sm">
-                                <i class="bx bx-check-circle text-white me-1"></i> Approved
-                            </a>
-                            <a href="{{ route('tenants-agreements.index', ['status' => 'rejected']) }}"
-                                class="btn btn-sm btn-danger ms-2 shadow-sm">
-                                <i class="bx bx-x-circle text-white me-1"></i> Rejected
-                            </a>
-                            <a href="{{ route('tenants-agreements.index', ['status' => 'expired']) }}"
-                                class="btn btn-sm btn-warning ms-2 shadow-sm">
-                                <i class="bx bx-timer text-white me-1"></i> Expired
-                            </a>
-                            <a href="{{ route('tenants-agreements.trash') }}" class="btn btn-sm btn-danger ms-2 shadow-sm">
-                                <i class="bx bx-trash me-1"></i>
-                            </a>
                         </div>
-
 
                     </div>
                     <div class="card-body">
                         <!-- Breadcrumb Navigation -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-style1 py-3">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
-                                </li>
+                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @elseif(Auth::user()->role->role_name == 'Admin')
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @endif
                                 <li class="breadcrumb-item ">
                                     Application and Agreements
                                 </li>
-                                <li class="breadcrumb-item text-primary active fw-bold">
-                                    Request Application
-                                </li>
+                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                    <li class="breadcrumb-item text-primary active fw-bold">
+                                        Request Application
+                                    </li>
+                                @elseif(Auth::user()->role->role_name == 'Admin')
+                                    <li class="breadcrumb-item text-primary active fw-bold">
+                                        Your Application
+                                    </li>
+                                @endif
                                 <li class="breadcrumb-item text-primary active fw-bold" aria-current="page">
                                     {{ ucfirst($currentStatus) }}
                                 </li>
@@ -88,10 +128,12 @@
                                     <tr>
                                         <th>SN</th>
                                         <th>Business Name</th>
-                                        <th>Full Name</th>
-                                        <th>Role</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
+                                        @if (Auth::user()->role->role_name == 'Super Admin')
+                                            <th>Full Name</th>
+                                            <th>Role</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                        @endif
                                         <th>Agreement Status</th>
                                         <th>Request Status</th>
 
@@ -106,10 +148,11 @@
                                                 <td class="text-wrap">
                                                     <strong>{{ $item->request->business_name ? $item->request->business_name : 'N/A' }}</strong>
                                                 </td>
-                                                <td class="text-wrap"><strong>{{ $item->user->name }}</strong></td>
-                                                <td class="text-capitalize">
-                                                    <span
-                                                        class="badge 
+                                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                                    <td class="text-wrap"><strong>{{ $item->user->name }}</strong></td>
+                                                    <td class="text-capitalize">
+                                                        <span
+                                                            class="badge 
                                                 @if ($item->user->role->role_name == 'Admin') bg-danger
                                                 @elseif($item->user->role->role_name == 'User')
                                                     bg-primary
@@ -117,12 +160,13 @@
                                                     bg-warning
                                                 @else
                                                     bg-secondary @endif">
-                                                        <strong>{{ $item->user->role->role_name }}</strong>
-                                                    </span>
-                                                </td>
+                                                            <strong>{{ $item->user->role->role_name }}</strong>
+                                                        </span>
+                                                    </td>
 
-                                                <td class="text-wrap"><strong>{{ $item->user->email }}</strong></td>
-                                                <td><strong>{{ $item->user->phone }}</strong></td>
+                                                    <td class="text-wrap"><strong>{{ $item->user->email }}</strong></td>
+                                                    <td><strong>{{ $item->user->phone }}</strong></td>
+                                                @endif
                                                 <td>
                                                     @if ($item->agreement_status == '1')
                                                         <span class="badge bg-success">Approved</span>
@@ -157,21 +201,37 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li>
-                                                                <form
-                                                                    action="{{ route('generateAgreementPDF', $item->id) }}"
-                                                                    method="GET">
-                                                                    @csrf
-                                                                    <input type="hidden" name="id"
-                                                                        value="{{ $item->id }}">
-                                                                    <input type="hidden" name="user_id"
-                                                                        value="{{ $item->user_id }}">
-                                                                    <input type="hidden" name="request_id"
-                                                                        value="{{ $item->request_id }}">
-                                                                    <button type="submit"
-                                                                        class="dropdown-item text-primary">
-                                                                        <i class="bx bx-download me-1"></i> Generate PDF
+                                                            @if (Auth::user()->role->role_name == 'Admin')
+                                                                <li>
+                                                                    <button type="button"
+                                                                        class="dropdown-item text-primary"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modalToggle3{{ $item->id }}">
+                                                                        <i class="bx bx-edit me-1"></i> Update
                                                                     </button>
+
+                                                                </li>
+                                                            @endif
+                                                            <li>
+                                                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                                                    <form
+                                                                        action="{{ route('superadmin.generateAgreementPDF', $item->id) }}"
+                                                                        method="GET">
+                                                                    @elseif(Auth::user()->role->role_name == 'Admin')
+                                                                        <form
+                                                                            action="{{ route('admin.generateAgreementPDF', $item->id) }}"
+                                                                            method="GET">
+                                                                @endif
+                                                                @csrf
+                                                                <input type="hidden" name="id"
+                                                                    value="{{ $item->id }}">
+                                                                <input type="hidden" name="user_id"
+                                                                    value="{{ $item->user_id }}">
+                                                                <input type="hidden" name="request_id"
+                                                                    value="{{ $item->request_id }}">
+                                                                <button type="submit" class="dropdown-item text-primary">
+                                                                    <i class="bx bx-download me-1"></i> Generate PDF
+                                                                </button>
                                                                 </form>
                                                             </li>
                                                             <li>
@@ -188,13 +248,16 @@
                                                                     <i class="bx bx-show me-1"></i> View
                                                                 </button>
                                                             </li>
-                                                            <li>
-                                                                <button type="button" class="dropdown-item text-danger"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#deleteModal{{ $item->id }}">
-                                                                    <i class="bx bx-trash me-1"></i> Delete
-                                                                </button>
-                                                            </li>
+                                                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                                                <li>
+                                                                    <button type="button"
+                                                                        class="dropdown-item text-danger"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#deleteModal{{ $item->id }}">
+                                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                                    </button>
+                                                                </li>
+                                                            @endif
                                                         </ul>
                                                         <div class="modal fade" id="deleteModal{{ $item->id }}"
                                                             tabindex="-1"
@@ -242,7 +305,7 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
                                                                         id="modalToggleLabel{{ $item->id }}">View
-                                                                        Agrreement
+                                                                        Agreement
                                                                         Details</h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
@@ -260,25 +323,6 @@
                                                                     </div>
 
                                                                     <div class="modal-footer">
-                                                                        <form
-                                                                            action="{{ route('generateAgreementPDF', $item->id) }}"
-                                                                            method="GET">
-                                                                            @csrf
-                                                                            <div class="modal-body">
-                                                                                <input type="hidden" name="id"
-                                                                                    value="{{ $item->id }}">
-                                                                                <input type="hidden" name="user_id"
-                                                                                    value="{{ $item->user_id }}">
-                                                                                <input type="hidden" name="request_id"
-                                                                                    value="{{ $item->request_id }}">
-
-
-                                                                                <button type="submit"
-                                                                                    class="btn btn-primary">Generate
-                                                                                    PDF</button>
-                                                                            </div>
-                                                                        </form>
-
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-bs-dismiss="modal">Close</button>
 
@@ -296,6 +340,35 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
                                                                         id="modalToggleLabel2{{ $item->id }}">
+                                                                        View Agreement PDF File
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <!-- Adjust iframe to display the PDF -->
+                                                                    <iframe
+                                                                        src="{{ asset('storage/' . $item->agreement_file) }}"
+                                                                        frameborder="0" width="100%" height="500px">
+                                                                    </iframe>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="modalToggle3{{ $item->id }}"
+                                                        aria-labelledby="modalToggleLabel3{{ $item->id }}"
+                                                        tabindex="-1" aria-hidden="true">
+                                                        <div
+                                                            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="modalToggleLabel3{{ $item->id }}">
                                                                         View Agreement PDF File
                                                                     </h5>
                                                                     <button type="button" class="btn-close"

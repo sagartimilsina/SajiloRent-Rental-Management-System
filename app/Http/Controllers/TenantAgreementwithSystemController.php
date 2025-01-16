@@ -2,63 +2,166 @@
 
 namespace App\Http\Controllers;
 
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Models\TenantAgreementwithSystem;
+use App\Models\UserRoleManagement;
 
 class TenantAgreementwithSystemController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // public function index(Request $request)
+    // {
+
+    //     $role_id = Auth::user()->role_id;
+    //     $role_name = UserRoleManagement::where('id', $role_id)->value('role_name');
+    //     if ($role_name == 'Super Admin') {
+
+    //         $status = $request->get('status', null); // Default to null if not provided
+    //         $search = $request->get('search', null); // Default to null if not provided
+
+    //         // Define colors for each status
+    //         $statusColors = [
+    //             'pending' => 'primary',
+    //             'approved' => 'success',
+    //             'rejected' => 'danger',
+    //             'expired' => 'warning',
+    //             'all' => 'secondary',
+    //         ];
+
+    //         $currentStatus = $status ?? 'all'; // Default to 'all' if status is null
+    //         $statusColor = $statusColors[$currentStatus] ?? 'secondary'; // Default to 'secondary' if status is unknown
+
+    //         // Filter request lists based on status and search term
+    //         $agreement_lists = TenantAgreementwithSystem::orderBy('created_at', 'desc')
+    //             ->with('user:id,name,email,phone,role_id', 'request:id,user_id,status,business_name');
+
+    //         if ($status && $status !== 'all') {
+    //             $agreement_lists->where('status', $status);
+    //         }
+
+    //         if ($search) {
+    //             // Searching for the user's name
+    //             $agreement_lists->whereHas('user', function ($query) use ($search) {
+    //                 $query->where('name', 'like', '%' . $search . '%');
+    //             });
+    //         }
+
+    //         $agreement_lists = $agreement_lists->paginate(20);
+
+    //     } elseif ($role_name == 'Admin') {
+
+    //         $status = $request->get('status', null); // Default to null if not provided
+    //         $search = $request->get('search', null); // Default to null if not provided
+
+    //         // Define colors for each status
+    //         $statusColors = [
+    //             'pending' => 'primary',
+    //             'approved' => 'success',
+    //             'rejected' => 'danger',
+    //             'expired' => 'warning',
+    //             'all' => 'secondary',
+    //         ];
+
+    //         $currentStatus = $status ?? 'all'; // Default to 'all' if status is null
+    //         $statusColor = $statusColors[$currentStatus] ?? 'secondary'; // Default to 'secondary' if status is unknown
+
+    //         $agreement_lists = TenantAgreementwithSystem::orderBy('created_at', 'desc')
+    //             ->with('user:id,name,email,phone,role_id', 'request:id,user_id,status,business_name')
+    //             ->where('user_id', Auth::user()->id)
+    //             ->paginate(10);
+
+    //         if ($status && $status !== 'all') {
+    //             $agreement_lists->where('status', $status);
+
+    //         }
+
+    //         if ($search) {
+    //             // Searching for the user's name
+    //             $agreement_lists->whereHas('user', function ($query) use ($search) {
+    //                 $query->where('name', 'like', '%' . $search . '%');
+    //             });
+    //         }
+
+    //         $agreement_lists = $agreement_lists->paginate(10);
+
+
+    //     }
+
+    //     // Get the status and search term from the request
+
+
+
+    //     return view('Backend.ManageTenantAgreement.lists', compact(
+    //         'agreement_lists',
+
+    //         'currentStatus',
+    //         'statusColor'
+    //     ));
+    // }
+
     public function index(Request $request)
     {
+        $roleId = Auth::user()->role_id;
+        $roleName = UserRoleManagement::where('id', $roleId)->value('role_name');
 
+        $statusColors = $this->getStatusColors();
+        $currentStatus = $request->get('status', 'all');
+        $statusColor = $statusColors[$currentStatus] ?? 'secondary';
 
-        // Get the status and search term from the request
-        $status = $request->get('status', null); // Default to null if not provided
-        $search = $request->get('search', null); // Default to null if not provided
+        $agreement_lists = $this->filterAgreementList(
+            $request,
+            $roleName,
+            $roleName === 'Admin' ? Auth::user()->id : null
+        );
 
-        // Define colors for each status
-        $statusColors = [
+        return view('Backend.ManageTenantAgreement.lists', compact(
+            'agreement_lists',
+            'currentStatus',
+            'statusColor'
+        ));
+    }
+
+    private function getStatusColors()
+    {
+        return [
             'pending' => 'primary',
             'approved' => 'success',
             'rejected' => 'danger',
             'expired' => 'warning',
             'all' => 'secondary',
         ];
+    }
 
-        $currentStatus = $status ?? 'all'; // Default to 'all' if status is null
-        $statusColor = $statusColors[$currentStatus] ?? 'secondary'; // Default to 'secondary' if status is unknown
+    private function filterAgreementList(Request $request, $roleName, $userId = null)
+    {
+        $status = $request->get('status', 'all');
+        $search = $request->get('search', null);
 
-        // Filter request lists based on status and search term
-        $agreement_lists = TenantAgreementwithSystem::orderBy('created_at', 'desc')
+        $query = TenantAgreementwithSystem::orderBy('created_at', 'desc')
             ->with('user:id,name,email,phone,role_id', 'request:id,user_id,status,business_name');
 
+        if ($roleName === 'Admin' && $userId) {
+            $query->where('user_id', $userId);
+        }
+
         if ($status && $status !== 'all') {
-            $agreement_lists->where('status', $status);
+            $query->where('status', $status);
         }
 
         if ($search) {
-            // Searching for the user's name
-            $agreement_lists->whereHas('user', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
             });
         }
 
-        $agreement_lists = $agreement_lists->paginate(20);
-
-
-        return view('Backend.ManageTenantAgreement.lists', compact(
-            'agreement_lists',
-
-            'currentStatus',
-            'statusColor'
-        ));
+        return $query->paginate($roleName === 'Super Admin' ? 20 : 10);
     }
-
 
 
     public function generateAgreementPDF(Request $request)
