@@ -40,28 +40,8 @@
 
                             <!-- Name Input -->
                             <div class="row">
-                                {{-- <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="category_id" class="form-label">Category</label>
-                                        <div class="input-group">
-                                            <select id="category_id" name="category_id"
-                                                class="form-select @error('category_id') is-invalid @enderror">
-                                                <option value="">Select a category</option>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                        {{ (isset($testimonial) && $testimonial->category_id == $category->id) || old('category_id') == $category->id ? 'selected' : '' }}>
-                                                        {{ $category->name }}
-                                                    </option>
-                                                @endforeach
 
-                                            </select>
-                                        </div>
-                                        @error('category_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div> --}}
-                                <div class="form-group mb-3 col-md-12">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" id="name" name="name"
                                         class="form-control @error('name') is-invalid @enderror"
@@ -85,7 +65,7 @@
                                 </div>
 
                                 <!-- Thumbnail Input and Preview -->
-                                <div class="mb-3">
+                                <div class=" form-group mb-3 col-md-6">
                                     <label for="thumbnail" class="form-label">Thumbnail</label>
                                     <input type="file" id="thumbnail" name="thumbnail"
                                         class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
@@ -97,8 +77,19 @@
                                         alt="Image Preview"
                                         style="display: {{ isset($testimonial->image) ? 'block' : 'none' }}; margin-top: 10px; max-width: 200px; max-height: 150px; object-fit: cover;" />
                                 </div>
-                            </div>
 
+                                <!-- Rating Input -->
+                                <div class="form-group mb-3 col-md-6">
+                                    <label for="rating" class="form-label">Rating (1-5)</label>
+                                    <input type="number" id="rating" name="rating"
+                                        class="form-control @error('rating') is-invalid @enderror"
+                                        value="{{ old('rating', isset($testimonial) ? $testimonial->rating : '') }}"
+                                        required min="1" max="5" placeholder="Enter rating (1-5)">
+                                    @error('rating')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <!-- Description Textarea -->
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
@@ -107,19 +98,9 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <!-- Rating Input -->
-                            <div class="form-group mb-3">
-                                <label for="rating" class="form-label">Rating (1-5)</label>
-                                <input type="number" id="rating" name="rating"
-                                    class="form-control @error('rating') is-invalid @enderror"
-                                    value="{{ old('rating', isset($testimonial) ? $testimonial->rating : '') }}"
-                                    required min="1" max="5" placeholder="Enter rating (1-5)">
-                                @error('rating')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary mt-3 btn-sm">
                                 {{ isset($testimonial) ? 'Update Testimonial' : 'Create Testimonial' }}
                             </button>
                         </form>
@@ -204,8 +185,8 @@
                 if (!cropper) return;
 
                 var canvas = cropper.getCroppedCanvas({
-                    width: 800,
-                    height: 200
+                    width: 400,
+                    height: 400
                 });
 
                 canvas.toBlob(function(blob) {

@@ -55,7 +55,7 @@
                             <thead class="table-light ">
                                 <tr>
                                     <th>SN</th>
-                                   
+
 
                                     <th>Question</th>
                                     <th>Answer</th>
@@ -68,7 +68,7 @@
                                 @foreach ($faqs as $item)
                                     <tr class="align-middle">
                                         <td>{{ $loop->iteration }}</td>
-                                       
+
 
 
                                         <td>
@@ -252,117 +252,3 @@
 
 
     @endsection
-
-    {{-- <script>
-        $(document).ready(function() {
-            // Handle pricing dropdown change
-            $('#pricing').change(function() {
-                const pricing = $(this).val();
-                if (pricing === 'paid') {
-                    $('#pricing_amount_field').show();
-                    $('#expire_date_field').show();
-                } else {
-                    $('#pricing_amount_field').hide();
-                    $('#expire_date_field').hide();
-                }
-                $('#pricing_amount').prop('disabled', pricing === 'free');
-            }).trigger('change'); // Trigger on page load
-
-            // Handle form submission for adding a new category
-            $('#add-category-form').submit(function(event) {
-                event.preventDefault(); // Prevent default form submission
-                const formData = new FormData(this);
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        // Handle successful form submission
-                        $('#addCategoryModal').modal('hide'); // Hide the modal
-                        location.reload(); // Reload page to show new category
-                    },
-                    error: function(xhr) {
-                        // Handle errors
-                        handleErrors(xhr);
-                    }
-                });
-            });
-
-            // Function to handle AJAX errors
-            function handleErrors(xhr) {
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    // Clear previous errors
-                    $('#error-messages').show();
-                    $('#error-list').empty();
-
-                    // Display new errors
-                    $.each(xhr.responseJSON.errors, function(key, errorMessages) {
-                        $('#error-list').append('<li>' + errorMessages.join(', ') + '</li>');
-                    });
-                } else {
-                    // Handle other errors
-                    console.error('An error occurred:', xhr.responseText);
-                }
-            }
-
-            // Handle success alert auto-hide
-            const successAlert = document.getElementById('success-alert');
-            if (successAlert) {
-                setTimeout(function() {
-                    const alert = new bootstrap.Alert(successAlert);
-                    alert.close();
-                }, 5000); // 5000 milliseconds = 5 seconds
-            }
-
-
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-
-            @foreach ($faqs as $item)
-                $('#description{{ $item->id }}').summernote({
-                    placeholder: 'Enter a detailed description...',
-                    tabsize: 2,
-                    height: 200,
-                    // toolbar: false,  // Disable toolbar
-                    disableDragAndDrop: true, // Disable drag and drop
-                    callbacks: {
-                        onInit: function() {
-                            // Make the content non-editable
-                            $(this).summernote('disable');
-                        }
-                    }
-                });
-            @endforeach
-
-        });
-    </script> --}}
-
-
-    {{-- <script>
-        function liveSearch() {
-            const input = document.getElementById('search-input').value.toLowerCase();
-            const tableBody = document.getElementById('mock-test-table-body');
-            const rows = tableBody.getElementsByTagName('tr');
-
-            for (let i = 0; i < rows.length; i++) {
-                const titleCell = rows[i].getElementsByTagName('td')[2]; // Title column const
-                categoryCell = rows[i].getElementsByTagName('td')[
-                    3]; // Category column if (titleCell || categoryCell) { const
-                titleText = titleCell.textContent || titleCell.innerText;
-                const categoryText = categoryCell.textContent ||
-                    categoryCell.innerText;
-                if (titleText.toLowerCase().indexOf(input) > -1 ||
-                    categoryText.toLowerCase().indexOf(input) > -1) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-        }
-    </script> --}}
