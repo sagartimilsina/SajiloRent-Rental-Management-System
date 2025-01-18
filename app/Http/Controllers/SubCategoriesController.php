@@ -268,6 +268,7 @@ class SubCategoriesController extends Controller
              ->when($search, function ($query, $search) {
                  return $query->where('category_name', 'like', '%' . $search . '%');
              })
+             ->where('created_by', Auth::id())
              ->orderBy('created_at', 'desc')
              ->paginate(30); // Adjusted pagination to match trash-specific listing
  

@@ -268,6 +268,7 @@ class CategoriesController extends Controller
                 return $query->where('category_name', 'like', '%' . $search . '%');
             })
             ->orderBy('created_at', 'desc')
+            ->where('created_by', Auth::id())
             ->paginate(30); // Adjusted pagination to match trash-specific listing
 
         return view('Backend.ManageCategory.trash_view', compact('categories_trash'));
