@@ -244,27 +244,54 @@
                 </ul>
             </li>
 
-            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            <li
+                class="menu-item 
+    {{ request()->routeIs('categories.index*') ||
+    request()->routeIs('subCategories.index*') ||
+    request()->routeIs('subCategory.trash-view*') ||
+    request()->routeIs('category.trash-view*') ||
+    request()->routeIs('products.index*') ||
+    request()->routeIs('product.trash-view*')
+        ? 'active open'
+        : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
-                    <div data-i18n="Layouts">Property/Product Management</div>
+                    <div data-i18n="Layouts">Property / Product Management</div>
                 </a>
-                <ul class="menu-sub {{ request()->is('superadmin.companies.index*') ? 'show' : '' }}">
-                    <li class="menu-item {{ request()->type === 'super-admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
+                <ul
+                    class="menu-sub 
+        {{ request()->routeIs('categories.index*') ||
+        request()->routeIs('subCategories.index*') ||
+        request()->routeIs('subCategory.trash-view*') ||
+        request()->routeIs('category.trash-view*') ||
+        request()->routeIs('products.index*') ||
+        request()->routeIs('product.trash-view*')
+            ? 'show'
+            : '' }}">
+                    <li
+                        class="menu-item 
+            {{ request()->routeIs('categories.index*') || request()->routeIs('category.trash-view*') ? 'active' : '' }}">
+                        <a href="{{ route('categories.index') }}" class="menu-link">
                             Product Category
                         </a>
                     </li>
-
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li
+                        class="menu-item 
+            {{ request()->routeIs('subCategories.index*') || request()->routeIs('subCategory.trash-view*') ? 'active' : '' }}">
+                        <a href="{{ route('subCategories.index') }}" class="menu-link">
+                            Product Sub Category
+                        </a>
+                    </li>
+                    <li
+                        class="menu-item 
+            {{ request()->routeIs('products.index*') || request()->routeIs('product.trash-view*') ? 'active' : '' }}">
+                        <a href="{{ route('products.index') }}" class="menu-link">
                             Product Lists
                         </a>
                     </li>
-
-
                 </ul>
             </li>
+
         </ul>
     @elseif(Auth::check() && Auth::user()->role->role_name == 'User')
     @endif

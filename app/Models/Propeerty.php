@@ -40,12 +40,12 @@ class Propeerty extends Model
 
     public function subcategory()
     {
-        return $this->belongsTo(SubCategories::class);
+        return $this->belongsTo(SubCategories::class, 'sub_category_id');
     }
 
     public function user_property()
     {
-        return $this->hasMany(Users_Property::class);
+        return $this->hasMany(Users_Property::class, 'property_id');
     }
 
     public function property_image()

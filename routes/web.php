@@ -8,8 +8,12 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AboutsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PropeertyController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\SiteManagerController;
 use App\Http\Controllers\TestimonialsController;
+use App\Http\Controllers\SubCategoriesController;
+use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
@@ -145,6 +149,38 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('agreement', [TenantAgreementwithSystemController::class, 'index'])->name('admin.agreement.index');
     Route::get('/generateAgreementPDF-admin/{id}', [TenantAgreementwithSystemController::class, 'generateAgreementPDF'])->name('admin.generateAgreementPDF');
     Route::patch('/agreement/{id}/update', [TenantAgreementwithSystemController::class, 'update_agreement'])->name('admin.agreement.update');
+
+    /*Category */
+    Route::resource('categories', CategoriesController::class);
+    Route::get('/category/trash-view', action: [CategoriesController::class, 'trashView'])->name('category.trash-view');
+    Route::delete('/category/trash/{id}', [CategoriesController::class, 'trashDelete'])->name('category.trash');
+    Route::get('/category/restore/{id}', [CategoriesController::class, 'restore'])->name('category.restore');
+    Route::patch('/category/{id}/publish', [CategoriesController::class, 'publish'])->name('category.publish');
+    Route::patch('/category/{id}/unpublish', [CategoriesController::class, 'unpublish'])->name('category.unpublish');
+
+    // SubCategory
+    Route::resource('subCategories', SubCategoriesController::class);
+    Route::get('/subCategory/trash-view', action: [SubCategoriesController::class, 'trashView'])->name('subCategory.trash-view');
+    Route::delete('/subCategory/trash/{id}', [SubCategoriesController::class, 'trashDelete'])->name('subCategory.trash');
+    Route::get('/subCategory/restore/{id}', [SubCategoriesController::class, 'restore'])->name('subCategory.restore');
+    Route::patch('/subCategory/{id}/publish', [SubCategoriesController::class, 'publish'])->name('subCategory.publish');
+    Route::patch('/subCategory/{id}/unpublish', [SubCategoriesController::class, 'unpublish'])->name('subCategory.unpublish');
+
+    //Products
+    Route::resource('products', PropeertyController::class);
+    Route::get('/product/trash-view', action: [PropeertyController::class, 'trashView'])->name('products.trash-view');
+    Route::delete('/product/trash/{id}', [PropeertyController::class, 'trashDelete'])->name('product.trash');
+    Route::get('/product/restore/{id}', [PropeertyController::class, 'restore'])->name('product.restore');
+    Route::patch('/product/{id}/publish', [PropeertyController::class, 'publish'])->name('product.publish');
+    Route::patch('/product/{id}/unpublish', [PropeertyController::class, 'unpublish'])->name('product.unpublish');
+    Route::get('/product/images/{id}', [PropertyImagesController::class, 'index'])->name('products.images');
+
+    Route::resource('property-images', PropertyImagesController::class)->except('index');
+    Route::get('/property-image/trash-view/{id}', action: [PropertyImagesController::class, 'trashView'])->name('property-images.trash-view');
+    Route::delete('/property-image/trash/{id}', [PropertyImagesController::class, 'trashDelete'])->name('property-image.trash');
+    Route::get('/property-image/restore/{id}', [PropertyImagesController::class, 'restore'])->name('property-image.restore');
+    Route::patch('/property-image/{id}/publish', [PropertyImagesController::class, 'publish'])->name('property-image.publish');
+    Route::patch('/property-image/{id}/unpublish', [PropertyImagesController::class, 'unpublish'])->name('property-image.unpublish');
 
 
 });

@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('category_name');
+            $table->string('icon')->nullable();
 
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');

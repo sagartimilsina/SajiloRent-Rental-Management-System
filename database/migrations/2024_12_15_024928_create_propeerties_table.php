@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
             $table->string('property_name');
             $table->longText('property_description');
+            $table->enum('pricing_type', ['free', 'paid'])->default('free');
             $table->string('property_price');
             $table->string('property_discount')->nullable();
             $table->string('property_location')->nullable();

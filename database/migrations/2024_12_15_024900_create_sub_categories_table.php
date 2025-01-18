@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('sub_category_name');
+            $table->string('icon')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');
             $table->boolean('publish_status')->default(false);

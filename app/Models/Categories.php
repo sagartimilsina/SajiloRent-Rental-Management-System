@@ -16,6 +16,7 @@ class Categories extends Model
 
     protected $fillable = [
         'category_name',
+        'icon',
         'publish_status',
         'created_by',
     ];

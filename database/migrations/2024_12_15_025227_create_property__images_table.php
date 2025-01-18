@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('property__images', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('property_id');
-            $table->foreignId('property_id');
+            $table->unsignedBigInteger('property_id');
+            $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
             $table->string('property_image');
             $table->boolean('property_publish_status')->default(false);
             $table->softDeletes();
