@@ -61,11 +61,26 @@
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
         }
+
+        .loader-wrapper {
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+      
     </style>
+
 
 </head>
 
-<body>
+<body >
     <div id="toastMessage" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true"
         style="display: none;">
         <div class="toast-body" id="toastBody">
@@ -76,3 +91,14 @@
     <button id="scrollToTopBtn" class="scroll-to-top" title="Go to top">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+
+    {{-- <div class="loader-wrapper" id="loader-wrapper" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div> --}}
+
+
+
+   

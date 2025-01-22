@@ -2,30 +2,58 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\User;
+use App\Models\Blogs;
+use App\Models\Abouts;
+use App\Models\Gallery;
+use App\Models\Propeerty;
+use App\Models\Categories;
+use App\Models\SliderImages;
+use App\Models\Testimonials;
 use Illuminate\Http\Request;
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\SubCategories;
 use Illuminate\Support\Facades\Mail;
 
 class FrontendController extends Controller
 {
     public function index()
     {
-        return view('frontend.index');
+        $Sliders = SliderImages::where('slider_publish_status', 1)->orderBy('created_at', 'desc')->get();
+
+        $categories = Categories::where('publish_status', 1)->orderBy('created_at', 'desc')->get();
+        $abouts = Abouts::where('about_publish_status', 1)->first();
+        $apartments = Propeerty::where('property_publish_status', 1)->orderBy('created_at', 'desc')->take(8);
+        $galleries = Gallery::where('gallery_publish_status', 1)->get();
+        $testimonials = Testimonials::where('testimonials_publish_status', 1)->get();
+        $blogs = Blogs::where('blog_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
+
+
+        return view('frontend.index', compact('Sliders', 'categories', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs'));
     }
+    // In your Controller
+    public function getSubcategories($id)
+    {
+        $subcategories = SubCategories::where('category_id', $id)->get();
+        return response()->json($subcategories);
+    }
+
     public function about()
     {
         return view('frontend.about');
     }
     public function blog()
     {
-        return view('frontend.blog');
+        $blogs = Blogs::where('blog_publish_status', 1)->orderBy('created_at', 'desc')->get();
+        return view('frontend.blog', compact('blogs'));
     }
-    public function blog_details()
+    public function blog_details($id)
     {
-        return view('frontend.blog_detail');
+        $blog = Blogs::findOrFail($id);
+        $similar_blogs = Blogs::where('blog_publish_status', 1)->where('id', '!=', $id)->orderBy('created_at', 'desc')->take(8)->get();
+        return view('frontend.blog_detail', compact('blog', 'similar_blogs'));
     }
     public function contact()
     {
@@ -41,12 +69,11 @@ class FrontendController extends Controller
 
     public function submitRequest(Request $request)
     {
-
         // Validate the request
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'full_name' => 'required|string|max:255',
-          'phone_number' => 'required|string|max:15|unique:users,phone,' . $request->input('user_id'),
+            'phone_number' => 'required|string|max:15|unique:users,phone,' . $request->input('user_id'),
 
             'email_address' => 'required|email|max:255',
             'residential_address' => 'required|string|max:255',
@@ -67,8 +94,6 @@ class FrontendController extends Controller
         } else {
             $data['agree_terms'] = false;
         }
-
-
         if ($request->has('phone_number')) {
 
             $user_id = $request->input('user_id');
@@ -119,6 +144,8 @@ class FrontendController extends Controller
             return redirect()->back()->withErrors(['An error occurred while processing your request. Please try again.']);
         }
     }
+
+
 
 
 }

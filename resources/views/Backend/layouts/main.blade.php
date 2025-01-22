@@ -24,7 +24,7 @@
         @include('backend.layouts.sidebar')
         <div class="layout-page">
             @include('backend.layouts.navbar')
-            <div class="content-wrapper">
+            <div class="content-wrapper" id="main-content">
                 @yield('content')
                 @include('backend.layouts.footer')
                 <div class="content-backdrop fade"></div>

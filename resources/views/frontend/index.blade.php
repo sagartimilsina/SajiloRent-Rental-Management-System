@@ -4,124 +4,68 @@
 
     <main>
         <!-- Slider Section Start -->
-        <section class="slider-section">
-            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                {{-- <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div> --}}
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{ asset('frontend/assets/images/slider1.jpg') }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <p>Good Service is our passion</p>
-                            <h1 class="text-white">Awesome Apartment Villa</h1>
-                            <p>No matter what the weather, no matter what the situation, life will always be beautiful!
-                            </p>
-                            <a class="btn btn-lg" href="#">Special Offer</a>
-                        </div>
+
+        @if ($Sliders->count() > 0)
+            <section class="slider-section">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-indicators">
+                        @foreach ($Sliders as $index => $slider)
+                            <button type="button" data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"
+                                aria-current="{{ $index === 0 ? 'true' : '' }}"
+                                aria-label="Slide {{ $index + 1 }}"></button>
+                        @endforeach
                     </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('frontend/assets/images/slider2.jpg') }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <p>Good Service is our passion</p>
-                            <h1 class="text-white">Awesome Apartment Villa</h1>
-                            <p>No matter what the weather, no matter what the situation, life will always be beautiful!
-                            </p>
-                            <a class="btn btn-lg" href="#">Special Offer</a>
-                        </div>
+                    <div class="carousel-inner">
+                        @foreach ($Sliders as $index => $slider)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $slider->slider_image) }}" class="d-block w-100"
+                                    alt="{{ $slider->title }}">
+
+                                <div class="carousel-caption d-none d-md-block">
+                                    <p style="color: #fff!important">{{ $slider->sub_title }}</p>
+                                    <h1 style="color: #fff !important">{{ $slider->title }}</h1>
+                                    <a class="btn btn-md" href="{{ route('about') }}">Learn More</a>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="carousel-item">
-                        <img src="{{ asset('frontend/assets/images/slider3.jpg') }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <p>Good Service is our passion</p>
-                            <h1 class="text-white">Awesome Apartment Villa</h1>
-                            <p>No matter what the weather, no matter what the situation, life will always be beautiful!
-                            </p>
-                            <a class="btn btn-lg" href="#">Special Offer</a>
-                        </div>
-                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </section>
+            </section>
+        @endif
 
         <!-- Slider Section End -->
         <!-- We Provide Section Start -->
-        <section class="we-provide-section">
-            <div class="text-center">
-                <h5 class="we-provide text-dark  ">We Provide</h5>
-            </div>
-            <div class="owl-carousel owl-theme" id="provide-carousel">
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-warehouse icon"></i>
-                        <p>Hall Room</p>
-                    </div>
+        @if ($categories->count() > 0)
+            <section class="we-provide-section">
+                <div class="text-center">
+                    <h5 class="we-provide text-dark">We Provide</h5>
                 </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-home icon"></i>
-                        <p>Warehouse</p>
-                    </div>
+                <div class="owl-carousel owl-theme" id="provide-carousel">
+
+                    @foreach ($categories as $category)
+                        <div class="item">
+                            <div class="provide-icon">
+                                <img src="{{ asset('storage/' . $category->icon) }}" max-width="50" height="50"
+                                    alt="{{ $category->icon }}">
+                                <p>{{ $category->category_name }}</p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-church icon"></i>
-                        <p>Female Mess</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-car icon"></i>
-                        <p>Garage</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-building icon"></i>
-                        <p>Office</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-user-tie icon"></i>
-                        <p>Sublet</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-city icon"></i>
-                        <p>Family House</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-building icon"></i>
-                        <p>Apartment</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="provide-icon">
-                        <i class="fas fa-tools icon"></i>
-                        <p>Bachelor Mess</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        @endif
+
         <!-- We Provide Section End -->
         <!-- Availability Section Start -->
         <section class=" availibility-section">
@@ -130,40 +74,71 @@
                 <h2>Search for Rent property</h2>
                 <form class="row g-3 justify-content-center">
                     <div class="col-md-3">
-                        <label for="livingArea" class="form-label"> AREA</label>
-                        <input type="text" class="form-control" id="livingArea"
-                            placeholder="Where do you want to live?">
+                        <label for="livingArea" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="livingArea" name="location"
+                            placeholder="Where do you want ?" required>
                     </div>
                     <div class="col-md-3">
-                        <label for="type" class="form-label">TYPE</label>
+                        <label for="type" class="form-label">Category</label>
                         <select id="type" class="form-select">
-                            <option selected>Apartments</option>
-                            <option>Rooms</option>
-                            <option>House</option>
-                            <option>Office</option>
-                            <option>Sublet</option>
-                            <option>Garage</option>
-                            <option>Warehouse</option>
+                            <option selected>Select a Category</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                            @endforeach
                         </select>
                     </div>
+                    <div class="col-md-3">
+                        <label for="for" class="form-label">Sub Category</label>
+                        <select id="for" class="form-select">
+                            <option selected>Select a Sub Category</option>
+                        </select>
+                    </div>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            $('#type').on('change', function() {
+                                let categoryId = $(this).val();
+                                // Clear the subcategory dropdown
+                                $('#for').html('<option selected>Select a Sub Category</option>');
+
+                                if (categoryId) {
+                                    let url = "{{ route('get.subcategories', ':id') }}".replace(':id', categoryId);
+
+                                    $.ajax({
+                                        url: url,
+                                        type: 'GET',
+                                        success: function(response) {
+                                            if (response && response.length > 0) {
+                                                $.each(response, function(key, subCategory) {
+                                                    $('#for').append(
+                                                        `<option value="${subCategory.id}">${subCategory.sub_category_name}</option>`
+                                                    );
+                                                });
+                                            } else {
+                                                $('#for').append('<option>No Sub Categories Found</option>');
+                                            }
+                                        },
+                                        error: function() {
+                                            alert('Error fetching subcategories');
+                                        },
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+
+
+
                     <div class="col-md-3">
                         <label for="priceMin" class="form-label">PRICE</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="priceMin" placeholder="min">
+                            <input type="text" class="form-control" id="priceMin" name="min_price" placeholder="min">
                             <span class="input-group-text">-</span>
-                            <input type="text" class="form-control" id="priceMax" placeholder="max">
+                            <input type="text" class="form-control" id="priceMax" name="max_price" placeholder="max">
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <label for="for" class="form-label">FOR</label>
-                        <select id="for" class="form-select">
-                            <option selected>Family</option>
-                            <option>Bachelor</option>
-                            <option>Friend of Four</option>
-                            <option>Couple</option>
-                        </select>
-                    </div>
+
                     <div class="col-md-12 mt-4">
                         <button type="submit" class="btn btn-primary">Check Availability</button>
                     </div>
@@ -335,7 +310,7 @@
         <!-- About Section End -->
         <!-- Rooms and property Section Start -->
 
-        <section class="rent-property">
+        {{-- <section class="rent-property">
             <div class="container">
 
                 <div class="header mb-5">
@@ -570,7 +545,78 @@
                     </button>
                 </div>
             </div>
+        </section> --}}
+        <section class="rent-property">
+            <div class="container">
+                <div class="header mb-5">
+                    <h1>
+                        Rooms &amp; Apartments
+                    </h1>
+                    <p class="text-secondary fs-5">
+                        FIND YOUR ROOMS, FOR YOUR ABILITY
+                    </p>
+                </div>
+                <div class="row">
+                    @if ($apartments->count() > 0)
+                        @foreach ($apartments as $apartment)
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                                <div class="card">
+                                    <img alt="{{ $apartment->title }}" class="img-fluid"
+                                        src="{{ $apartment->image_url }}" />
+                                    <a href="{{ route('property.details', $apartment->id) }}"
+                                        class="text-decoration-none">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                {{ $apartment->title }}
+                                            </h5>
+                                            <p class="card-text">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                {{ $apartment->location }}
+                                            </p>
+                                            <div class="row">
+                                                <div class="col-6 services-icon">
+                                                    <p class="card-text">
+                                                        <i class="fas fa-bed"></i>
+                                                        {{ $apartment->bedrooms }} Bedrooms
+                                                    </p>
+                                                </div>
+                                                <div class="col-6 services-icon">
+                                                    <p class="card-text">
+                                                        <i class="fas fa-bath"></i>
+                                                        {{ $apartment->bathrooms }} Bathrooms
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="price">
+                                                <p class="text-center">
+                                                    Rs. {{ $apartment->price }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="text-muted" href="#">
+                                            <i class="fas fa-share-alt"></i>
+                                        </a>
+                                        <a class="text-muted" href="#">
+                                            <i class="far fa-star"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <p class="text-center">No properties available at the moment.</p>
+                    @endif
+                </div>
+                <div class="text-center mb-4">
+                    <a href="#" class="btn btn-primary">
+                        View All
+                    </a>
+                </div>
+            </div>
         </section>
+
         <!-- Room and Apartments Section End -->
 
 
@@ -601,76 +647,42 @@
         <section class="gallery">
             <div class="container mt-5">
                 <div class="row">
-                    <div class=" col-xl-6 col-lg-8 col-md-12">
+                    <!-- Gallery Images -->
+                    <div class="col-xl-6 col-lg-8 col-md-12">
                         <div class="row">
-                            <div class="col-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                    data-bs-image="https://storage.googleapis.com/a1aa/image/fMHbWxhR3YwtTyYt9ywo0nm8ofweMuKgNvgxXnGPTBI1hljnA.jpg">
-                                    <img alt="A person jumping with a blueprint in hand in front of a house under construction"
-                                        class="img-fluid gallery-image"
-                                        src="https://storage.googleapis.com/a1aa/image/fMHbWxhR3YwtTyYt9ywo0nm8ofweMuKgNvgxXnGPTBI1hljnA.jpg" />
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                    data-bs-image="https://storage.googleapis.com/a1aa/image/enjxPA0lVvQDaqOge7TucTxC9MpfhMv4gHcvDkceyR0jDLHPB.jpg">
-                                    <img alt="A vintage car parked in front of a house" class="img-fluid gallery-image"
-                                        src="https://storage.googleapis.com/a1aa/image/enjxPA0lVvQDaqOge7TucTxC9MpfhMv4gHcvDkceyR0jDLHPB.jpg" />
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                    data-bs-image="https://storage.googleapis.com/a1aa/image/y1DhPkigC250O5ekCGZBR3g0k1ndpiDLBJdGe9qonC11wyxTA.jpg">
-                                    <img alt="A large house covered in snow" class="img-fluid gallery-image"
-                                        src="https://storage.googleapis.com/a1aa/image/y1DhPkigC250O5ekCGZBR3g0k1ndpiDLBJdGe9qonC11wyxTA.jpg" />
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                    data-bs-image="https://storage.googleapis.com/a1aa/image/fMHbWxhR3YwtTyYt9ywo0nm8ofweMuKgNvgxXnGPTBI1hljnA.jpg">
-                                    <img alt="A person jumping with a blueprint in hand in front of a house under construction"
-                                        class="img-fluid gallery-image"
-                                        src="https://storage.googleapis.com/a1aa/image/fMHbWxhR3YwtTyYt9ywo0nm8ofweMuKgNvgxXnGPTBI1hljnA.jpg" />
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                    data-bs-image="https://storage.googleapis.com/a1aa/image/enjxPA0lVvQDaqOge7TucTxC9MpfhMv4gHcvDkceyR0jDLHPB.jpg">
-                                    <img alt="A vintage car parked in front of a house" class="img-fluid gallery-image"
-                                        src="https://storage.googleapis.com/a1aa/image/enjxPA0lVvQDaqOge7TucTxC9MpfhMv4gHcvDkceyR0jDLHPB.jpg" />
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                    data-bs-image="https://storage.googleapis.com/a1aa/image/y1DhPkigC250O5ekCGZBR3g0k1ndpiDLBJdGe9qonC11wyxTA.jpg">
-                                    <img alt="A large house covered in snow" class="img-fluid gallery-image"
-                                        src="https://storage.googleapis.com/a1aa/image/y1DhPkigC250O5ekCGZBR3g0k1ndpiDLBJdGe9qonC11wyxTA.jpg" />
-                                </a>
-                            </div>
-                            <!-- Add more images similarly -->
+                            @foreach ($galleries as $gallery)
+                                <div class="col-4 mb-3">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
+                                        data-bs-image="{{ asset($gallery->image_url) }}">
+                                        <img alt="{{ $gallery->title }}" class="img-fluid gallery-image"
+                                            src="{{ asset($gallery->image_url) }}" />
+                                    </a>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
-
-                    <div class=" col-xl-6 col-md-12 col-lg-4 ">
+                    <!-- Gallery Description -->
+                    <div class="col-xl-6 col-md-12 col-lg-4">
                         <h1 class="gallery-title">
                             Our Photo Gallery
                         </h1>
                         <h2 class="gallery-subtitle">
-                            Best of our Event portfolio Photos
+                            Best of our Event Portfolio Photos
                         </h2>
                         <p class="gallery-description">
                             Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras ettikis
                             mauris
-                            eget lorem ultricies ferme ntum a inti diam. Morbi mollis pellen tesque offs aiug ueia nec
-                            rhoncus.
+                            eget lorem ultricies fermentum a inti diam. Morbi mollis pellentesque offs aiugueia nec rhoncus.
                             Nam ute ultricies.
                         </p>
-                        <button class="btn  btn-primary btn-lg">
+                        <button class="btn btn-primary btn-lg">
                             ALL PHOTOS &amp; VIDEO
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- Modal for Image Preview -->
             <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -686,8 +698,19 @@
                     </div>
                 </div>
             </div>
-
         </section>
+
+        <!-- JavaScript for Modal Image Handling -->
+        <script>
+            document.querySelectorAll('[data-bs-image]').forEach(imgLink => {
+                imgLink.addEventListener('click', function() {
+                    const imgSrc = this.getAttribute('data-bs-image');
+                    const modalImg = document.getElementById('modalImage');
+                    modalImg.setAttribute('src', imgSrc);
+                });
+            });
+        </script>
+
         <!-- Gallery Section End -->
         <!-- list your property contact  starts-->
 
@@ -717,90 +740,29 @@
                 </h2>
                 <div class="testimonial-container">
                     <div id="testimonial-carousel" class="owl-carousel owl-theme">
-                        <div class="item">
-                            <div class="testimonial-card">
-                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                    alt="Single Rakib">
-                                <h3>Single Rakib</h3>
-                                <h4>Softhopper Manager</h4>
-                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
+                        @foreach ($testimonials as $testimonial)
+                            <div class="item">
+                                <div class="testimonial-card">
+                                    <img src="{{ asset($testimonial->image) }}" alt="{{ $testimonial->name }}">
+                                    <h3>{{ $testimonial->name }}</h3>
+                                    <h4>{{ $testimonial->position }}</h4>
+                                    <p>{{ $testimonial->feedback }}</p>
+                                    <div class="stars">
+                                        @for ($i = 0; $i < $testimonial->rating; $i++)
+                                            <i class="fas fa-star"></i>
+                                        @endfor
+                                        @for ($i = $testimonial->rating; $i < 5; $i++)
+                                            <i class="far fa-star"></i>
+                                        @endfor
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Add more testimonial items below -->
-                        <div class="item">
-                            <div class="testimonial-card">
-                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                    alt="Single Rakib">
-                                <h3>Single Rakib</h3>
-                                <h4>Softhopper Manager</h4>
-                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimonial-card">
-                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                    alt="Single Rakib">
-                                <h3>Single Rakib</h3>
-                                <h4>Softhopper Manager</h4>
-                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimonial-card">
-                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                    alt="Single Rakib">
-                                <h3>Single Rakib</h3>
-                                <h4>Softhopper Manager</h4>
-                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimonial-card">
-                                <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                    alt="Single Rakib">
-                                <h3>Single Rakib</h3>
-                                <h4>Softhopper Manager</h4>
-                                <p>Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl.</p>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
+            </div>
         </section>
+
         <!-- Testimonial Section End -->
         <!-- Available section start -->
         <section class="container">
@@ -854,91 +816,45 @@
         </section>
         <!-- Available section end -->
         <!-- Blogs Section Start -->
-        <section class="blog-section container">
-            <div class="container text-center">
-                <h1 class="blog-title">
-                    Our Blogs
-                </h1>
-                <p class="blog-subtitle">
-                    Discover the Latest Trends & Insights in Rental Living
-                </p>
-            </div>
-            <div class="row">
-                <div class="  col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                    <div class="card blog-card">
-                        <img alt="Aerial view of a small town with houses and trees" class="card-img-top img-fluid"
-                            src="https://storage.googleapis.com/a1aa/image/lRe0UTQVo80NFCxe7ETkyNqHCdzVJ9MHPdUe8VDOub5pbknnA.jpg"
-                            width="600" />
-                        <div class="card-body blog-card-body">
-                            <p class="blog-card-text">
-                                July 25, 2016 | Rooms &amp; Suites
-                            </p>
-                            <h5 class="blog-card-title">
-                                <a href="blog_details.html"> Finding best places to visit in California </a>
-                            </h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </div>
+        @if (@$blogs->count() > 0)
+
+
+            <section class="blog-section container">
+                <div class="container text-center">
+                    <h1 class="blog-title">Our Blogs</h1>
+                    <p class="blog-subtitle">Discover the Latest Trends & Insights in Rental Living</p>
                 </div>
-                <div class=" col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                    <div class="card blog-card">
-                        <img alt="A church with a tall steeple in a small town" class="card-img-top img-fluid"
-                            src="https://storage.googleapis.com/a1aa/image/w7YI5MZPHGJkBthc1yfoa2gLmR7y68FPmJIy1nAxjsI7G55JA.jpg"
-                            width="600" />
-                        <div class="card-body blog-card-body">
-                            <p class="blog-card-text">
-                                July 25, 2016 | Rooms &amp; Suites
-                            </p>
-                            <h5 class="blog-card-title">
-                                <a href="blog_details.html"> Finding best places to visit in California </a>
-                            </h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <div class="row">
+                    @foreach ($blogs as $blog)
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card blog-card">
+                                <img alt="{{ $blog->alt_text ?? 'Blog Image' }}" class="card-img-top img-fluid"
+                                    src="{{ asset('storage/' . $blog->blog_image) }}" />
+                                <div class="card-body blog-card-body">
+                                    <p class="blog-card-text">
+                                        {{ $blog->created_at->format('F d, Y') }}
+                                    </p>
+                                    <h5 class="blog-card-title" style="height: 50px; overflow:hidden;">
+                                        <a href="{{ route('blog.details', $blog->id) }}"
+                                            class="text-wrap">{{ $blog->blog_title }}</a>
+                                    </h5>
+                                    <p class="text-wrap" style="height: 50px; overflow:hidden;">{!! substr(strip_tags($blog->blog_description), 0, 100) !!}...
+                                    </p>
+
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                <div class=" col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                    <div class="card blog-card">
-                        <img alt="A house on a cliff overlooking the ocean" class="card-img-top img-fluid"
-                            src="https://storage.googleapis.com/a1aa/image/HEZU1atlN0ZoOV6nfe3IIy9Dkqf5c8BW3xyeeCeiOYQwcj88E.jpg"
-                            width="600" />
-                        <div class="card-body blog-card-body">
-                            <p class="blog-card-text">
-                                July 25, 2016 | Rooms &amp; Suites
-                            </p>
-                            <h5 class="blog-card-title">
-                                <a href="blog_details.html"> Finding best places to visit in California </a>
-                            </h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </div>
+                <div class="text-center my-4">
+                    <a href="{{ route('blog') }}" class="btn btn-primary btn-sm">
+                        Show All
+                    </a>
                 </div>
-                <div class=" col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                    <div class="card blog-card">
-                        <img alt="A house on a cliff overlooking the ocean" class="img-fluid"
-                            src="https://storage.googleapis.com/a1aa/image/HEZU1atlN0ZoOV6nfe3IIy9Dkqf5c8BW3xyeeCeiOYQwcj88E.jpg"
-                            width="600" />
-                        <div class="card-body blog-card-body">
-                            <p class="blog-card-text">
-                                July 25, 2016 | Rooms &amp; Suites
-                            </p>
-                            <h5 class="blog-card-title">
-                                <a href="blog_details.html"> Finding best places to visit in California </a>
-                            </h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center my-4">
-                <button class="btn btn-primary">
-                    Show All
-                </button>
-            </div>
-        </section>
+            </section>
+        @endif
+
         <!-- Blogs Section End -->
     </main>
-    
-   
-   
-
 @endsection

@@ -16,6 +16,7 @@ use App\Http\Controllers\SubCategoriesController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\RequestOwnerListsController;
+use App\Http\Controllers\SliderImagesController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
 /*
@@ -80,6 +81,9 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/gallery', 'gallery')->name('gallery');
     Route::get('/product/{categoryId}/{subcategoryId}', 'product')->name('product');
+    Route::get('/faq', 'faq')->name('faq');
+    Route::get('/get-subcategories/{categoryId}', 'getSubCategories')->name('get.subcategories');
+
 });
 
 // Super Admin Routes
@@ -132,6 +136,18 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::delete('/tenant-agreement/delete/{id}', [TenantAgreementwithSystemController::class, 'delete'])->name('tenant-agreements.delete');
     Route::get('/tenant-agreement/restore/{id}', [TenantAgreementwithSystemController::class, 'restore'])->name('tenant_agreement.restore');
     Route::patch('/tenant-agreement/{id}/verify', [TenantAgreementwithSystemController::class, 'verify'])->name('systemandtenant-agreements.verify');
+
+
+    Route::resource('sliders', SliderImagesController::class);
+    Route::get('slider/trash-view', action: [SliderImagesController::class, 'trashView'])->name('sliders.trash-view');
+    Route::delete('slider/trash/{id}', [SliderImagesController::class, 'trashDelete'])->name('slider.trash');
+    Route::delete('slider/{id}', [SliderImagesController::class, 'delete'])->name('slider.delete');
+    Route::get('slider/restore/{id}', [SliderImagesController::class, 'restore'])->name('slider.restore');
+    Route::patch('slider/{id}/publish', [SliderImagesController::class, 'publish'])->name('slider.publish');
+    Route::patch('slider/{id}/unpublish', [SliderImagesController::class, 'unpublish'])->name('slider.unpublish');
+
+
+
 });
 
 

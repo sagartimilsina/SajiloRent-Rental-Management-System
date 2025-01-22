@@ -157,14 +157,18 @@
                 </ul>
             </li>
             <li
-                class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') ? 'active open' : '' }}">
+                class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') || request()->routeIs('sliders.index') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Content Management</div>
                 </a>
-                <ul class="menu-sub {{ request()->is('superadmin/*') ? 'show' : '' }}">
-                    <li
-                        class="menu-item {{ request()->is('superadmin/users') && request('type') == 'super-admin' ? 'active' : '' }}">
+                <ul class="menu-sub {{ request()->is('superAdmin/*') ? 'show' : '' }}">
+                    <li class="menu-item {{ request()->is('superAdmin/sliders') ? 'active' : '' }}">
+                        <a href="{{ route('sliders.index') }}" class="menu-link">
+                            Slider
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->is('superAdmin/users') ? 'active' : '' }}">
                         <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
                             Gallery
                         </a>

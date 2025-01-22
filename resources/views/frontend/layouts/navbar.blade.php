@@ -1,14 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark position-relative">
+<nav class="navbar navbar-expand-lg navbar-dark position-relative ">
     <div class="container-fluid">
-        {{-- <a class="navbar-brand" href="{{ route('index') }}">
-            <img alt="House Rent Logo" height="60"
-                src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
-                width="60" />
-        </a> --}}
-        <a class="navbar-brand" href="{{ route('index') }}">
-            <img alt="House Rent Logo" height="60"
-                src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
-                width="60" class="img-fluid rounded-circle">
+
+        <a class="navbar-brand mx-5" href="{{ route('index') }}">
+            <img alt="House Rent Logo" height="75" src="{{ asset('frontend/assets/images/logo.png') }}" width="75"
+                class="img-fluid rounded-circle">
         </a>
         <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button">
@@ -25,8 +20,12 @@
                 </li>
                 <li class="nav-item"><a class="nav-link {{ Route::is('about') ? 'active-nav' : '' }}"
                         href="{{ route('about') }}">About</a></li>
-                <li class="nav-item"><a class="nav-link {{ Route::is('blog') ? 'active-nav' : '' }}"
-                        href="{{ route('blog') }}">Blogs</a></li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('blog') ? 'active-nav' : '' }}"
+                        href="{{ route('blog') }}">Blogs</a>
+                </li>
+
+
                 <li class="nav-item"><a class="nav-link {{ Route::is('gallery') ? 'active-nav' : '' }}"
                         href="{{ route('gallery') }}">Gallery</a></li>
                 <li class="nav-item dropdown">

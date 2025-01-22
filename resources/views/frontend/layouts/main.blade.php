@@ -1,7 +1,8 @@
 @include('frontend.layouts.header')
 @include('frontend.layouts.navbar')
-
-@yield('content')
+<div id="main-content">
+    @yield('content')
+</div>
 @include('frontend.layouts.script')
 
 @include('frontend.layouts.footer')

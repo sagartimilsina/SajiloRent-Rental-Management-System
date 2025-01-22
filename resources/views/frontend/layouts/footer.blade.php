@@ -1,16 +1,18 @@
 <section class="footer-section">
+    @php
+        $categories = App\Models\Categories::where('publish_status', 1)->orderBy('created_at', 'desc')->get();
+
+    @endphp
     <div class="container-fluid">
         <div class="row">
             <!-- About Section -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <h2 class="section-title">About Sajilo Rent</h2>
                 <div class="about-house-rent">
-                    <img alt="House Rent Logo" height="100"
-                        src="https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg"
-                        width="100" />
-                    <!-- <h2 style="color: #f39c12; font-size: 32px; font-weight: bold; ">Sajilo Rent</h2> -->
+                    <img alt="House Rent Logo" height="150" src="{{ asset('frontend/assets/images/logo.png') }}"
+                        width="150" />
                 </div>
-                <p>
+                <p class="mt-2">
                     We provide premium WordPress, Ghost, and HTML templates designed to be user-friendly and
                     client-focused for seamless support.
                 </p>
@@ -18,17 +20,15 @@
 
             <!-- Place Categories -->
             <div class="col-lg-2 col-md-6 mb-4 place-category">
-                <h2 class="section-title">Place Categories</h2>
+                <h2 class="section-title">Categories</h2>
                 <ul class="list-unstyled">
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Francis</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Collins St</a>
-                    </li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Rose Ln</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Cosgrave Ln</a>
-                    </li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Bourke St</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Flat for Rent - Flinders Ln</a>
-                    </li>
+                    @foreach ($categories as $category)
+                        <li>
+                            <a href="#" style="color: #fff; text-decoration: none;">
+                                {{ $category->category_name }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
 
@@ -36,11 +36,29 @@
             <div class="col-lg-2 col-md-6 mb-4 place-category">
                 <h2 class="section-title">Quick Links</h2>
                 <ul class="list-unstyled">
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Home</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">About Us</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Services</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">Contact</a></li>
-                    <li><a href="#" style="color: #fff; text-decoration: none;">FAQ</a></li>
+                    <li><a href="{{ route('index') }}" style="color: #fff; text-decoration: none;">Home</a></li>
+                    <li><a href="{{ route('about') }}" style="color: #fff; text-decoration: none;">About Us</a></li>
+                    <li><a href="{{ route('gallery') }}" style="color: #fff; text-decoration: none;">Gallery</a></li>
+                    <li><a href="{{ route('contact') }}" style="color: #fff; text-decoration: none;">Contact</a></li>
+                    <li><a href="{{ route('blog') }}" style="color: #fff; text-decoration: none;">Blogs</a></li>
+
+                    @php
+                        // Fetch the latest application status for the authenticated user
+                        $application = DB::table('request_owner_lists')
+                            ->where('user_id', @Auth::user()->id)
+                            ->orderBy('created_at', 'desc') // Get the latest entry by date
+                            ->first();
+                    @endphp
+
+                    @if (is_null($application) || in_array($application->status, ['rejected', 'expired']))
+                        <li>
+                            <a style="color: #fff; text-decoration: none;" href="#" data-bs-toggle="modal"
+                                data-bs-target="#listPropertyModal">
+                                List your Property
+                            </a>
+                        </li>
+                    @endif
+
                 </ul>
             </div>
 
@@ -48,13 +66,16 @@
             <div class="col-lg-2 col-md-6 mb-4 place-category">
                 <h2 class="section-title">Contact Us</h2>
                 <ul class="list-unstyled">
-                    <li><strong>Phone:</strong> +1 234 567 890</li>
+                    <li><strong>Phone:</strong><a href="tel:+977-9819113548"
+                            style="color: #fff; text-decoration: none;">
+                            +977-9819113548
+                        </a></li>
                     <li><strong>Email:</strong>
-                        <a href="mailto:support@houserent.com" style="color: #fff; text-decoration: none;">
-                            support@houserent.com
+                        <a href="mailto:support@sajiorent.com" style="color: #fff; text-decoration: none;">
+                            support@sajiorent.com
                         </a>
                     </li>
-                    <li><strong>Address:</strong> 123 Main St, Cityville, Country</li>
+                    <li><strong>Address:</strong>Pokhara, Kaski, Nepal </li>
                     <li><strong>Follow Us:</strong>
                         <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none; ">
                             <i class="fab fa-facebook"></i>
@@ -84,12 +105,15 @@
                             alt="Stripe" style="margin-right: 10px; object-fit: cover;" width="50"
                             height="30" />
                     </li>
-                    <li><strong>Support Line:</strong> +1 800 123 456</li>
+                    {{-- <li><strong>Support Line:</strong><a href="tel:+977-9819113548"
+                            style="color: #fff; text-decoration: none;">
+                            +977-9819113548
+                        </a></li>
                     <li><strong>Refunds:</strong>
                         <a href="mailto:support@sajilorent.com" style="color: #fff; text-decoration: none;">
                             support@sajilorent.com
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -97,10 +121,12 @@
         <!-- Footer Bottom -->
         <div class="row text-center mt-2 ">
             <div class="col-12">
-                <p class="text-white">Copyright © 2024 <span style="color: #f39c12;">Sajilo Rent Group.</span> All
+                <p class="text-white">Copyright © @php
+                    echo date('Y');
+                @endphp <span style="color: #f39c12;">Sajilo Rent
+                        Group.</span> All
                     rights reserved.</p>
             </div>
         </div>
     </div>
 </section>
-

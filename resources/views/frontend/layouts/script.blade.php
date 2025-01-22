@@ -164,6 +164,36 @@
         @endif
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const loaderWrapper = document.getElementById("loader-wrapper");
+        const mainContent = document.getElementById("main-content");
+
+        // Show the loader on page load for reloads
+        loaderWrapper.style.display = "flex";
+        mainContent.style.display = "none";
+        window.addEventListener("load", function() {
+            loaderWrapper.style.display = "none";
+            mainContent.style.display = "block";
+        });
+
+        // Show loader on form submission
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", function() {
+                loaderWrapper.style.display = "flex";
+                mainContent.style.display = "none";
+            });
+        });
+
+        // Show loader on page refresh/navigation
+        window.addEventListener("beforeunload", function() {
+            loaderWrapper.style.display = "flex";
+            mainContent.style.display = "none";
+        });
+    });
+</script>
+
+
 
 
 

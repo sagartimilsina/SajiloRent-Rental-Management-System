@@ -125,7 +125,7 @@ class SubCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-      
+
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'created_by' => 'required|exists:users,id',
@@ -153,7 +153,7 @@ class SubCategoriesController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = 'subcategories/' . $imageName;
             $image->storeAs('public/' . 'subcategories', $imageName);
-            
+
             // Update the subcategory with the new image path
             $subCategory->icon = $imagePath;
         }
@@ -168,123 +168,114 @@ class SubCategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    
-     public function destroy($id)
-     {
-         try {
-             // Retrieve the blog from the trash
-             $blog = SubCategories::onlyTrashed()->findOrFail($id);
- 
-             // Check if the blog has an image and delete it from storage
-             if ($blog->icon && Storage::disk('public')->exists($blog->icon)) {
-                 Storage::disk('public')->delete($blog->icon);
-             }
- 
-             // Permanently delete the blog
-             $blog->forceDelete();
- 
-             // Success notification
-             return redirect()->back()->with('success', 'Sub Category deleted successfully.');
-         } catch (\Exception $e) {
-             // Error notification
- 
- 
-             return redirect()->back()->with('error', $e->getMessage());
-         }
- 
-     }
- 
-     public function publish(Request $request, $id)
-     {
-         try {
-             // Manually validating the incoming request
-             $validatedData = $request->validate([
-                 'publish_status' => 'required|in:1,0',
-             ]);
- 
-             // Find blog or fail
-             $blog = SubCategories::findOrFail($id);
- 
-             // Update the publish status
-             $blog->publish_status = $request->publish_status;
-             $blog->save();
- 
- 
- 
-             return redirect()->route('subCategories.index')->with('success', 'Sub Category published successfully.');
- 
-         } catch (\Illuminate\Validation\ValidationException $e) {
-             // Handle the validation failure case
-             $errors = implode(', ', array_map(function ($error) {
-                 return implode(', ', $error);
-             }, $e->errors())); // Convert errors array to a string
- 
- 
-             // Redirect back with the error notification and input
-             return redirect()->back()->with('error', $errors)->withInput();
- 
-         } catch (\Exception $e) {
-             // General exception handling
-             return redirect()->back()->with('error', $e->getMessage());
-         }
-     }
- 
- 
-     public function unpublish(Request $request, $id)
-     {
-         $request->validate([
-             'publish_status' => 'required|in:1,0',
- 
-         ]);
-         try {
-             $blog = SubCategories::find($id);
-             $blog->publish_status = $request->publish_status;
-             $blog->save();
- 
-             return redirect()->route('subCategories.index', $blog->id)->with('success', 'Sub Category unpublished successfully.');
-         } catch (\Exception $e) {
- 
-             return redirect()->back()->with('error', $e->getMessage());
-         }
-     }
-     public function trashDelete(Request $request, $id)
-     {
-         try {
-             $blog = SubCategories::find($id);
-             $blog->delete();
- 
-             return redirect()->route('subCategories.index')->with('success', 'Sub Category moved to trash successfully.');
-         } catch (\Exception $e) {
- 
-             return redirect()->back()->with('error', $e->getMessage());
-         }
-     }
-     public function trashView(Request $request)
-     {
-         $search = $request->input('search');
- 
-         // Retrieve only trashed blogs with optional search functionality
-         $categories_trash = SubCategories::onlyTrashed() 
-             ->when($search, function ($query, $search) {
-                 return $query->where('category_name', 'like', '%' . $search . '%');
-             })
-             ->where('created_by', Auth::id())
-             ->orderBy('created_at', 'desc')
-             ->paginate(30); // Adjusted pagination to match trash-specific listing
- 
-         return view('Backend.ManageCategory.subcategories-trash', compact('categories_trash'));
-     }
- 
-     public function restore(Request $request, $id)
-     {
-         try {
-             $blog = SubCategories::onlyTrashed()->find($id);
-             $blog->restore();
- 
-             return redirect()->route('subCategories.index')->with('success', 'Sub Category restored successfully.');
-         } catch (\Exception $e) {
- 
-             return redirect()->back()->with('error', $e->getMessage());
-         }
-     }
+
+    public function destroy($id)
+    {
+        try {
+            // Retrieve the blog from the trash
+            $blog = SubCategories::onlyTrashed()->findOrFail($id);
+
+            // Check if the blog has an image and delete it from storage
+            if ($blog->icon && Storage::disk('public')->exists($blog->icon)) {
+                Storage::disk('public')->delete($blog->icon);
+            }
+
+            // Permanently delete the blog
+            $blog->forceDelete();
+
+            // Success notification
+            return redirect()->back()->with('success', 'Sub Category deleted successfully.');
+        } catch (\Exception $e) {
+            // Error notification
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+    }
+
+    public function publish(Request $request, $id)
+    {
+        try {
+            // Manually validating the incoming request
+            $validatedData = $request->validate([
+                'publish_status' => 'required|in:1,0',
+            ]);
+
+            // Find blog or fail
+            $blog = SubCategories::findOrFail($id);
+
+            // Update the publish status
+            $blog->publish_status = $request->publish_status;
+            $blog->save();
+            return redirect()->route('subCategories.index')->with('success', 'Sub Category published successfully.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle the validation failure case
+            $errors = implode(', ', array_map(function ($error) {
+                return implode(', ', $error);
+            }, $e->errors())); // Convert errors array to a string
+            // Redirect back with the error notification and input
+            return redirect()->back()->with('error', $errors)->withInput();
+
+        } catch (\Exception $e) {
+            // General exception handling
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    public function unpublish(Request $request, $id)
+    {
+        $request->validate([
+            'publish_status' => 'required|in:1,0',
+
+        ]);
+        try {
+            $blog = SubCategories::find($id);
+            $blog->publish_status = $request->publish_status;
+            $blog->save();
+
+            return redirect()->route('subCategories.index', $blog->id)->with('success', 'Sub Category unpublished successfully.');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    public function trashDelete(Request $request, $id)
+    {
+        try {
+            $blog = SubCategories::find($id);
+            $blog->delete();
+
+            return redirect()->route('subCategories.index')->with('success', 'Sub Category moved to trash successfully.');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    public function trashView(Request $request)
+    {
+        $search = $request->input('search');
+
+        // Retrieve only trashed blogs with optional search functionality
+        $categories_trash = SubCategories::onlyTrashed()
+            ->when($search, function ($query, $search) {
+                return $query->where('category_name', 'like', '%' . $search . '%');
+            })
+            ->where('created_by', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(30); // Adjusted pagination to match trash-specific listing
+
+        return view('Backend.ManageCategory.subcategories-trash', compact('categories_trash'));
+    }
+
+    public function restore(Request $request, $id)
+    {
+        try {
+            $blog = SubCategories::onlyTrashed()->find($id);
+            $blog->restore();
+
+            return redirect()->route('subCategories.index')->with('success', 'Sub Category restored successfully.');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 }
