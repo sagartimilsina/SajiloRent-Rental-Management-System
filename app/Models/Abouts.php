@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Abouts extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $table = 'abouts';
 
 
     protected $fillable = [
-        'about_title',
-        'about_description',
-        'about_image',
+        'head',
+        'title',
+        'description',
+        'image',
         'about_publish_status',
     ];
 }

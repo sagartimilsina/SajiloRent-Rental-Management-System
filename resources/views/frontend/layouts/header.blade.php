@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
         .toast {
@@ -74,13 +75,24 @@
             align-items: center;
             z-index: 9999;
         }
-      
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 
 
 </head>
 
-<body >
+<body>
     <div id="toastMessage" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true"
         style="display: none;">
         <div class="toast-body" id="toastBody">
@@ -98,7 +110,3 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div> --}}
-
-
-
-   

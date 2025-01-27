@@ -6,21 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Property_Images extends Model
+class PropertyMessage extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'property__images';
 
     protected $fillable = [
         'property_id',
-        'property_image',
-        'property_publish_status'
+        'user_id',
+        'subject',
+        'message',
+        'read_status',
     ];
 
     public function property()
     {
-        return $this->belongsTo(Propeerty::class, 'property_id', 'id');
+        return $this->belongsTo(Propeerty::class, 'property_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

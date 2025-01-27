@@ -28,8 +28,45 @@ class FavouritesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'property_id' => 'required|exists:propeerties,id',
+        ]);
+
+        $userId = $request->user_id;
+        $propertyId = $request->property_id;
+
+        $favorite_true = Favourites::where('user_id', $userId)->where('property_id', $propertyId)
+            ->where('favourite_status', true)
+            ->first();
+        $favorite_false = Favourites::where('user_id', $userId)->where('property_id', $propertyId)
+            ->where('favourite_status', false)
+            ->first();
+
+        if ($favorite_true) {
+
+            // Remove from favorites
+            $favorite_true->favourite_status = false;
+            $favorite_true->save();
+
+            return response()->json(['success' => true, 'isFavorite' => false]);
+
+        } elseif ($favorite_false) {
+            $favorite_false->favourite_status = true;
+            $favorite_false->save();
+            return response()->json(['success' => true, 'isFavorite' => true]);
+        } else {
+            // Add to favorites
+            Favourites::create([
+                'user_id' => $userId,
+                'property_id' => $propertyId,
+                'favourite_status' => true, // Storing favorite status
+            ]);
+
+            return response()->json(['success' => true, 'isFavorite' => true]);
+        }
     }
+
 
     /**
      * Display the specified resource.

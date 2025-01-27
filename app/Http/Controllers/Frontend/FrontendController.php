@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\FAQ;
 use App\Models\User;
 use App\Models\Blogs;
+use App\Models\Teams;
 use App\Models\Abouts;
 use App\Models\Gallery;
 use App\Models\Propeerty;
 use App\Models\Categories;
+use App\Models\Favourites;
 use App\Models\SliderImages;
 use App\Models\Testimonials;
 use Illuminate\Http\Request;
+use App\Models\SubCategories;
+use App\Models\Property_Review;
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\SubCategories;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class FrontendController extends Controller
@@ -24,14 +29,22 @@ class FrontendController extends Controller
         $Sliders = SliderImages::where('slider_publish_status', 1)->orderBy('created_at', 'desc')->get();
 
         $categories = Categories::where('publish_status', 1)->orderBy('created_at', 'desc')->get();
-        $abouts = Abouts::where('about_publish_status', 1)->first();
-        $apartments = Propeerty::where('property_publish_status', 1)->orderBy('created_at', 'desc')->take(8);
+        $abouts = Abouts::where('about_publish_status', 1)->get();
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+
+        $apartments = Propeerty::where('property_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
         $galleries = Gallery::where('gallery_publish_status', 1)->get();
         $testimonials = Testimonials::where('testimonials_publish_status', 1)->get();
         $blogs = Blogs::where('blog_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
 
 
-        return view('frontend.index', compact('Sliders', 'categories', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs'));
+        return view('frontend.index', compact('Sliders', 'categories', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
     }
     // In your Controller
     public function getSubcategories($id)
@@ -40,9 +53,33 @@ class FrontendController extends Controller
         return response()->json($subcategories);
     }
 
+    public function dynamic($id)
+    {
+        // Fetch the 'Abouts' entry based on the given ID and its publish status
+        $about = Abouts::where('id', $id)
+            ->where('about_publish_status', 1) // Check for published status
+            ->first();
+
+        // Return or handle the `$about` object
+        if ($about) {
+            return view('frontend.about_dynamic', ['about' => $about]);
+        } else {
+            return redirect()->route('about')->with('error', 'Content not found or unpublished.');
+        }
+    }
+
     public function about()
     {
-        return view('frontend.about');
+        $about = Abouts::where('about_publish_status', 1)
+            ->where('head', 'About Us')
+
+            ->first();
+
+        $faqs = FAQ::orderBy('created_at', 'desc')->where('faq_publish_status', 1)->get();
+
+        $testimonials = Testimonials::orderBy('created_at', 'desc')->where('testimonials_publish_status', 1)->get();
+        $teams = Teams::orderBy('created_at', 'desc')->where('team_publish_status', 1)->get();
+        return view('frontend.about', compact('about', 'faqs', 'testimonials', 'teams'));
     }
     public function blog()
     {
@@ -64,6 +101,21 @@ class FrontendController extends Controller
         return view('frontend.gallery');
     }
 
+    public function property_details($id)
+    {
+
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+        $property = Propeerty::with('propertyImages')->findOrFail($id);
+        $property_review = Property_Review::where('property_id', $id)->get();
+
+        $similar_properties = Propeerty::where('property_publish_status', 1)->where('id', '!=', $id)->orderBy('created_at', 'desc')->take(8)->get();
+        return view('frontend.product_details', compact('property', 'similar_properties', 'property_review', 'favoriteIds'));
+    }
 
 
 
@@ -144,6 +196,8 @@ class FrontendController extends Controller
             return redirect()->back()->withErrors(['An error occurred while processing your request. Please try again.']);
         }
     }
+
+
 
 
 

@@ -28,8 +28,24 @@ class PropertyReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+     
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:500',
+            'property_id' => 'required|exists:propeerties,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        Property_Review::create([
+            'property_id' => $request->property_id,
+            'user_id' => $request->user_id,
+            'property_rating' => $request->rating,
+            'property_review' => $request->comment,
+        ]);
+
+        return redirect()->back()->with('success', 'Your review has been submitted.');
     }
+
 
     /**
      * Display the specified resource.

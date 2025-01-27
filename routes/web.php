@@ -2,21 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AboutsController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PropeertyController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\FavouritesController;
 use App\Http\Controllers\SiteManagerController;
+use App\Http\Controllers\SliderImagesController;
 use App\Http\Controllers\TestimonialsController;
 use App\Http\Controllers\SubCategoriesController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\RequestOwnerListsController;
-use App\Http\Controllers\SliderImagesController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
 /*
@@ -70,6 +74,18 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/otp-verify', [AuthController::class, 'otp_verify'])->name('otp.verify.post');
     Route::get('/new-password', [AuthController::class, 'showChangeCredentialsPage'])->name('new.password');
     Route::post('/new-password', [AuthController::class, 'changeCredentials'])->name('new.password.post');
+    Route::post('/property/{id}/review', [PropertyReviewController::class, 'store'])->name('property.review.store');
+    Route::post('/favorites/toggle', [FavouritesController::class, 'store'])->name('favorites.toggle');
+    Route::post('cart/add', [CartController::class, 'store'])->name('cart.add');
+    Route::post('/property/message/store', [PropeertyController::class, 'message_store'])->name('property.message.store');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::delete('/cart/{property_id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
+
+
+
+
 });
 
 // Frontend Routes
@@ -83,6 +99,8 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/product/{categoryId}/{subcategoryId}', 'product')->name('product');
     Route::get('/faq', 'faq')->name('faq');
     Route::get('/get-subcategories/{categoryId}', 'getSubCategories')->name('get.subcategories');
+    Route::get('/property-details/{id}', 'property_details')->name('property.details');
+    Route::get('/about-dynamic/{id}', 'dynamic')->name('about_dynamic');
 
 });
 
@@ -126,8 +144,18 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::delete('/RequestOwnerList/delete/{id}', [RequestOwnerListsController::class, 'delete'])->name('request_owner_lists.delete');
 
     Route::resource('teams', TeamsController::class);
+    Route::get('team/trash-view', action: [TeamsController::class, 'trashView'])->name('teams.trash-view');
+    Route::delete('team/trash/{id}', [TeamsController::class, 'trashDelete'])->name('team.trash');
+    Route::delete('team/{id}', [TeamsController::class, 'delete'])->name('team.delete');
+    Route::get('team/restore/{id}', [TeamsController::class, 'restore'])->name('team.restore');
+    Route::patch('team/{id}/publish', [TeamsController::class, 'publish'])->name('team.publish');
+    Route::patch('team/{id}/unpublish', [TeamsController::class, 'unpublish'])->name('team.unpublish');
+
 
     Route::resource('abouts', AboutsController::class);
+    Route::get('/about/trash-view', action: [AboutsController::class, 'trashView'])->name('abouts.trash-view');
+    Route::patch('/about/{id}/publish', [AboutsController::class, 'publish'])->name('about.publish');
+    Route::patch('/about/{id}/unpublish', [AboutsController::class, 'unpublish'])->name('about.unpublish');
 
     Route::resource('sites', SiteManagerController::class);
     Route::resource('/tenants-agreements', TenantAgreementwithSystemController::class);
@@ -146,6 +174,13 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::patch('slider/{id}/publish', [SliderImagesController::class, 'publish'])->name('slider.publish');
     Route::patch('slider/{id}/unpublish', [SliderImagesController::class, 'unpublish'])->name('slider.unpublish');
 
+    Route::resource('galleries', GalleryController::class);
+    Route::get('gallery/trash-view', action: [GalleryController::class, 'trashView'])->name('galleries.trash-view');
+    Route::delete('gallery/trash/{id}', [GalleryController::class, 'trashDelete'])->name('gallery.trash');
+    Route::delete('gallery/{id}', [GalleryController::class, 'delete'])->name('gallery.delete');
+    Route::get('gallery/restore/{id}', [GalleryController::class, 'restore'])->name('gallery.restore');
+    Route::patch('gallery/{id}/publish', [GalleryController::class, 'publish'])->name('gallery.publish');
+    Route::patch('gallery/{id}/unpublish', [GalleryController::class, 'unpublish'])->name('gallery.unpublish');
 
 
 });

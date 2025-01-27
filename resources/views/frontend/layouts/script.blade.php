@@ -7,6 +7,90 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script>
+    function toggleFavorite(userId, propertyId) {
+        if (!userId) {
+            window.location.href = "{{ route('login') }}"; // Redirect to login if user isn't authenticated
+            return;
+        }
+
+        fetch("{{ route('favorites.toggle') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    property_id: propertyId,
+                }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Dynamically update the favorite link style and icon
+                    const favoriteLink = document.querySelector(
+                        `a[onclick="toggleFavorite(${userId}, ${propertyId})"]`
+                    );
+                    if (data.isFavorite) {
+                        favoriteLink.classList.remove('text-muted');
+                        favoriteLink.classList.add('text-warning');
+                        favoriteLink.querySelector('i').classList.remove('far', 'fa-heart');
+                        favoriteLink.querySelector('i').classList.add('fas', 'fa-heart');
+                    } else {
+                        favoriteLink.classList.remove('text-primary');
+                        favoriteLink.classList.add('text-muted');
+                        favoriteLink.querySelector('i').classList.remove('fas', 'fa-heart');
+                        favoriteLink.querySelector('i').classList.add('far', 'fa-heart');
+                    }
+                } else {
+                    alert('Failed to update favorite status. Please try again.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
+    }
+
+    function shareProperty(propertyLink) {
+        // Use the Clipboard API to copy the link
+        navigator.clipboard.writeText(propertyLink)
+            .then(() => {
+                // Create and show the custom tooltip
+                const tooltip = document.createElement('div');
+                tooltip.innerText = 'Copied to clipboard!';
+                tooltip.style.position = 'absolute';
+                tooltip.style.backgroundColor = '#333';
+                tooltip.style.color = '#fff';
+                tooltip.style.padding = '5px 10px';
+                tooltip.style.borderRadius = '5px';
+                tooltip.style.fontSize = '14px';
+                tooltip.style.zIndex = 1000;
+                tooltip.style.boxShadow = '0px 2px 8px rgba(0, 0, 0, 0.2)';
+
+                // Get the button's position
+                const button = document.activeElement;
+                const rect = button.getBoundingClientRect();
+
+                // Position the tooltip near the button
+                tooltip.style.top = `${rect.top + window.scrollY - 30}px`;
+                tooltip.style.left = `${rect.left + window.scrollX}px`;
+
+                // Append the tooltip to the body
+                document.body.appendChild(tooltip);
+
+                // Remove the tooltip after 2 seconds
+                setTimeout(() => {
+                    tooltip.remove();
+                }, 2000);
+            })
+            .catch((err) => {
+                console.error('Error copying to clipboard:', err);
+                alert('Failed to copy the link. Please try again.');
+            });
+    }
+</script>
+<script>
     $(document).ready(function() {
 
         // Second Carousel Configuration
@@ -59,7 +143,7 @@
 
     });
 </script>
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Trigger showContent for the default active content
         showContent('about-company', document.querySelector('.nav-item.active'));
@@ -84,7 +168,7 @@
         // Add 'active' class to the clicked nav item
         element.classList.add('active-about-nav');
     }
-</script>
+</script> --}}
 <script>
     // JavaScript to handle image click and modal image update
     document.querySelectorAll('[data-bs-image]').forEach(imgLink => {
@@ -164,6 +248,88 @@
         @endif
     });
 </script>
+ <script>
+        $(document).ready(function() {
+            function showSuccessToast(message) {
+                console.log('Toast Message:', message); // Check if the message is passed
+                const toast = `<div class="toast toast-success">${message}</div>`;
+                $('body').append(toast); // Check if the element is appended
+
+                setTimeout(() => {
+                    $('.toast-success').fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            }
+
+
+            function showErrorToast(message) {
+                const toast = `<div class="toast toast-error">${message}</div>`;
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    $('.toast-error').fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            }
+
+            // Delete button click event
+            $('.delete-btn').on('click', function() {
+                const item = $(this).closest('.cart-item');
+                const propertyId = item.find('.item-checkbox').data('property-id');
+
+                if (confirm('Are you sure you want to remove this item?')) {
+                    const deleteUrl = `{{ route('cart.destroy', ':property_id') }}`
+                        .replace(':property_id', propertyId);
+
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        success: function(response) {
+                            console.log('Response:', response); // Verify the response object
+                            if (response.success) {
+                                showSuccessToast(response
+                                    .message); // Ensure this function is called
+                                item.remove();
+                                calculateTotals();
+                            } else {
+                                showErrorToast(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error); // Verify if this block is triggered
+                            showErrorToast('An error occurred. Please try again.');
+                        },
+                    });
+
+                }
+            });
+
+            // Function to recalculate totals
+            function calculateTotals() {
+                let subtotal = 0;
+                $('.item-checkbox:checked').each(function() {
+                    const price = parseFloat($(this).data('price'));
+                    const quantity = parseInt($(this).closest('.cart-item').find('.quantity').text());
+                    subtotal += price * quantity;
+                });
+
+                const tax = subtotal * 0.1; // 10% tax
+                const total = subtotal + tax;
+
+                $('.subtotal').text(`$${subtotal.toFixed(2)}`);
+                $('.tax').text(`$${tax.toFixed(2)}`);
+                $('.total-amount').text(`$${total.toFixed(2)}`);
+            }
+
+
+
+        });
+    </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const loaderWrapper = document.getElementById("loader-wrapper");

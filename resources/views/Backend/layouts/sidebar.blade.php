@@ -157,7 +157,7 @@
                 </ul>
             </li>
             <li
-                class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') || request()->routeIs('sliders.index') ? 'active open' : '' }}">
+                class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') || request()->routeIs('sliders.index') || request()->routeIs('galleries.index') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Content Management</div>
@@ -168,8 +168,8 @@
                             Slider
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->is('superAdmin/users') ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->is('superAdmin/galleries') ? 'active' : '' }}">
+                        <a href="{{ route('galleries.index') }}" class="menu-link">
                             Gallery
                         </a>
                     </li>

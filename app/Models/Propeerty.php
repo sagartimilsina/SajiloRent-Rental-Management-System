@@ -48,9 +48,9 @@ class Propeerty extends Model
         return $this->hasMany(Users_Property::class, 'property_id');
     }
 
-    public function property_image()
+    public function propertyImages()
     {
-        return $this->hasMany(Property_Images::class);
+        return $this->hasMany(Property_Images::class, 'property_id', 'id');
     }
 
 }
