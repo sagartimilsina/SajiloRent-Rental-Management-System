@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Models\SubCategories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -161,8 +162,6 @@ class CategoriesController extends Controller
         $category->save();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully!');
-
-
     }
 
     /**
@@ -190,7 +189,6 @@ class CategoriesController extends Controller
 
             return redirect()->back()->with('error', $e->getMessage());
         }
-
     }
 
     public function publish(Request $request, $id)
@@ -211,7 +209,6 @@ class CategoriesController extends Controller
 
 
             return redirect()->route('categories.index')->with('success', 'Category published successfully.');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle the validation failure case
             $errors = implode(', ', array_map(function ($error) {
@@ -221,7 +218,6 @@ class CategoriesController extends Controller
 
             // Redirect back with the error notification and input
             return redirect()->back()->with('error', $errors)->withInput();
-
         } catch (\Exception $e) {
             // General exception handling
             return redirect()->back()->with('error', $e->getMessage());
@@ -285,5 +281,11 @@ class CategoriesController extends Controller
 
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function getSubcategories($categoryId)
+    {
+        $subCategories = SubCategories::where('category_id', $categoryId)->get();
+        return response()->json($subCategories);
     }
 }

@@ -10,15 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('property__reviews', function (Blueprint $table) {
+        Schema::create('property_messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
-            $table->foreignId('user_id');
-            $table->longText('property_review');
-            $table->string('property_rating');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('subject');
+            $table->longText('message')->nullable();
+            $table->string('read_status')->default('0')->comment('0=unread,1=read');
             $table->softDeletes();
-
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('property__reviews');
+        Schema::dropIfExists('property_messages');
     }
 };

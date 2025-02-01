@@ -2,133 +2,366 @@
 @section('title', 'Cart')
 @section('content')
 
-    <section class="mt-3 mb-5">
-        <section class="breadcrumb-hero ">
+    <section class="mt-5 mb-5">
+        {{-- <section class="breadcrumb-hero">
             <hr>
             <div class="container text-start breadcrumb-overlay" style="padding: 0;">
                 <nav class="breadcrumb">
                     <a class="breadcrumb-item" href="{{ route('index') }}">Home</a>
-
-                    <a href="#" class="active-nav" aria-current="page">Cart </a>
+                    <a href="#" class="active-nav" aria-current="page">Cart</a>
                 </nav>
             </div>
             <hr>
-        </section>
+        </section> --}}
 
-        <div class="cart-container container">
+        <div class="cart-container container ">
             <div class="cart-title">
                 <div class="align-items-start">
                     <input type="checkbox" id="select-all">
                     <label for="select-all" style="font-size: 16px;">Select All</label>
                 </div>
-                <span>Your Cart (4 items)</span>
+                <span>Your Cart ({{ $cartCount }} items)</span>
             </div>
+
             <!-- Cart Items -->
-            <div class="cart-item">
-                <input type="checkbox">
-                <div class="cart-item-image">
-                    <img src="https://via.placeholder.com/80" alt="Pi Pizza Oven">
-                </div>
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Product Name</div>
-                    <div class="cart-item-subtitle">Category </div>
-                    <div class="cart-item-extra">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
-                        necessitatibus dolorum quibusdam odit neque rerum at aliquam delectus ea vel!</div>
-                </div>
+            {{-- <div class="item" style="max-height: 400px; overflow-y: scroll;">
+                @foreach ($cartItems as $item)
+                    <div class="cart-item" data-id="{{ $item->id }}">
+                        <input type="checkbox" class="item-checkbox" data-price="{{ $item->property->property_sell_price }}"
+                            data-id="{{ $item->id }}">
 
-                <div class="cart-item-price">$469.99</div>
-                <div class="cart-item-quantity">
-                    <button>-</button>
-                    <span>1</span>
-                    <button>+</button>
-                </div>
-                <div class="cart-item-total">$469.99</div>
-                <button class="delete-btn">✕</button>
+                        <div class="cart-item-image">
+                            <img src="{{ asset('storage/' . $item->property->property_image) }}"
+                                alt="{{ $item->property->property_name }}">
+                        </div>
+
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">{{ $item->property->property_name }}</div>
+                            <div class="cart-item-subtitle">{{ $item->property->category->category_name }}</div>
+                            <div class="cart-item-extra">
+                                {!! \Illuminate\Support\Str::limit(strip_tags($item->property->property_description), 200, '...') !!}
+                            </div>
+                        </div>
+
+                        <div class="cart-item-price">Rs {{ $item->property->property_sell_price }}</div>
+                        @if ($item->property_quantity > 0)
+                            <div class="cart-item-quantity">
+                                <button class="decrement">-</button>
+                                <span class="quantity">1</span>
+                                <button class="increment">+</button>
+                            </div>
+                        @endif
+                        <div class="cart-item-total">Rs {{ $item->property->property_sell_price }}</div>
+                        <button class="delete-btn">✕</button>
+                    </div>
+                @endforeach
+            </div> --}}
+
+            <div class="item" style="max-height: 400px; overflow-y: scroll;">
+                @foreach ($cartItems as $item)
+                    <div class="cart-item" data-id="{{ $item->id }}">
+                        <input type="checkbox" class="item-checkbox" data-price="{{ $item->property->property_sell_price }}"
+                            data-id="{{ $item->id }}">
+
+                        <div class="cart-item-image">
+                            <img src="{{ asset('storage/' . $item->property->property_image) }}"
+                                alt="{{ $item->property->property_name }}">
+                        </div>
+
+                        <div class="cart-item-details">
+                            <div class="cart-item-title" title="{{ $item->property->property_name }}">
+                                {{ $item->property->property_name }}
+                            </div>
+                            <div class="cart-item-subtitle">{{ $item->property->category->category_name }}</div>
+                            <div class="cart-item-extra">
+                                {!! \Illuminate\Support\Str::limit(strip_tags($item->property->property_description), 200, '...') !!}
+                            </div>
+                        </div>
+
+                        <div class="cart-item-price">Rs {{ $item->property->property_sell_price }}</div>
+                        <style>
+                            .quantity-alert {
+                                color: red;
+                                font-size: 12px;
+                                display: none;
+                                /* Hidden by default */
+                            }
+                        </style>
+
+                        <div class="cart-item-quantity" data-max="{{ $item->property->property_quantity }}">
+                            <button class="decrement">-</button>
+                            <span class="quantity">1</span>
+                            <button class="increment">+</button>
+                            <div class="quantity-alert" style="color: red; font-size: 12px; display: none;">Maximum quantity
+                                reached</div>
+                        </div>
+
+
+
+                        <div class="cart-item-total">Rs {{ $item->property->property_sell_price }}</div>
+                        <button class="delete-btn">✕</button>
+                    </div>
+                @endforeach
             </div>
 
-            <!-- Repeat for other items -->
-            <div class="cart-item">
-                <input type="checkbox">
-                <div class="cart-item-image">
-                    <img src="https://via.placeholder.com/80" alt="Grill Ultimate Bundle">
-                </div>
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Product Name</div>
-                    <div class="cart-item-subtitle">Category </div>
-                    <div class="cart-item-extra">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
-                        necessitatibus dolorum quibusdam odit neque rerum at aliquam delectus ea vel!</div>
-                </div>
-                <div class="cart-item-price">$549.99</div>
-                <div class="cart-item-quantity">
-                    <button>-</button>
-                    <span>1</span>
-                    <button>+</button>
-                </div>
-                <div class="cart-item-total">$549.99</div>
-                <button class="delete-btn">✕</button>
-            </div>
 
             <!-- Cart Summary -->
             <div class="cart-summary">
                 <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span>$1,019.98</span>
+                    <strong>Subtotal:</strong>
+                    <span class="subtotal mx-2">Rs 0.00</span>
                 </div>
                 <div class="summary-row">
-                    <span> Tax:</span>
-                    <span>$102.00</span>
+                    <strong>Tax:</strong>
+                    <span class="tax mx-2">Rs 0.00</span>
                 </div>
                 <div class="summary-row">
-                    <span> Discount:</span>
-                    <span>$102.00</span>
+                    <strong>Discount:</strong>
+                    <span class="discount mx-2">Rs 0.00</span>
                 </div>
 
                 <div class="summary-row total-row">
-                    <span>Grand Total:</span>
-                    <span class="total-amount">$1,121.98</span>
+                    <strong>Grand Total:</strong>
+                    <span class="total-amount mx-2">Rs 0.00</span>
                 </div>
 
-                <button class=" btn-primary btn-sm">Check Out</button>
+                <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                    <input type="hidden" name="selected_items" id="selected-items">
+                    <button type="submit" class="btn-primary btn-sm">Check Out</button>
+                </form>
             </div>
         </div>
     </section>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cartItems = document.querySelectorAll('.cart-item');
-            const subtotalElement = document.querySelector('.cart-summary .subtotal');
-            const taxElement = document.querySelector('.cart-summary .tax');
-            const discountPrice = document.querySelector('.discount');
-            const totalElement = document.querySelector('.cart-summary .total');
+            const subtotalElement = document.querySelector('.subtotal');
+            const taxElement = document.querySelector('.tax');
+            const totalAmountElement = document.querySelector('.total-amount');
             const selectAllCheckbox = document.querySelector('#select-all');
+            const checkoutForm = document.querySelector('#checkout-form');
+            const selectedItemsInput = document.querySelector('#selected-items');
 
-            // Helper function to recalculate totals
+            // Function to calculate totals and update selected items
             function calculateTotals() {
                 let subtotal = 0;
-                cartItems.forEach((item) => {
-                    const checkbox = item.querySelector('input[type="checkbox"]');
+                let selectedItems = []; // Array to store selected items with quantities
+
+                cartItems.forEach(item => {
+                    const checkbox = item.querySelector('.item-checkbox');
+                    const price = parseFloat(checkbox.dataset.price);
+                    const quantity = parseInt(item.querySelector('.quantity').innerText);
+                    const itemId = item.dataset.id;
+
+                    const itemTotal = price * quantity;
+                    item.querySelector('.cart-item-total').innerText = `Rs ${itemTotal.toFixed(2)}`;
+
                     if (checkbox.checked) {
-                        const price = parseFloat(item.querySelector('.cart-item-price').innerText.replace(
-                            '$', ''));
-                        const quantity = parseInt(item.querySelector('.cart-item-quantity span').innerText);
-                        subtotal += price * quantity;
+                        subtotal += itemTotal;
+                        // Add the item details to selected items array
+                        selectedItems.push({
+                            id: itemId,
+                            quantity: quantity,
+                            price: price
+                        });
                     }
                 });
 
-                const tax = subtotal * 0.1; // 10% tax
-                const discount = subtotal - discountPrice;
+                const tax = subtotal * 0.13; // Example: 13% tax
                 const total = subtotal + tax;
-                subtotalElement.innerText = `$${subtotal.toFixed(2)}`;
-                taxElement.innerText = `$${tax.toFixed(2)}`;
-                totalElement.innerText = `$${total.toFixed(2)}`;
+
+                subtotalElement.innerText = `Rs ${subtotal.toFixed(2)}`;
+                taxElement.innerText = `Rs ${tax.toFixed(2)}`;
+                totalAmountElement.innerText = `Rs ${total.toFixed(2)}`;
+
+                // Update the hidden input with selected items
+                selectedItemsInput.value = JSON.stringify(selectedItems);
             }
 
-            // Event listener for quantity changes
-            cartItems.forEach((item) => {
-                const decrementButton = item.querySelector('.cart-item-quantity button:first-child');
-                const incrementButton = item.querySelector('.cart-item-quantity button:last-child');
-                const quantitySpan = item.querySelector('.cart-item-quantity span');
+            // Function to update button states and alert visibility
+            function updateButtonStates(container) {
+                const quantitySpan = container.querySelector('.quantity');
+                const incrementBtn = container.querySelector('.increment');
+                const decrementBtn = container.querySelector('.decrement');
+                const quantityAlert = container.querySelector('.quantity-alert');
+                const maxQuantity = parseInt(container.getAttribute('data-max'), 10);
+                let currentQuantity = parseInt(quantitySpan.innerText, 10);
 
+                // Disable increment button if quantity reaches max
+                if (currentQuantity >= maxQuantity) {
+                    incrementBtn.disabled = true;
+                    quantityAlert.style.display = 'block'; // Show alert
+                } else {
+                    incrementBtn.disabled = false;
+                    quantityAlert.style.display = 'none'; // Hide alert
+                }
+
+                // Disable decrement button if quantity is 1
+                if (currentQuantity <= 1) {
+                    decrementBtn.disabled = true;
+                } else {
+                    decrementBtn.disabled = false;
+                }
+            }
+
+            // Attach event listeners to cart items
+            cartItems.forEach(item => {
+                const decrementButton = item.querySelector('.decrement');
+                const incrementButton = item.querySelector('.increment');
+                const quantitySpan = item.querySelector('.quantity');
+                const checkbox = item.querySelector('.item-checkbox');
+                const deleteButton = item.querySelector('.delete-btn');
+                const quantityAlert = item.querySelector('.quantity-alert');
+                const maxQuantity = parseInt(item.querySelector('.cart-item-quantity').getAttribute(
+                    'data-max'), 10);
+
+                console.log('Initial quantity:', quantitySpan.innerText); // Debug initial value
+
+                // Decrease quantity
+                decrementButton.addEventListener('click', () => {
+                    let quantity = parseInt(quantitySpan.innerText);
+                    if (quantity > 1) {
+                        quantity--;
+                        quantitySpan.innerText = quantity;
+                        updateButtonStates(item.querySelector('.cart-item-quantity'));
+                        calculateTotals();
+                    }
+                });
+
+                // Increase quantity
+                incrementButton.addEventListener('click', () => {
+                    let quantity = parseInt(quantitySpan.innerText);
+                    if (quantity < maxQuantity) {
+                        quantity++;
+                        quantitySpan.innerText = quantity;
+                        updateButtonStates(item.querySelector('.cart-item-quantity'));
+                        calculateTotals();
+                    }
+                });
+
+                // Checkbox change event
+                checkbox.addEventListener('change', () => {
+                    calculateTotals();
+                });
+
+                // Delete button event
+                deleteButton.addEventListener('click', () => {
+                    const itemId = item.dataset.id;
+
+                    if (confirm('Are you sure you want to remove this item?')) {
+                        const deleteUrl = `{{ route('cart.destroy', ':property_id') }}`.replace(
+                            ':property_id', itemId);
+
+                        fetch(deleteUrl, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    item.remove(); // Remove the item from the DOM
+                                    calculateTotals(); // Update totals
+                                    alert(data.message);
+                                } else {
+                                    alert('Failed to delete item.');
+                                }
+                            })
+                            .catch(() => {
+                                alert('An error occurred. Please try again.');
+                            });
+                    }
+                });
+
+                // Initialize button states on page load
+                updateButtonStates(item.querySelector('.cart-item-quantity'));
+            });
+
+            // Select all checkbox event
+            selectAllCheckbox.addEventListener('change', () => {
+                const isChecked = selectAllCheckbox.checked;
+                cartItems.forEach(item => {
+                    const checkbox = item.querySelector('.item-checkbox');
+                    checkbox.checked = isChecked;
+                });
+                calculateTotals();
+            });
+
+            // Modify checkout form submission to ensure selected items are passed
+            checkoutForm.addEventListener('submit', (e) => {
+                const selectedItems = JSON.parse(selectedItemsInput.value);
+
+                if (selectedItems.length === 0) {
+                    e.preventDefault(); // Prevent form submission
+                    alert('Please select at least one item to checkout.');
+                }
+            });
+
+            // Initial totals calculation
+            calculateTotals();
+        });
+    </script>
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartItems = document.querySelectorAll('.cart-item');
+            const subtotalElement = document.querySelector('.subtotal');
+            const taxElement = document.querySelector('.tax');
+            const totalAmountElement = document.querySelector('.total-amount');
+            const selectAllCheckbox = document.querySelector('#select-all');
+            const checkoutForm = document.querySelector('#checkout-form');
+            const selectedItemsInput = document.querySelector('#selected-items');
+
+            // Function to calculate totals and update selected items
+            function calculateTotals() {
+                let subtotal = 0;
+                let selectedItems = []; // Array to store selected items with quantities
+
+                cartItems.forEach(item => {
+                    const checkbox = item.querySelector('.item-checkbox');
+                    const price = parseFloat(checkbox.dataset.price);
+                    const quantity = parseInt(item.querySelector('.quantity').innerText);
+                    const itemId = item.dataset.id;
+
+                    const itemTotal = price * quantity;
+                    item.querySelector('.cart-item-total').innerText = `Rs ${itemTotal.toFixed(2)}`;
+
+                    if (checkbox.checked) {
+                        subtotal += itemTotal;
+                        // Add the item details to selected items array
+                        selectedItems.push({
+                            id: itemId,
+                            quantity: quantity,
+                            price: price
+                        });
+                    }
+                });
+
+                const tax = subtotal * 0.1; // Example: 10% tax
+                const total = subtotal + tax;
+
+                subtotalElement.innerText = `Rs ${subtotal.toFixed(2)}`;
+                taxElement.innerText = `Rs ${tax.toFixed(2)}`;
+                totalAmountElement.innerText = `Rs ${total.toFixed(2)}`;
+
+                // Update the hidden input with selected items
+                selectedItemsInput.value = JSON.stringify(selectedItems);
+            }
+
+            // Attach event listeners to cart items
+            cartItems.forEach(item => {
+                const decrementButton = item.querySelector('.decrement');
+                const incrementButton = item.querySelector('.increment');
+                const quantitySpan = item.querySelector('.quantity');
+                const checkbox = item.querySelector('.item-checkbox');
+                const deleteButton = item.querySelector('.delete-btn');
+
+                // Decrease quantity
                 decrementButton.addEventListener('click', () => {
                     let quantity = parseInt(quantitySpan.innerText);
                     if (quantity > 1) {
@@ -138,6 +371,7 @@
                     }
                 });
 
+                // Increase quantity
                 incrementButton.addEventListener('click', () => {
                     let quantity = parseInt(quantitySpan.innerText);
                     quantity++;
@@ -145,31 +379,126 @@
                     calculateTotals();
                 });
 
-                // Event listener for individual checkbox
-                const checkbox = item.querySelector('input[type="checkbox"]');
-                checkbox.addEventListener('change', calculateTotals);
+                // Checkbox change event
+                checkbox.addEventListener('change', () => {
+                    calculateTotals();
+                });
+
+                // Delete button event
+                deleteButton.addEventListener('click', () => {
+                    const itemId = item.dataset.id;
+
+                    if (confirm('Are you sure you want to remove this item?')) {
+                        const deleteUrl = `{{ route('cart.destroy', ':property_id') }}`.replace(
+                            ':property_id', itemId);
+
+                        fetch(deleteUrl, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').content,
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    item.remove(); // Remove the item from the DOM
+                                    calculateTotals(); // Update totals
+                                    alert(data.message);
+                                } else {
+                                    alert('Failed to delete item.');
+                                }
+                            })
+                            .catch(() => {
+                                alert('An error occurred. Please try again.');
+                            });
+                    }
+                });
             });
 
-            // Event listener for "select all" checkbox
+            // Select all checkbox event
             selectAllCheckbox.addEventListener('change', () => {
                 const isChecked = selectAllCheckbox.checked;
-                cartItems.forEach((item) => {
-                    item.querySelector('input[type="checkbox"]').checked = isChecked;
+                cartItems.forEach(item => {
+                    const checkbox = item.querySelector('.item-checkbox');
+                    checkbox.checked = isChecked;
                 });
                 calculateTotals();
             });
 
-            // Delete functionality
-            cartItems.forEach((item) => {
-                const deleteButton = item.querySelector('.delete-btn');
-                deleteButton.addEventListener('click', () => {
-                    item.remove();
-                    calculateTotals();
-                });
+            // Modify checkout form submission to ensure selected items are passed
+            checkoutForm.addEventListener('submit', (e) => {
+                const selectedItems = JSON.parse(selectedItemsInput.value);
+
+                if (selectedItems.length === 0) {
+                    e.preventDefault(); // Prevent form submission
+                    alert('Please select at least one item to checkout.');
+                }
             });
 
-            // Initial calculation
+            // Initial totals calculation
             calculateTotals();
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".cart-item-quantity").forEach(function(container) {
+                const decrementBtn = container.querySelector(".decrement");
+                const incrementBtn = container.querySelector(".increment");
+                const quantitySpan = container.querySelector(".quantity");
+                const quantityAlert = container.querySelector(".quantity-alert");
+                const maxQuantity = parseInt(container.getAttribute("data-max"), 10);
+
+                console.log("Initial quantity:", quantitySpan.innerText); // Debug initial value
+
+                // Function to update button states and alert visibility
+                function updateButtonStates() {
+                    let currentQuantity = parseInt(quantitySpan.innerText, 10);
+
+                    // Disable increment button if quantity reaches max
+                    if (currentQuantity >= maxQuantity) {
+                        incrementBtn.disabled = true;
+                        quantityAlert.style.display = "block"; // Show alert
+                    } else {
+                        incrementBtn.disabled = false;
+                        quantityAlert.style.display = "none"; // Hide alert
+                    }
+
+                    // Disable decrement button if quantity is 1
+                    if (currentQuantity <= 1) {
+                        decrementBtn.disabled = true;
+                    } else {
+                        decrementBtn.disabled = false;
+                    }
+                }
+
+                // Increment button click event
+                incrementBtn.addEventListener("click", function() {
+                    let currentQuantity = parseInt(quantitySpan.innerText, 10);
+                    if (currentQuantity < maxQuantity) {
+                        quantitySpan.innerText = currentQuantity + 1;
+                        updateButtonStates(); // Update button states
+                        calculateTotals(); // Update totals
+                    }
+                });
+
+                // Decrement button click event
+                decrementBtn.addEventListener("click", function() {
+                    let currentQuantity = parseInt(quantitySpan.innerText, 10);
+                    if (currentQuantity > 1) {
+                        quantitySpan.innerText = currentQuantity - 1;
+                        updateButtonStates(); // Update button states
+                        calculateTotals(); // Update totals
+                    }
+                });
+
+                // Initialize button states on page load
+                updateButtonStates();
+            });
+        });
+    </script> --}}
+
+
+
+
 @endsection

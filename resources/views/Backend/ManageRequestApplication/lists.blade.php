@@ -106,16 +106,25 @@
                                                 <td class="text-capitalize">
                                                     <span
                                                         class="badge 
-                                                @if ($item->user->role->role_name == 'Admin') bg-danger
-                                                @elseif($item->user->role->role_name == 'User')
-                                                    bg-primary
-                                                @elseif($item->user->role->role_name == 'Moderator')
-                                                    bg-warning
-                                                @else
-                                                    bg-secondary @endif">
-                                                        <strong>{{ $item->user->role->role_name }}</strong>
+                                                        @if ($item->user->role->role_name == 'Super Admin') bg-dark
+                                                        @elseif ($item->user->role->role_name == 'Admin') bg-info
+                                                        @elseif ($item->user->role->role_name == 'User') bg-primary
+                                                        @elseif ($item->user->role->role_name == 'Moderator') bg-warning
+                                                        @else bg-secondary @endif">
+                                                        <strong>
+                                                            @if ($item->user->role->role_name == 'Super Admin')
+                                                                Super Admin
+                                                            @elseif ($item->user->role->role_name == 'Admin')
+                                                                House / Company Owner
+                                                            @elseif ($item->user->role->role_name == 'User')
+                                                                Client
+                                                            @else
+                                                                {{ $item->user->role->role_name }}
+                                                            @endif
+                                                        </strong>
                                                     </span>
                                                 </td>
+
 
                                                 <td><strong>{{ $item->user->email }}</strong></td>
                                                 <td><strong>{{ $item->user->phone }}</strong></td>
@@ -469,7 +478,7 @@
                                                         aria-hidden="true"
                                                         aria-labelledby="modalToggleLabel{{ $item->id }}"2"
                                                         tabindex="-1">
-                                                        <div class="modal-dialog modal-dialog-centered  modal-xl">
+                                                        <div class="modal-dialog ">
 
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -491,7 +500,7 @@
                                                                             application ?
                                                                         </h6>
                                                                         <div class="row">
-                                                                            <div class="mb-3 col-md-6">
+                                                                            <div class="mb-3 col-md-12">
                                                                                 <input type="hidden" name="user_id"
                                                                                     value="{{ $item->user_id }}">
                                                                                 <label for=""
@@ -500,17 +509,24 @@
                                                                                     Status</label>
                                                                                 <select class="form-select form-select"
                                                                                     name="role_id" id="">
-                                                                                    @foreach ($userroles as $role)
+                                                                                    {{-- @foreach ($userroles as $role)
                                                                                         <option
                                                                                             value="{{ $role->id }}"
                                                                                             {{ $role->id === $item->user->role_id ? 'selected' : '' }}>
                                                                                             {{ $role->role_name }}
                                                                                         </option>
+                                                                                    @endforeach --}}
+                                                                                    @foreach ($userroles as $role)
+                                                                                        <option
+                                                                                            value="{{ $role->id }}"
+                                                                                            {{ $role->id === $item->user->role_id ? 'selected' : '' }}>
+                                                                                            {{ strtolower($role->role_name) === 'admin' ? 'House owner/Company Owner' : (strtolower($role->role_name) === 'user' ? 'Client' : $role->role_name) }}
+                                                                                        </option>
                                                                                     @endforeach
                                                                                 </select>
 
                                                                             </div>
-                                                                            <div class="mb-3 col-md-6">
+                                                                            <div class="mb-3 col-md-12">
 
                                                                                 <label for=""
                                                                                     class="form-label">Update
@@ -530,7 +546,7 @@
 
                                                                             </div>
 
-                                                                            <!-- Agreement Terms -->
+                                                                            {{-- <!-- Agreement Terms -->
                                                                             <h4>Agreement Terms</h4>
                                                                             <div class="mb-3 col-12">
                                                                                 <label for="agreement_text"
@@ -539,7 +555,7 @@
                                                                                 <textarea class="form-control" id="agreement_text{{ $item->id }}" name="agreement_text" rows="2"
                                                                                     placeholder="Enter Agreement Text" required></textarea>
                                                                             </div>
-                                                                            <!-- Signatures -->
+                                                                            <!-- Signatures --> --}}
 
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -681,7 +697,7 @@
                     .summernote({
                         placeholder: 'Enter a detailed description...',
                         tabsize: 2,
-                        height: 400,
+                        height: 200,
                     });
             @endforeach
 

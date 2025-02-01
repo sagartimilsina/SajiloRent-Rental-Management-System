@@ -1,6 +1,7 @@
 <section class="footer-section">
     @php
         $categories = App\Models\Categories::where('publish_status', 1)->orderBy('created_at', 'desc')->get();
+        $about = App\Models\Abouts::where('about_publish_status', 1)->where('head', 'About Us')->first();
 
     @endphp
     <div class="container-fluid">
@@ -12,9 +13,8 @@
                     <img alt="House Rent Logo" height="150" src="{{ asset('frontend/assets/images/logo.png') }}"
                         width="150" />
                 </div>
-                <p class="mt-2">
-                    We provide premium WordPress, Ghost, and HTML templates designed to be user-friendly and
-                    client-focused for seamless support.
+                <p class=" mt-2 text-start">
+                    {!! \Illuminate\Support\Str::limit(strip_tags(@$about->description), 300, '...') !!}
                 </p>
             </div>
 
@@ -41,7 +41,6 @@
                     <li><a href="{{ route('gallery') }}" style="color: #fff; text-decoration: none;">Gallery</a></li>
                     <li><a href="{{ route('contact') }}" style="color: #fff; text-decoration: none;">Contact</a></li>
                     <li><a href="{{ route('blog') }}" style="color: #fff; text-decoration: none;">Blogs</a></li>
-
                     @php
                         // Fetch the latest application status for the authenticated user
                         $application = DB::table('request_owner_lists')

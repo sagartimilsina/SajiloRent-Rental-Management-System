@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('abouts', function (Blueprint $table) {
             $table->id();
-            $table->string('about_title');
-            $table->longText('about_description')->nullable();
-            $table->string('about_image');
+            $table->string('head');
+            $table->string('title');
+            $table->longText('description')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('about_publish_status')->default(false);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

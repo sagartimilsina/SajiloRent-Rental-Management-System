@@ -15,7 +15,7 @@ class SliderImagesController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $sliderImages = SliderImages::orderBy('created_at', 'desc')
             ->when($request->search, function ($query, $search) {
                 return $query->where('title', 'like', '%' . $search . '%');
@@ -40,10 +40,9 @@ class SliderImagesController extends Controller
     {
 
         $request->validate([
-            'title' => 'nullable|string|min:5|max:255',
+            'title' => 'required|string|min:5|max:255',
             'sub_title' => 'nullable|string|min:5|max:255',
-
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // Allow uploaded images
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:5120', // Allow uploaded images
             'cropped_image' => 'nullable|string', // Allow base64 cropped image data
 
         ]);
@@ -67,7 +66,6 @@ class SliderImagesController extends Controller
                     $constraint->aspectRatio();
                 });
                 Storage::disk('public')->put("$folderPath/$image_name", $imagesized->encode('jpg', 90));
-
             }
 
             // Save blog data
@@ -78,7 +76,6 @@ class SliderImagesController extends Controller
             ]);
 
             return redirect()->route('sliders.index')->with('success', 'Slider created successfully.');
-
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -99,7 +96,6 @@ class SliderImagesController extends Controller
     {
         $slider = SliderImages::findOrFail($id);
         return view('backend.sliders.create', compact('slider'));
-
     }
 
     /**
@@ -163,7 +159,6 @@ class SliderImagesController extends Controller
             ]);
 
             return redirect()->route('sliders.index')->with('success', 'Slider updated successfully.');
-
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -215,7 +210,6 @@ class SliderImagesController extends Controller
 
 
             return redirect()->route('sliders.index')->with('success', 'Slider published successfully.');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle the validation failure case
             $errors = implode(', ', array_map(function ($error) {
@@ -225,7 +219,6 @@ class SliderImagesController extends Controller
 
             // Redirect back with the error notification and input
             return redirect()->back()->with('error', $errors)->withInput();
-
         } catch (\Exception $e) {
             // General exception handling
             return redirect()->back()->with('error', $e->getMessage());

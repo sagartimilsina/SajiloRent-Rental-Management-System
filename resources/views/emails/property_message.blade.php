@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application Approved Notice</title>
+    <title>Property Message Notification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,12 +50,6 @@
             line-height: 1.5;
         }
 
-        .content a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
         .footer {
             text-align: center;
             padding: 15px 20px;
@@ -69,14 +63,18 @@
             text-decoration: none;
         }
 
-        .a .button {
+        .button {
             background-color: #007bff;
             color: #ffffff;
             padding: 10px 20px;
             border-radius: 4px;
             text-decoration: none;
             display: inline-block;
+        }
 
+        a {
+            text-decoration: none;
+            color: #f4f4f4;
         }
     </style>
 </head>
@@ -84,17 +82,17 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>Application Approved Notice</h1>
+            <h1>New Message about your Property</h1>
         </div>
         <div class="content">
-            <p>Dear {{ $user->name }},</p>
-            <p>Congratulations! Your application has been approved. You can now log in to your account using the link
-                below:</p>
-            <p><a href="{{ $loginRoute }}"><button>Login Page</button></a></p>
-            <p>Once logged in, you can navigate to your admin dashboard through the profile dropdown menu.</p>
-            <p>We’re thrilled to have you on board. Let's enjoy this journey together!</p>
-            <p>Thank you for choosing Sajilo Rent Organization.</p>
-            <p>If you have any questions, feel free to contact us at any time.</p>
+            <p>Dear {{ $user_name }},</p>
+            <p>You have received a new message regarding your property titled "<strong>{{ $property_name }}</strong>".
+            </p>
+            <p><strong>Subject:</strong> {{ $subject }}</p>
+            <p><strong>Message:</strong></p>
+            <p>{{ $message_content }}</p>
+            <p>To view and manage this message, please log in to your account:</p>
+            <p><a href="{{ $loginRoute }}" class="button" style="color: #fff!important">Login to your Account</a></p>
         </div>
         <div class="footer">
             <p>Sajilo Rent Organization, Nepal</p>

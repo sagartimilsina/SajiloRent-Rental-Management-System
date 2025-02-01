@@ -56,7 +56,8 @@
                     @foreach ($categories as $category)
                         <div class="item">
                             <div class="provide-icon">
-                                <img src="{{ asset('storage/' . $category->icon) }}" max-width="50" height="50"
+                                <img src="{{ asset('storage/' . $category->icon) }}"
+                                    style="width: 50px; height: 50px ; display: block; margin: 0 auto;"
                                     alt="{{ $category->icon }}">
                                 <p>{{ $category->category_name }}</p>
                             </div>
@@ -151,463 +152,167 @@
             <div class="container py-5">
                 <div class="text-center mb-5">
                     <h1 class="title text-dark">About Us</h1>
-                    <p class="text-secondary fs-5">WELCOME TO Sajilo rent</p>
+                    <p class="text-secondary fs-5">WELCOME TO Sajilo Rent</p>
                 </div>
 
                 <div class="row">
+                    <!-- Sidebar Navigation -->
                     <div class="col-xl-2 col-lg-3 col-md-3 mb-4 position-relative">
                         <ul class="nav about-nav-responsive flex-column">
-                            <li class="nav-item mb-3 me-3 active " onclick="showContent('about-company', this)">
-                                <h6 class="fw-bold text-left ">
-                                    About Company
-                                </h6>
-                            </li>
-                            <li class="nav-item mb-3 " onclick="showContent('terms-condition', this)">
-                                <h6 class="fw-bold text-left ">
-                                    Terms & Condition
-                                </h6>
-                            </li>
-                            <li class="nav-item mb-3 " onclick="showContent('our-specialty', this)">
-                                <h6 class="fw-bold text-left ">
-                                    Our specialty
-                                </h6>
-                            </li>
-                            <li class="nav-item mb-3 " onclick="showContent('our-specialty-2', this)">
-                                <h6 class="fw-bold text-left ">
-                                    Our specialty 2
-                                </h6>
-                            </li>
+                            @foreach ($abouts as $index => $item)
+                                <li class="nav-item{{ $index == 0 ? ' active-about-nav' : '' }} mb-3 me-3"
+                                    onclick="showContent('{{ $item->id }}', this)">
+                                    <h6 class="fw-bold text-left">
+                                        {{ $item->head }}
+                                    </h6>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
 
-                    <div class="col-xl-10 col-lg-9 col-md-9" id="content">
-                        <div class="content-section" id="about-company">
-                            <div class="row">
-                                <div class="col-lg-7 col-md-12">
-                                    <p class="fs-5 mb-4 text-start">
-                                        Sajilo Rent is an innovative rental management system designed to address
-                                        inefficiencies in traditional renting methods.
-                                        It serves as a centralized platform where individuals can find and manage rental
-                                        properties, including rooms, apartments, commercial spaces, tools, and vehicles,
-                                        with ease.
-                                        Sajilo Rent simplifies the rental experience, promotes trust, and supports
-                                        cultural and social integration.
-                                    </p>
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">
-                                            Amorem ipsum dolor sit amet, consectetur
-                                        </li>
-                                        <li class="mb-2">
-                                            Cras etitikis mauris egeth lorem ultricies
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-5 col-md-12">
-                                    <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                                        class="img-fluid rounded shadow"
-                                        src="https://storage.googleapis.com/a1aa/image/jR8EVe5c5VS1EavtbJOQSChAT4DGOyXAT9NgeirfcTiGipgnA.jpg"
-                                        width="400" />
+                    <!-- Content Area -->
+                    <div class="col-xl-10 col-lg-9 col-md-9">
+                        @foreach ($abouts as $index => $item)
+                            <div class="content-section {{ $index == 0 ? '' : 'd-none' }}" id="{{ @$item->id }}">
+                                <div class="row">
+                                    <!-- Text Section -->
+                                    <div class="{{ @$item->image != null ? 'col-lg-7 col-md-12' : 'col-12' }}">
+                                        <p class="fs-5 mb-4 text-start">
+                                            {!! \Illuminate\Support\Str::limit(strip_tags(@$item->description), 500, '...') !!}
+                                        </p>
+
+                                        <div class="btn" style="float: left;">
+                                            <a class="btn btn-primary btn-sm"
+                                                href="{{ route('about_dynamic', $item->id) }}">Read More</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Image Section -->
+                                    @if (@$item->image != null)
+                                        <div class="col-lg-5 col-md-12">
+                                            <img class="img-fluid rounded shadow"
+                                                src="{{ asset('storage/' . $item->image) }}" />
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
 
-                        <div class="content-section d-none" id="terms-condition">
-                            <div class="row">
-                                <div class="col-lg-7">
-                                    <p class="fs-5 mb-4 text-start">
-                                        Terms and conditions content goes here. Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit.
-                                    </p>
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">
-                                            For Property Owners:
-                                            Term 1: Provide accurate and up-to-date property details; false information
-                                            may result in removal.
-                                            Term 2:Ensure your property complies with all local and national laws.
-                                            Term 3:You are responsible for drafting and managing rental agreements with
-                                            tenants.
-                                            Term 4:Address tenant maintenance requests promptly.
-                                            Term 5:Prohibited activities include spam listings, discrimination, and
-                                            promoting illegal activities.
-
-                                        </li>
-                                        <li class="mb-2">
-                                            For Property Seekers
-                                            Term 1: rovide truthful information and verify property details before
-                                            renting.
-                                            Term 2:Respect property owners during communication; harassment is
-                                            prohibited.
-                                            Term 3:Payments made through Sajilo Rent must follow platform guidelines.
-                                            Term 4:Ensure you inspect properties physically or online before finalizing
-                                            agreements.
-                                            Term 5:Use the platform only for rental-related purposes; fraudulent
-                                            activities are forbidden.
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-5">
-                                    <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                                        class="img-fluid rounded shadow"
-                                        src="https://storage.googleapis.com/a1aa/image/6RmFXAl0oVrODFGPqph0T38LvLQ2R5NgWTfgFkNjI446LK4JA.jpg"
-                                        width="400" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="content-section d-none" id="our-specialty">
-                            <div class="row">
-                                <div class="col-lg-7">
-                                    <p class="fs-5 mb-4 text-start">
-                                        Our specialty content goes here. Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit.
-                                    </p>
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">
-                                            Specialty 1: Lorem ipsum dolor sit amet
-                                        </li>
-                                        <li class="mb-2">
-                                            Specialty 2: Cras etitikis mauris egeth lorem ultricies
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-5">
-                                    <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                                        class="img-fluid rounded shadow"
-                                        src="https://storage.googleapis.com/a1aa/image/jR8EVe5c5VS1EavtbJOQSChAT4DGOyXAT9NgeirfcTiGipgnA.jpg"
-                                        width="400" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="content-section d-none" id="our-specialty-2">
-                            <div class="row">
-                                <div class="col-lg-7 col-md-12">
-                                    <p class="fs-5 mb-4 text-start">
-                                        Our second specialty content goes here. Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit.
-                                    </p>
-                                    <ul class="list-unstyled">
-                                        <li class="mb-2">
-                                            Specialty 1: Lorem ipsum dolor sit amet
-                                        </li>
-                                        <li class="mb-2">
-                                            Specialty 2: Cras etitikis mauris egeth lorem ultricies
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-5">
-                                    <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                                        class="img-fluid rounded shadow"
-                                        src="https://storage.googleapis.com/a1aa/image/6RmFXAl0oVrODFGPqph0T38LvLQ2R5NgWTfgFkNjI446LK4JA.jpg"
-                                        width="400" />
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Trigger showContent for the default active section
+                        const defaultNavItem = document.querySelector('.nav-item.active-about-nav');
+                        if (defaultNavItem) {
+                            const defaultSectionId = defaultNavItem.getAttribute('onclick').match(/'([^']+)'/)[1];
+                            showContent(defaultSectionId, defaultNavItem);
+                        }
+                    });
+
+                    function showContent(sectionId, element) {
+                        // Hide all content sections
+                        const sections = document.querySelectorAll('.content-section');
+                        sections.forEach(section => {
+                            section.classList.add('d-none');
+                        });
+
+                        // Show the selected section
+                        const targetSection = document.getElementById(sectionId);
+                        if (targetSection) {
+                            targetSection.classList.remove('d-none');
+                        }
+
+                        // Remove 'active-about-nav' class from all navigation items
+                        const navItems = document.querySelectorAll('.nav-item');
+                        navItems.forEach(item => {
+                            item.classList.remove('active-about-nav');
+                        });
+
+                        // Add 'active-about-nav' class to the clicked nav item
+                        if (element) {
+                            element.classList.add('active-about-nav');
+                        }
+                    }
+                </script>
+
             </div>
         </section>
         <!-- About Section End -->
         <!-- Rooms and property Section Start -->
-
-        {{-- <section class="rent-property">
-            <div class="container">
-
-                <div class="header mb-5">
-                    <h1>
-                        Rooms &amp; Apartments
-                    </h1>
-                    <p class="text-secondary fs-5">
-                        FIND YOUR ROOMS, FOR YOUR ABALITY
-                    </p>
-                </div>
-                <div class="row">
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-
-                        <div class="card">
-                            <img alt="Family Apartment 1" class="img-fluid"
-                                src="https://storage.googleapis.com/a1aa/image/8fE5PXpZO23UZq4bAj6EX0HOCLXrDNmfPmntllU17aEhdvxTA.jpg" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body">
-                                    <h5 class="card-title ">
-                                        Family Apartment
-                                    </h5>
-                                    <p class="card-text">
-                                        <i class="fas fa-map-marker-alt">
-                                        </i>
-                                        Bagar, Pokhara
-                                    </p>
-                                    <div class="row ">
-
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bed">
-                                                </i>
-                                                3 Bedrooms
-                                            </p>
-                                        </div>
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bath">
-                                                </i>
-                                                2 Bathroom
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="price">
-                                        <p class="text-center">
-                                            Rs. 200
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </a>
-                            <div class="card-footer d-flex justify-content-between  ">
-
-                                <a class="text-muted" href="#">
-                                    <i class="fas fa-share-alt">
-                                    </i>
-                                </a>
-                                <a class="text-muted" href="#">
-                                    <i class="far fa-star">
-                                    </i>
-                                </a>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card">
-                            <img alt="Family Apartment 2" class="img-fluid"
-                                src="https://storage.googleapis.com/a1aa/image/3jmEupGczybwCNOIT8goQyJXVaC0Oedj6EIHXLqG5CLwu34JA.jpg" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body">
-                                    <h5 class="card-title ">
-                                        Family Apartment
-                                    </h5>
-                                    <p class="card-text">
-                                        <i class="fas fa-map-marker-alt">
-                                        </i>
-                                        Lakeside, Pokhara
-                                    </p>
-                                    <div class="row ">
-
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bed">
-                                                </i>
-                                                3 Bedrooms
-                                            </p>
-                                        </div>
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bath">
-                                                </i>
-                                                2 Bathroom
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="price">
-                                        <p class="text-center">
-                                            Rs. 200
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </a>
-                            <div class="card-footer d-flex justify-content-between  ">
-
-                                <a class="text-muted" href="#">
-                                    <i class="fas fa-share-alt">
-                                    </i>
-                                </a>
-                                <a class="text-muted" href="#">
-                                    <i class="far fa-star">
-                                    </i>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card">
-                            <img alt="Family Apartment 3" class="img-fluid"
-                                src="https://storage.googleapis.com/a1aa/image/lri1ak82XjJtA5VJh1P0TIwX8jebgANyaOyDQp3Ydhsuu34JA.jpg" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body">
-                                    <h5 class="card-title ">
-                                        Family Apartment
-                                    </h5>
-                                    <p class="card-text">
-                                        <i class="fas fa-map-marker-alt">
-                                        </i>
-                                        Newroad, Kathmandu
-                                    </p>
-                                    <div class="row ">
-
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bed">
-                                                </i>
-                                                3 Bedrooms
-                                            </p>
-                                        </div>
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bath">
-                                                </i>
-                                                2 Bathroom
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="price">
-                                        <p class="text-center">
-                                            Rs. 200
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </a>
-                            <div class="card-footer d-flex justify-content-between  ">
-
-                                <a class="text-muted" href="#">
-                                    <i class="fas fa-share-alt">
-                                    </i>
-                                </a>
-                                <a class="text-muted" href="#">
-                                    <i class="far fa-star">
-                                    </i>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card">
-                            <img alt="Family Apartment 4" class="img-fluid"
-                                src="https://storage.googleapis.com/a1aa/image/B9T5aE0c0ZKzB5yeNXfiHATCuW2CBaEAe5TPVWxOkqE46eGPB.jpg" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body">
-                                    <h5 class="card-title ">
-                                        Family Apartment
-                                    </h5>
-                                    <p class="card-text">
-                                        <i class="fas fa-map-marker-alt">
-                                        </i>
-                                        Rupandehi, Lumbini
-                                    </p>
-                                    <div class="row ">
-
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bed">
-                                                </i>
-                                                3 Bedrooms
-                                            </p>
-                                        </div>
-                                        <div class="col-6 services-icon">
-                                            <p class="card-text">
-                                                <i class="fas fa-bath">
-                                                </i>
-                                                2 Bathroom
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="price">
-                                        <p class="text-center">
-                                            Rs. 200
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </a>
-                            <div class="card-footer d-flex justify-content-between  ">
-
-                                <a class="text-muted" href="#">
-                                    <i class="fas fa-share-alt">
-                                    </i>
-                                </a>
-                                <a class="text-muted" href="#">
-                                    <i class="far fa-star">
-                                    </i>
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="text-center mb-4">
-                    <button class="btn btn-primary">
-                        View All
-                    </button>
-                </div>
-            </div>
-        </section> --}}
         <section class="rent-property">
             <div class="container">
                 <div class="header mb-5">
                     <h1>
-                        Rooms &amp; Apartments
+                        Property and Product Rentals
                     </h1>
-                    <p class="text-secondary fs-5">
-                        FIND YOUR ROOMS, FOR YOUR ABILITY
+                    <p class="text-secondary fs-5 text-uppercase">
+                        FIND YOUR Property and Product, FOR YOUR ABILITY
                     </p>
                 </div>
                 <div class="row">
+
                     @if ($apartments->count() > 0)
-                        @foreach ($apartments as $apartment)
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                                <div class="card">
-                                    <img alt="{{ $apartment->title }}" class="img-fluid"
-                                        src="{{ $apartment->image_url }}" />
-                                    <a href="{{ route('property.details', $apartment->id) }}"
-                                        class="text-decoration-none">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                {{ $apartment->title }}
-                                            </h5>
-                                            <p class="card-text">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                {{ $apartment->location }}
-                                            </p>
-                                            <div class="row">
-                                                <div class="col-6 services-icon">
-                                                    <p class="card-text">
-                                                        <i class="fas fa-bed"></i>
-                                                        {{ $apartment->bedrooms }} Bedrooms
-                                                    </p>
-                                                </div>
-                                                <div class="col-6 services-icon">
-                                                    <p class="card-text">
-                                                        <i class="fas fa-bath"></i>
-                                                        {{ $apartment->bathrooms }} Bathrooms
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="price">
-                                                <p class="text-center">
-                                                    Rs. {{ $apartment->price }}
+                        <div class="row">
+                            @foreach ($apartments as $apartment)
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <a href="{{ route('property.details', ['id' => $apartment->id]) }}"
+                                            class="text-decoration-none">
+                                            <img alt="{{ $apartment->property_name }}" class="card-img-top img-fluid"
+                                                src="{{ asset('storage/' . $apartment->property_image) }}" />
+                                            <div class="card-body">
+                                                <h5 class="card-title text-truncate">{{ $apartment->property_name }}</h5>
+                                                <p class="card-text text-justify">
+                                                    {!! \Illuminate\Support\Str::limit(strip_tags($apartment->property_description), 70, '...') !!}
                                                 </p>
+                                                <p class="card-text small text-muted">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    {{ $apartment->property_location }}
+                                                </p>
+                                                <div class="price mt-2">
+                                                    <p
+                                                        class="text-center d-flex align-items-center justify-content-between">
+                                                        <del class="text-danger small">Rs.
+                                                            {{ $apartment->property_price }}</del>
+                                                        Rs. {{ $apartment->property_sell_price }}
+                                                    </p>
+                                                </div>
                                             </div>
+                                        </a>
+                                        <div
+                                            class="card-footer bg-white border-0 d-flex justify-content-between align-items-center favorite-link">
+                                            <!-- Share Button -->
+                                            <a href="javascript:void(0);" class="text-warning"
+                                                onclick="shareProperty('{{ route('property.details', ['id' => $apartment->id]) }}')"
+                                                style="position: relative;" title="Share this property">
+                                                <i class="fas fa-share-alt fa-lg"></i>
+                                            </a>
+                                            <!-- Add to Favorites Link -->
+                                            <a href="javascript:void(0);"
+                                                class="favorite-link {{ in_array($apartment->id, $favoriteIds) ? 'text-warning' : 'text-warning' }} "
+                                                onclick="toggleFavorite({{ Auth::id() }}, {{ $apartment->id }})"
+                                                title="Add to Favorites">
+                                                <i
+                                                    class="{{ in_array($apartment->id, $favoriteIds) ? 'fas fa-heart' : 'far fa-heart' }} fa-lg"></i>
+                                            </a>
                                         </div>
-                                    </a>
-                                    <div class="card-footer d-flex justify-content-between">
-                                        <a class="text-muted" href="#">
-                                            <i class="fas fa-share-alt"></i>
-                                        </a>
-                                        <a class="text-muted" href="#">
-                                            <i class="far fa-star"></i>
-                                        </a>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     @else
-                        <p class="text-center">No properties available at the moment.</p>
+                        <div class="text-center py-5">
+                            <p class="h5 text-muted">No properties available at the moment.</p>
+                        </div>
                     @endif
+
+
+
+
+
+
                 </div>
                 <div class="text-center mb-4">
                     <a href="#" class="btn btn-primary">
@@ -743,10 +448,11 @@
                         @foreach ($testimonials as $testimonial)
                             <div class="item">
                                 <div class="testimonial-card">
-                                    <img src="{{ asset($testimonial->image) }}" alt="{{ $testimonial->name }}">
+                                    <img src="{{ asset('storage/' . $testimonial->image) }}"
+                                        alt="{{ $testimonial->name }}">
                                     <h3>{{ $testimonial->name }}</h3>
                                     <h4>{{ $testimonial->position }}</h4>
-                                    <p>{{ $testimonial->feedback }}</p>
+                                    <p>{!! $testimonial->description !!}</p>
                                     <div class="stars">
                                         @for ($i = 0; $i < $testimonial->rating; $i++)
                                             <i class="fas fa-star"></i>

@@ -84,9 +84,12 @@
                                                 <td>{{ $item->category->category_name }}</td>
                                                 <td><strong>{{ $item->sub_category_name }}</strong></td>
 
-                                                <td><img src="{{ asset('storage/' . $item->icon) }}" alt="Icon"
-                                                        style="width: 50px; height: 50px; "></td>
-
+                                                @if ($item->icon == null)
+                                                    <td>No Image</td>
+                                                @else
+                                                    <td><img src="{{ asset('storage/' . $item->icon) }}" alt="Icon"
+                                                            style="width: 50px; height: 50px; "></td>
+                                                @endif
                                                 @if (Auth::user()->role->role_name == 'Super Admin')
                                                     <td><strong>{{ @$item->user->name }}</strong></td>
                                                 @endif
@@ -191,7 +194,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
                                                                     id="publishModalLabel{{ $item->id }}">
-                                                                    Publish  Sub Category</h5>
+                                                                    Publish Sub Category</h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
@@ -457,7 +460,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('modalToggle');
             const bootstrapModal = bootstrap.Modal.getOrCreateInstance(modal);
@@ -548,7 +551,76 @@
                 created_by: createdBy
             })));
         }
+    </script> --}}
+    <script>
+        let categories = []; // Define the categories array globally
+
+        document.getElementById('addCategory').addEventListener('click', function() {
+            const nameInput = document.getElementById('category_name');
+            const iconInput = document.getElementById('category_icon');
+            const categorySelect = document.getElementById('categorySelect');
+
+            if (!nameInput.value || categorySelect.value === 'Select one') {
+                alert('Category name and category must be selected!');
+                return;
+            }
+
+            const categoryData = {
+                category_id: categorySelect.value,
+                category_name: categorySelect.options[categorySelect.selectedIndex].text,
+                sub_category_name: nameInput.value,
+                icon: null // Default null for optional icon
+            };
+
+            if (iconInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    categoryData.icon = e.target.result; // Assign base64 image if available
+                    addCategoryToTable(categoryData);
+                };
+                reader.readAsDataURL(iconInput.files[0]);
+            } else {
+                addCategoryToTable(categoryData);
+            }
+        });
+
+        function addCategoryToTable(categoryData) {
+            categories.push(categoryData);
+            renderCategories();
+        }
+
+        function removeCategory(index) {
+            categories.splice(index, 1);
+            renderCategories();
+        }
+
+        function renderCategories() {
+            const tableBody = document.getElementById('categoryTable');
+            tableBody.innerHTML = '';
+
+            categories.forEach((category, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${category.category_name}</td>
+                    <td>${category.sub_category_name}</td>
+                    <td>
+                        ${category.icon ? `<img src="${category.icon}" alt="Icon" style="width: 50px; height: 50px; object-fit: cover;">` : 'No Image'}
+                    </td>
+                    <td><button class="btn btn-danger btn-sm" onclick="removeCategory(${index})">Remove</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            const createdBy = document.querySelector('input[name="created_by"]').value;
+            document.getElementById('categoriesInput').value = JSON.stringify(
+                categories.map(category => ({
+                    ...category,
+                    created_by: createdBy
+                }))
+            );
+        }
     </script>
+
 
 
 

@@ -24,6 +24,66 @@ body {
     --main-primary: #1a2b4c !important;
 }
 
+.cart-add .text-primary {
+    color: var(--primary) !important;
+}
+
+.cart-add .text-primary:hover {
+    color: var(--secondary) !important;
+}
+
+.favorite-link {
+    cursor: pointer;
+}
+
+.favorite-link .text-warning {
+    color: var(--secondary) !important;
+}
+
+.custom-tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    color: #fff !important;
+    border-color: var(--primary);
+}
+
+
+
+
+
+
+
+
 .navbar {
     background-color: var(--main-primary);
     color: white;
@@ -127,7 +187,7 @@ a.btn.btn-outline-warning.register-button:hover {
     right: 20px;
     width: 50px;
     height: 50px;
-    background-color:var(--secondary);
+    background-color: var(--secondary);
     /* Blue color */
     color: white;
     border: none;
@@ -151,7 +211,7 @@ a.btn.btn-outline-warning.register-button:hover {
 }
 
 .scroll-to-top:hover {
-    background-color:var(--primary);
+    background-color: var(--primary);
     /* Darker blue on hover */
 }
 
@@ -467,7 +527,7 @@ h2 {
 }
 
 .price {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
     color: var(--main-primary);
     margin: 10px 0px;
@@ -498,6 +558,71 @@ h2 {
 
 }
 
+.thumbnail {
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.booking-form {
+    border: 2px solid var(--main-primary);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.booking-form h5 {
+    color: var(--main-primary);
+}
+
+.container-left {
+    position: relative;
+    text-align: left;
+}
+
+.booking-form {
+    position: sticky;
+    top: 30px;
+}
+
+.container-left .img-lists {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    column-gap: 20px;
+}
+
+.booking-form .btn-outline-primary {
+
+    border-color: var(--main-primary) !important;
+    padding: 10px 20px !important;
+    color: #000 !important;
+
+}
+
+.booking-form .btn-warning {
+    background-color: var(--secondary) !important;
+    padding: 10px 20px !important;
+    color: #fff !important;
+}
+
+.booking-form .btn-warning:hover {
+    background-color: var(--primary) !important;
+    padding: 10px 20px !important;
+    color: #fff !important;
+}
+
+.booking-form .btn-outline-secondary {
+    background-color: var(--primary) !important;
+    padding: 10px 20px !important;
+    color: #fff !important;
+}
+
+
+
+.booking-form .btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+}
 
 
 
@@ -1127,7 +1252,7 @@ ol {
 
 .summary-row {
     display: flex;
-    justify-content: space-between;
+    justify-content:;
     margin-bottom: 10px;
 }
 

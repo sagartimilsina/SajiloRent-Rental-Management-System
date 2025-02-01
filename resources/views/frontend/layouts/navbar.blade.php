@@ -88,10 +88,19 @@
                                             </div>
                                         </div>
                                         <div class="">
-                                            <span
-                                                class="fw-medium d-block text-wrap">{{ Auth::user()->name ?? 'User' }}</span>
-                                            <span
-                                                class="fw-medium d-block">{{ Auth::user()->role->role_name ?? 'Role' }}</span>
+                                            <span class="fw-medium d-block text-wrap">
+                                                {{ Auth::user()->name ?? 'User' }}
+                                            </span>
+                                            <span class="fw-medium d-block">
+                                                @if (Auth::user()->role->role_name == 'Admin')
+                                                    Owner
+                                                @elseif (Auth::user()->role->role_name == 'User')
+                                                    Client
+                                                @else
+                                                    {{ Auth::user()->role->role_name ?? 'Role' }}
+                                                @endif
+                                            </span>
+
                                         </div>
                                     </div>
                                 </a>
@@ -107,17 +116,17 @@
                                 @if (Auth::user()->role->role_name == 'Admin')
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                         <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap"> Admin Dashboard</span>
+                                        <span class="align-middle text-wrap"> Dashboard</span>
                                     </a>
                                 @elseif(Auth::user()->role->role_name == 'User')
                                     <a class="dropdown-item" href="{{ route('user.dashboard') }}">
                                         <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap"> User Dashboard</span>
+                                        <span class="align-middle text-wrap"> Dashboard</span>
                                     </a>
                                 @elseif(Auth::user()->role->role_name == 'Super Admin')
                                     <a class="dropdown-item" href="{{ route('super.admin.dashboard') }}">
                                         <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap"> Super Admin Dashboard</span>
+                                        <span class="align-middle text-wrap"> Dashboard</span>
                                     </a>
                                 @else
                                 @endif

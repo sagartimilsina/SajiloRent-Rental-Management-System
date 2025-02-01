@@ -70,7 +70,7 @@ class RequestOwnerListsController extends Controller
             'status' => 'required|in:pending,approved,rejected,expired',
             'user_id' => 'required|exists:users,id',
             'role_id' => 'required|exists:user_role_management,id',
-            'agreement_text' => 'required|string',
+            // 'agreement_text' => 'required|string',
         ]);
 
         try {
@@ -97,7 +97,7 @@ class RequestOwnerListsController extends Controller
                 TenantAgreementwithSystem::create([
                     'request_id' => $request_status->id,
                     'user_id' => $request->user_id,
-                    'agreement' => $request->agreement_text,
+                    'agreement' => $request->agreement_text ?? '',
                 ]);
             }
             // Send email notification

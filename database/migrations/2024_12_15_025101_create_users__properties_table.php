@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::create('users__properties', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign ('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('property_id');
-            $table->foreign ('property_id')->references('id')->on('propeerties');
+            $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
             $table->timestamps();
         });
     }
