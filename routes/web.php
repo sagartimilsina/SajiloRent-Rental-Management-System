@@ -3,15 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AboutsController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PropeertyController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\FavouritesController;
 use App\Http\Controllers\FavouritesController;
 use App\Http\Controllers\SiteManagerController;
 use App\Http\Controllers\EsewaPaymentController;
@@ -21,6 +24,7 @@ use App\Http\Controllers\SubCategoriesController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
@@ -156,8 +160,18 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::patch('team/{id}/publish', [TeamsController::class, 'publish'])->name('team.publish');
     Route::patch('team/{id}/unpublish', [TeamsController::class, 'unpublish'])->name('team.unpublish');
 
+    Route::get('team/trash-view', action: [TeamsController::class, 'trashView'])->name('teams.trash-view');
+    Route::delete('team/trash/{id}', [TeamsController::class, 'trashDelete'])->name('team.trash');
+    Route::delete('team/{id}', [TeamsController::class, 'delete'])->name('team.delete');
+    Route::get('team/restore/{id}', [TeamsController::class, 'restore'])->name('team.restore');
+    Route::patch('team/{id}/publish', [TeamsController::class, 'publish'])->name('team.publish');
+    Route::patch('team/{id}/unpublish', [TeamsController::class, 'unpublish'])->name('team.unpublish');
+
 
     Route::resource('abouts', AboutsController::class);
+    Route::get('/about/trash-view', action: [AboutsController::class, 'trashView'])->name('abouts.trash-view');
+    Route::patch('/about/{id}/publish', [AboutsController::class, 'publish'])->name('about.publish');
+    Route::patch('/about/{id}/unpublish', [AboutsController::class, 'unpublish'])->name('about.unpublish');
     Route::get('/about/trash-view', action: [AboutsController::class, 'trashView'])->name('abouts.trash-view');
     Route::patch('/about/{id}/publish', [AboutsController::class, 'publish'])->name('about.publish');
     Route::patch('/about/{id}/unpublish', [AboutsController::class, 'unpublish'])->name('about.unpublish');

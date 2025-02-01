@@ -153,12 +153,22 @@
                 <div class="text-center mb-5">
                     <h1 class="title text-dark">About Us</h1>
                     <p class="text-secondary fs-5">WELCOME TO Sajilo Rent</p>
+                    <p class="text-secondary fs-5">WELCOME TO Sajilo Rent</p>
                 </div>
 
                 <div class="row">
                     <!-- Sidebar Navigation -->
+                    <!-- Sidebar Navigation -->
                     <div class="col-xl-2 col-lg-3 col-md-3 mb-4 position-relative">
                         <ul class="nav about-nav-responsive flex-column">
+                            @foreach ($abouts as $index => $item)
+                                <li class="nav-item{{ $index == 0 ? ' active-about-nav' : '' }} mb-3 me-3"
+                                    onclick="showContent('{{ $item->id }}', this)">
+                                    <h6 class="fw-bold text-left">
+                                        {{ $item->head }}
+                                    </h6>
+                                </li>
+                            @endforeach
                             @foreach ($abouts as $index => $item)
                                 <li class="nav-item{{ $index == 0 ? ' active-about-nav' : '' }} mb-3 me-3"
                                     onclick="showContent('{{ $item->id }}', this)">
@@ -198,8 +208,47 @@
                             </div>
                         @endforeach
 
+                        @endforeach
+
                     </div>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Trigger showContent for the default active section
+                        const defaultNavItem = document.querySelector('.nav-item.active-about-nav');
+                        if (defaultNavItem) {
+                            const defaultSectionId = defaultNavItem.getAttribute('onclick').match(/'([^']+)'/)[1];
+                            showContent(defaultSectionId, defaultNavItem);
+                        }
+                    });
+
+                    function showContent(sectionId, element) {
+                        // Hide all content sections
+                        const sections = document.querySelectorAll('.content-section');
+                        sections.forEach(section => {
+                            section.classList.add('d-none');
+                        });
+
+                        // Show the selected section
+                        const targetSection = document.getElementById(sectionId);
+                        if (targetSection) {
+                            targetSection.classList.remove('d-none');
+                        }
+
+                        // Remove 'active-about-nav' class from all navigation items
+                        const navItems = document.querySelectorAll('.nav-item');
+                        navItems.forEach(item => {
+                            item.classList.remove('active-about-nav');
+                        });
+
+                        // Add 'active-about-nav' class to the clicked nav item
+                        if (element) {
+                            element.classList.add('active-about-nav');
+                        }
+                    }
+                </script>
+
 
                 <script>
                     document.addEventListener("DOMContentLoaded", function() {
@@ -246,14 +295,41 @@
                 <div class="header mb-5">
                     <h1>
                         Property and Product Rentals
+                        Property and Product Rentals
                     </h1>
+                    <p class="text-secondary fs-5 text-uppercase">
+                        FIND YOUR Property and Product, FOR YOUR ABILITY
                     <p class="text-secondary fs-5 text-uppercase">
                         FIND YOUR Property and Product, FOR YOUR ABILITY
                     </p>
                 </div>
                 <div class="row">
 
+
                     @if ($apartments->count() > 0)
+                        <div class="row">
+                            @foreach ($apartments as $apartment)
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <a href="{{ route('property.details', ['id' => $apartment->id]) }}"
+                                            class="text-decoration-none">
+                                            <img alt="{{ $apartment->property_name }}" class="card-img-top img-fluid"
+                                                src="{{ asset('storage/' . $apartment->property_image) }}" />
+                                            <div class="card-body">
+                                                <h5 class="card-title text-truncate">{{ $apartment->property_name }}</h5>
+                                                <p class="card-text text-justify">
+                                                    {!! \Illuminate\Support\Str::limit(strip_tags($apartment->property_description), 70, '...') !!}
+                                                </p>
+                                                <p class="card-text small text-muted">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    {{ $apartment->property_location }}
+                                                </p>
+                                                <div class="price mt-2">
+                                                    <p
+                                                        class="text-center d-flex align-items-center justify-content-between">
+                                                        <del class="text-danger small">Rs.
+                                                            {{ $apartment->property_price }}</del>
+                                                        Rs. {{ $apartment->property_sell_price }}
                         <div class="row">
                             @foreach ($apartments as $apartment)
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
@@ -302,7 +378,12 @@
                                 </div>
                             @endforeach
                         </div>
+                            @endforeach
+                        </div>
                     @else
+                        <div class="text-center py-5">
+                            <p class="h5 text-muted">No properties available at the moment.</p>
+                        </div>
                         <div class="text-center py-5">
                             <p class="h5 text-muted">No properties available at the moment.</p>
                         </div>
@@ -450,8 +531,11 @@
                                 <div class="testimonial-card">
                                     <img src="{{ asset('storage/' . $testimonial->image) }}"
                                         alt="{{ $testimonial->name }}">
+                                    <img src="{{ asset('storage/' . $testimonial->image) }}"
+                                        alt="{{ $testimonial->name }}">
                                     <h3>{{ $testimonial->name }}</h3>
                                     <h4>{{ $testimonial->position }}</h4>
+                                    <p>{!! $testimonial->description !!}</p>
                                     <p>{!! $testimonial->description !!}</p>
                                     <div class="stars">
                                         @for ($i = 0; $i < $testimonial->rating; $i++)

@@ -191,6 +191,7 @@
     });
 </script>
 {{-- <script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Trigger showContent for the default active content
         showContent('about-company', document.querySelector('.nav-item.active'));
@@ -215,6 +216,7 @@
         // Add 'active' class to the clicked nav item
         element.classList.add('active-about-nav');
     }
+</script> --}}
 </script> --}}
 <script>
     // JavaScript to handle image click and modal image update

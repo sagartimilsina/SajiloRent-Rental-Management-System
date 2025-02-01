@@ -2,6 +2,7 @@
     @php
         $categories = App\Models\Categories::where('publish_status', 1)->orderBy('created_at', 'desc')->get();
         $about = App\Models\Abouts::where('about_publish_status', 1)->where('head', 'About Us')->first();
+        $about = App\Models\Abouts::where('about_publish_status', 1)->where('head', 'About Us')->first();
 
     @endphp
     <div class="container-fluid">
@@ -16,6 +17,10 @@
                 <p class=" mt-2 text-start">
                     {!! \Illuminate\Support\Str::limit(strip_tags(@$about->description), 300, '...') !!}
                 </p>
+
+
+
+
             </div>
 
             <!-- Place Categories -->

@@ -4,6 +4,9 @@
 @section('content')
 
 
+@section('content')
+
+
     {{-- <section class="breadcrumb-hero ">
         <hr>
         <div class="container text-start breadcrumb-overlay" style="padding: 0;">
@@ -179,10 +182,14 @@
                             <button class="btn btn-primary w-25" type="submit">
                                 Pay with Stripe
                             </button>
+                            <button class="btn btn-primary w-25" type="submit">
+                                Pay with Stripe
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
 
         </div>
     </div>
