@@ -31,10 +31,30 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'google' => [
-    'client_id' => env('GOOGLE_CLIENT_ID'),
-    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-    'redirect' => env('GOOGLE_REDIRECT_URI'),
-],
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
+    'khalti' => [
+        'test_secret_key' => env('KHALTI_TEST_SECRET_KEY'),
+        'live_secret_key' => env('KHALTI_LIVE_SECRET_KEY'),
+        'mode' => env('KHALTI_MODE', 'test'), // Defaults to 'test' if not set
+        'base_url' => [
+            'test' => 'https://dev.khalti.com/api/v2/',
+            'live' => 'https://khalti.com/api/v2/',
+        ],
+    ],
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
+    'exchange_rate_api' => [
+        'key' => env('EXCHANGE_RATE_API_KEY'),
+    ],
+
+
 
 
 ];

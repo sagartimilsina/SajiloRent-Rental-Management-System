@@ -3,29 +3,28 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\FAQ;
-use App\Models\FAQ;
+
 use App\Models\User;
 use App\Models\Blogs;
 use App\Models\Teams;
-use App\Models\Teams;
+
 use App\Models\Abouts;
 use App\Models\Gallery;
 use App\Models\Propeerty;
 use App\Models\Categories;
 use App\Models\Favourites;
-use App\Models\Favourites;
+
 use App\Models\SliderImages;
 use App\Models\Testimonials;
 use Illuminate\Http\Request;
 use App\Models\SubCategories;
 use App\Models\Property_Review;
-use App\Models\SubCategories;
-use App\Models\Property_Review;
+
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Mail;
 
 class FrontendController extends Controller
@@ -44,7 +43,7 @@ class FrontendController extends Controller
                 ->toArray();
         }
 
-        $apartments = Propeerty::where('property_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
+
         $abouts = Abouts::where('about_publish_status', 1)->get();
         $favoriteIds = [];
         if (Auth::check()) {
@@ -60,7 +59,6 @@ class FrontendController extends Controller
         $blogs = Blogs::where('blog_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
 
 
-        return view('frontend.index', compact('Sliders', 'categories', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
         return view('frontend.index', compact('Sliders', 'categories', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
     }
     // In your Controller
@@ -85,20 +83,7 @@ class FrontendController extends Controller
         }
     }
 
-    public function dynamic($id)
-    {
-        // Fetch the 'Abouts' entry based on the given ID and its publish status
-        $about = Abouts::where('id', $id)
-            ->where('about_publish_status', 1) // Check for published status
-            ->first();
 
-        // Return or handle the `$about` object
-        if ($about) {
-            return view('frontend.about_dynamic', ['about' => $about]);
-        } else {
-            return redirect()->route('about')->with('error', 'Content not found or unpublished.');
-        }
-    }
 
     public function about()
     {
@@ -161,7 +146,10 @@ class FrontendController extends Controller
         return view('frontend.product_details', compact('property', 'similar_properties', 'property_review', 'favoriteIds'));
     }
 
-
+    public function request()
+    {
+        return view('frontend.listyourproperty');
+    }
 
     public function submitRequest(Request $request)
     {

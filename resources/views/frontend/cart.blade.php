@@ -22,43 +22,8 @@
                     <label for="select-all" style="font-size: 16px;">Select All</label>
                 </div>
                 <span>Your Cart ({{ $cartCount }} items)</span>
-                <span>Your Cart ({{ $cartCount }} items)</span>
+               
             </div>
-
-
-            <!-- Cart Items -->
-            {{-- <div class="item" style="max-height: 400px; overflow-y: scroll;">
-                @foreach ($cartItems as $item)
-                    <div class="cart-item" data-id="{{ $item->id }}">
-                        <input type="checkbox" class="item-checkbox" data-price="{{ $item->property->property_sell_price }}"
-                            data-id="{{ $item->id }}">
-
-                        <div class="cart-item-image">
-                            <img src="{{ asset('storage/' . $item->property->property_image) }}"
-                                alt="{{ $item->property->property_name }}">
-                        </div>
-
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">{{ $item->property->property_name }}</div>
-                            <div class="cart-item-subtitle">{{ $item->property->category->category_name }}</div>
-                            <div class="cart-item-extra">
-                                {!! \Illuminate\Support\Str::limit(strip_tags($item->property->property_description), 200, '...') !!}
-                            </div>
-                        </div>
-
-                        <div class="cart-item-price">Rs {{ $item->property->property_sell_price }}</div>
-                        @if ($item->property_quantity > 0)
-                            <div class="cart-item-quantity">
-                                <button class="decrement">-</button>
-                                <span class="quantity">1</span>
-                                <button class="increment">+</button>
-                            </div>
-                        @endif
-                        <div class="cart-item-total">Rs {{ $item->property->property_sell_price }}</div>
-                        <button class="delete-btn">✕</button>
-                    </div>
-                @endforeach
-            </div> --}}
 
             <div class="item" style="max-height: 400px; overflow-y: scroll;">
                 @foreach ($cartItems as $item)
@@ -113,27 +78,23 @@
                 <div class="summary-row">
                     <strong>Subtotal:</strong>
                     <span class="subtotal mx-2">Rs 0.00</span>
-                    <strong>Subtotal:</strong>
-                    <span class="subtotal mx-2">Rs 0.00</span>
+                   
                 </div>
                 <div class="summary-row">
                     <strong>Tax:</strong>
                     <span class="tax mx-2">Rs 0.00</span>
-                    <strong>Tax:</strong>
-                    <span class="tax mx-2">Rs 0.00</span>
+                    
                 </div>
                 <div class="summary-row">
                     <strong>Discount:</strong>
                     <span class="discount mx-2">Rs 0.00</span>
-                    <strong>Discount:</strong>
-                    <span class="discount mx-2">Rs 0.00</span>
+                   
                 </div>
 
                 <div class="summary-row total-row">
                     <strong>Grand Total:</strong>
                     <span class="total-amount mx-2">Rs 0.00</span>
-                    <strong>Grand Total:</strong>
-                    <span class="total-amount mx-2">Rs 0.00</span>
+                   
                 </div>
 
                 <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
@@ -142,18 +103,13 @@
                     <input type="hidden" name="selected_items" id="selected-items">
                     <button type="submit" class="btn-primary btn-sm">Check Out</button>
                 </form>
-                <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
-                    @csrf
-                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                    <input type="hidden" name="selected_items" id="selected-items">
-                    <button type="submit" class="btn-primary btn-sm">Check Out</button>
-                </form>
+               
             </div>
         </div>
     </section>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cartItems = document.querySelectorAll('.cart-item');

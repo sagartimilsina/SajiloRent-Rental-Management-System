@@ -1,30 +1,33 @@
 <?php
 
+use App\Models\Payments;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\FAQController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\UsersController;
+
 use App\Http\Controllers\AboutsController;
-use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PropeertyController;
 use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\FavouritesController;
+
 use App\Http\Controllers\FavouritesController;
 use App\Http\Controllers\SiteManagerController;
 use App\Http\Controllers\EsewaPaymentController;
 use App\Http\Controllers\SliderImagesController;
 use App\Http\Controllers\TestimonialsController;
+
+use App\Http\Controllers\KhaltiPaymentController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubCategoriesController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
@@ -69,6 +72,8 @@ Route::middleware(['auth', 'user'])->group(function () {
 
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('user.dashboard');
+
+    Route::get('/list-property/request', [FrontendController::class, 'request'])->name('list-property');
     Route::post('/request/submit', [FrontendController::class, 'submitRequest'])->name('request_submit');
     // User account settings
     Route::get('/change-password', [AuthController::class, 'changePassword'])->name('change.password');
@@ -90,10 +95,21 @@ Route::middleware(['auth', 'user'])->group(function () {
     // Esewa Payment Routes
     Route::post('/esewa/checkout', [EsewaPaymentController::class, 'esewaPayment'])->name('esewa.payment');
     Route::get('/esewa/success', [EsewaPaymentController::class, 'success'])->name('esewa.success');
-
-    Route::get('/payment/success', [EsewaPaymentController::class, 'payment_success'])->name('payment.success');
-    Route::get('/payment/failure', [EsewaPaymentController::class, 'payment_failure'])->name('payment.failure');
     Route::get('/esewa/failure', [EsewaPaymentController::class, 'failure'])->name('esewa.failure');
+    Route::get('/esewa/invoice/{transaction_uuid}', [EsewaPaymentController::class, 'paymentInvoice'])->name('esewa.invoice');
+
+
+
+    Route::post('/khalti/initiate', [KhaltiPaymentController::class, 'initiatePayment'])->name('khalti.initiate');
+    Route::get('/khalti/verify', [KhaltiPaymentController::class, 'verifyPayment'])->name('khalti.verify');
+    Route::get('/payment/success', [KhaltiPaymentController::class, 'success'])->name('khalti.success');
+    Route::get('/payment/failed', [KhaltiPaymentController::class, 'failed'])->name('khalti.failed');
+
+
+    Route::post('/payment/process', [StripePaymentController::class, 'processPayment'])->name('payment.process.stripe');
+    Route::get('/payment/success', [StripePaymentController::class, 'paymentSuccess'])->name('payment.success.stripe');
+    Route::get('/payment/failure', [StripePaymentController::class, 'paymentFailure'])->name('payment.failure.stripe');
+    Route::get('/payment/invoice/{transaction_uuid}', [StripePaymentController::class, 'paymentInvoice'])->name('payment.invoice.stripe');
 });
 
 // Route::post('/favorites/toggle', [FavouritesController::class, 'store'])->name('favorites.toggle');

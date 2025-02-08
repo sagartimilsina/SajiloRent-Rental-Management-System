@@ -217,7 +217,7 @@
         element.classList.add('active-about-nav');
     }
 </script> --}}
-</script> --}}
+</script> 
 <script>
     // JavaScript to handle image click and modal image update
     document.querySelectorAll('[data-bs-image]').forEach(imgLink => {

@@ -24,15 +24,15 @@
         </section> --}}
 
         <section class="container container-left mt-4">
-        <section class="container container-left mt-4">
+
             <div class="row">
                 <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12">
-                <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12">
+
                     <div class="image-pic">
                         <!-- Main Image -->
                         <img id="mainImage" alt="Main image of the family apartment" class="img-fluid" height="auto"
                             src="{{ asset('storage/' . $property->property_image) }}" />
-                            src="{{ asset('storage/' . $property->property_image) }}" />
+
 
                         <!-- Thumbnails Carousel -->
                         <div class="img-lists owl-carousel owl-theme mt-2">
@@ -43,22 +43,10 @@
                                         onclick="changeMainImage(this)" />
                                 </div>
                             @endforeach
-                            @foreach ($property->propertyImages as $image)
-                                <div class="item">
-                                    <img alt="Thumbnail image" class="thumbnail img-fluid" height="400"
-                                        src="{{ asset('storage/' . $image->property_image) }}" width="400"
-                                        onclick="changeMainImage(this)" />
-                                </div>
-                            @endforeach
+
                         </div>
                     </div>
-                    <div class="data">
-                        <h2 class="mt-3" style="color: #f39c12;">
-                            {{ $property->property_name }}
-                        </h2>
 
-                        <p>
-                            Normal Price: {{ $property->property_price }}
                     <div class="data">
                         <h2 class="mt-3" style="color: #f39c12;">
                             {{ $property->property_name }}
@@ -237,7 +225,8 @@
                                     <label class="form-label" for="emailAddress">Email Address</label>
                                     <input class="form-control @error('email_address') is-invalid @enderror"
                                         id="emailAddress" name="email_address" placeholder="example@domain.com"
-                                        type="email" value="{{ old('email_address', @Auth::user()->email) }}" readonly />
+                                        type="email" value="{{ old('email_address', @Auth::user()->email) }}"
+                                        readonly />
                                     @error('email_address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -282,11 +271,12 @@
                 <!-- Header -->
                 <div class="header mb-5 text-center">
                     <h1> Related &amp; Property or Product</h1>
-                    <h1> Related &amp; Property or Product</h1>
+
                 </div>
 
                 <!-- Navigation Tabs -->
                 <div class="container">
+
                     @if (@$similar_properties->count() > 0)
                         <div class="row justify-content-center">
                             @foreach ($similar_properties as $apartment)
@@ -301,7 +291,8 @@
                                                 <h5 class="card-title text-truncate">
                                                     {{ $apartment->property_name }}
                                                 </h5>
-                                                <p class="card-text text-justify">{!! \Illuminate\Support\Str::limit(strip_tags($apartment->property_description), 70, '...') !!}
+                                                <p class="card-text text-justify">
+                                                    {!! \Illuminate\Support\Str::limit(strip_tags($apartment->property_description), 70, '...') !!}
                                                 </p>
 
 
@@ -321,61 +312,24 @@
                                             </div>
                                         </a>
                                         <div
-                                            class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
-                                            <a class="text-muted" href="#" title="Share">
-                                                <i class="fas fa-share-alt"></i>
+                                            class="card-footer bg-white border-0 d-flex justify-content-between align-items-center favorite-link">
+                                            <!-- Share Button -->
+                                            <a href="javascript:void(0);" class="text-warning"
+                                                onclick="shareProperty('{{ route('property.details', ['id' => $apartment->id]) }}')"
+                                                style="position: relative;" title="Share this property">
+                                                <i class="fas fa-share-alt fa-lg"></i>
                                             </a>
-                                            <a class="text-muted" href="#" title="Save">
-                                                <i class="far fa-star"></i>
-                                            </a>
-                    @if (@$similar_properties->count() > 0)
-                        <div class="row justify-content-center">
-                            @foreach ($similar_properties as $apartment)
-                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                                    <div class="card h-100 shadow-sm">
-                                        <a href="{{ route('property.details', ['id' => $apartment->id]) }}"
-                                            class="text-decoration-none">
-                                            <img alt="{{ $apartment->property_name }}" class="card-img-top img-fluid"
-                                                src="{{ asset('storage/' . $apartment->property_image) }}" />
-
-                                            <div class="card-body">
-                                                <h5 class="card-title text-truncate">
-                                                    {{ $apartment->property_name }}
-                                                </h5>
-                                                <p class="card-text text-justify">{!! \Illuminate\Support\Str::limit(strip_tags($apartment->property_description), 70, '...') !!}
-                                                </p>
-
-
-                                                <p class="card-text small text-muted">
-                                                    <i class="fas fa-map-marker-alt me-1"></i>
-                                                    {{ $apartment->property_location }}
-                                                </p>
-                                                <div class="price mt-2">
-                                                    <p
-                                                        class="text-center d-flex align-items-center justify-content-between">
-                                                        <del class="text-danger small">Rs.
-                                                            {{ $apartment->property_price }}</del>
-
-                                                        Rs. {{ $apartment->property_sell_price }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div
-                                            class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
-                                            <a class="text-muted" href="#" title="Share">
-                                                <i class="fas fa-share-alt"></i>
-                                            </a>
-                                            <a class="text-muted" href="#" title="Save">
-                                                <i class="far fa-star"></i>
+                                            <!-- Add to Favorites Link -->
+                                            <a href="javascript:void(0);"
+                                                class="favorite-link {{ in_array($apartment->id, $favoriteIds) ? 'text-warning' : 'text-warning' }} "
+                                                onclick="toggleFavorite({{ Auth::id() }}, {{ $apartment->id }})"
+                                                title="Add to Favorites">
+                                                <i
+                                                    class="{{ in_array($apartment->id, $favoriteIds) ? 'fas fa-heart' : 'far fa-heart' }} fa-lg"></i>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-
-                            <div class="text-center mb-4">
-                                <button class="btn btn-primary">View All</button>
                             @endforeach
 
                             <div class="text-center mb-4">
@@ -385,12 +339,9 @@
                     @else
                         <div class="text-center">
                             <h3>No Similar Properties Found</h3>
-                    @else
-                        <div class="text-center">
-                            <h3>No Similar Properties Found</h3>
                         </div>
                     @endif
-                    @endif
+
                 </div>
 
 
@@ -455,9 +406,6 @@
             thumbnail.classList.add('selected-thumbnail');
         }
     </script>
-
-
-
     <script>
         // JavaScript to dynamically adjust dropdown alignment
         document.querySelectorAll('.dropdown-submenu').forEach(function(submenu) {

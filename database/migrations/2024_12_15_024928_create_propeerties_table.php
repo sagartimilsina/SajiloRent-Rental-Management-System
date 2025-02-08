@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->string('property_location')->nullable();
             $table->string('property_image');
             $table->string('property_quantity');
+            $table->string('property_booked_quantity')->nullable();
             $table->string('property_sell_price')->nullable();
             $table->string('property_expiry')->nullable();
             $table->boolean('property_publish_status')->default(false);

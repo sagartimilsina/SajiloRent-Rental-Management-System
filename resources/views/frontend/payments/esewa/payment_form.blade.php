@@ -14,7 +14,6 @@
         method="POST" id="esewaForm">
         @foreach ($formData as $key => $value)
             <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-            
         @endforeach
 
         <!-- Automatically submit the form after the page loads -->

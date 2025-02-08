@@ -15,14 +15,17 @@ class Payments extends Model
     protected $fillable = [
         'user_id',
         'property_id',
+        'property_quantity',
         'payment_method',
-        'payment_status',
-        'transaction_id',
+        'status',  // Changed from 'payment_status' to 'status' to match the column name in your migration
+        'transaction_uuid',
+        'transaction_code',
+        'signature',
         'payment_date',
-        'service_charge',
-        'discount',
-        'tax',
         'total_amount',
+        'service_charge',  // Assuming these fields are in your schema
+        'discount',
+        'tax'
     ];
 
     public function user()
@@ -34,5 +37,4 @@ class Payments extends Model
     {
         return $this->belongsTo(Propeerty::class);
     }
-
 }
