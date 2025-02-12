@@ -28,6 +28,7 @@ use App\Http\Controllers\SubCategoriesController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\MessageChatController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
@@ -44,6 +45,14 @@ use App\Http\Controllers\TenantAgreementwithSystemController;
 Route::get('/send-otp', function () {
     return view('welcome');
 });
+
+
+
+Route::get('/send-message', [MessageChatController::class, 'index'])->name('send-message')->middleware('auth');
+Route::get('/message', [MessageChatController::class, 'show'])->name('message.show')->middleware('auth');
+Route::get('/chat/{user}', [MessageChatController::class, 'getUserChat']);
+Route::resource('messages', MessageChatController::class);
+Route::get('/send-message/{user_id}/{user_name}', [MessageChatController::class, 'showChat'])->name('send-message-user')->middleware('auth');
 
 // Auth Routes
 Route::prefix('auth')->group(function () {
