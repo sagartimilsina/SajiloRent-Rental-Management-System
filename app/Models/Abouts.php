@@ -15,6 +15,7 @@ class Abouts extends Model
 
     protected $fillable = [
         'about_title',
+        'about_subtitle',
         'about_description',
         'about_image',
         'about_publish_status',

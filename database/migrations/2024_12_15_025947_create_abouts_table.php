@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('abouts', function (Blueprint $table) {
             $table->id();
             $table->string('about_title');
+            $table->longText('about_subtitle')->nullable();
             $table->longText('about_description')->nullable();
             $table->string('about_image');
             $table->boolean('about_publish_status')->default(false);
