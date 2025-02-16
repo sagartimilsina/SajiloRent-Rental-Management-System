@@ -408,6 +408,44 @@
         });
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function animateCounter(element, start, end, duration) {
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let timer = setInterval(function() {
+                current += increment;
+                element.innerText = current + "+";
+                if (current == end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        function startCounters(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let counters = document.querySelectorAll(".counter");
+                    counters.forEach(counter => {
+                        let endValue = parseInt(counter.getAttribute("data-count"));
+                        animateCounter(counter, 0, endValue, 2000); // Duration: 2 seconds
+                    });
+                    observer.disconnect(); // Stop observing after animation
+                }
+            });
+        }
+
+        let options = {
+            threshold: 0.5, // Start animation when 50% of the section is visible
+        };
+
+        let observer = new IntersectionObserver(startCounters, options);
+        let section = document.querySelector(".achievement-section");
+        observer.observe(section);
+    });
+</script>
 
 
 

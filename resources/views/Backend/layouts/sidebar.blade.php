@@ -124,7 +124,14 @@
                     <div data-i18n="Contact Info">Contact Info</div>
                 </a>
             </li>
-            {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('achievements.index') ? 'active open' : '' }}">
+                <a href="{{ route('achievements.index') }}" class="menu-link text-wrap">
+                    <i class="menu-icon tf-icons bx bx-trophy"></i>
+                    <div data-i18n="Achievements">Achievements</div>
+                </a>
+            </li>
+
+            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Maintenance and Support</div>

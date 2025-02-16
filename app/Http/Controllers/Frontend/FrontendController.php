@@ -19,6 +19,7 @@ use App\Models\Testimonials;
 use Illuminate\Http\Request;
 use App\Models\SubCategories;
 use App\Models\Property_Review;
+use App\Models\Achievement;
 
 use App\Models\Request_owner_lists;
 use Illuminate\Support\Facades\Log;
@@ -59,9 +60,10 @@ class FrontendController extends Controller
             ->take(6)->get();
         $testimonials = Testimonials::where('testimonials_publish_status', 1)->get();
         $blogs = Blogs::where('blog_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
+        $achievements = Achievement::all();
 
 
-        return view('frontend.index', compact('Sliders', 'categories', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
+        return view('frontend.index', compact('Sliders', 'categories','achievements', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
     }
     // In your Controller
     public function getSubcategories($id)
