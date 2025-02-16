@@ -111,6 +111,10 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/esewa/failure', [EsewaPaymentController::class, 'failure'])->name('esewa.failure');
     Route::get('/esewa/invoice/{transaction_uuid}', [EsewaPaymentController::class, 'paymentInvoice'])->name('esewa.invoice');
 
+    // contact form store
+
+
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
     Route::post('/khalti/initiate', [KhaltiPaymentController::class, 'initiatePayment'])->name('khalti.initiate');
@@ -251,10 +255,7 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::patch('gallery/{id}/unpublish', [GalleryController::class, 'unpublish'])->name('gallery.unpublish');
 });
 
-// contact form store
 
-
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 
