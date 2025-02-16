@@ -14,18 +14,29 @@ class SubCategoriesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
         $userRole = Auth::user()->role->role_name;
 
         // Fetch categories based on the user's role
         if ($userRole == 'Admin') {
             $subCategories = SubCategories::with('user:id,name', 'category:id,category_name,created_by')
                 ->orderBy('created_at', 'desc')
+                ->where(
+                    function ($query) use ($search) {
+                        $query->where('sub_category_name', 'like', '%' . $search . '%');
+                    }
+                )
                 ->paginate(30);
         } elseif ($userRole == 'Super Admin') {
             $subCategories = SubCategories::with('user:id,name', 'category:id,category_name,created_by')
                 ->orderBy('created_at', 'desc')
+                ->where(
+                    function ($query) use ($search) {
+                        $query->where('sub_category_name', 'like', '%' . $search . '%');
+                    }
+                )
                 ->paginate(30);
         } else {
             return redirect()->back()->with('error', 'You are not authorized to access this page.');

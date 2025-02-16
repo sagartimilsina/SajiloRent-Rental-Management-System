@@ -11,24 +11,27 @@ use App\Http\Controllers\UsersController;
 
 use App\Http\Controllers\AboutsController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ContractsController;
 use App\Http\Controllers\DashboardController;
+
 use App\Http\Controllers\PropeertyController;
 use App\Http\Controllers\CategoriesController;
-
 use App\Http\Controllers\FavouritesController;
+use App\Http\Controllers\MessageChatController;
 use App\Http\Controllers\SiteManagerController;
+
 use App\Http\Controllers\EsewaPaymentController;
 use App\Http\Controllers\SliderImagesController;
 use App\Http\Controllers\TestimonialsController;
-
 use App\Http\Controllers\KhaltiPaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubCategoriesController;
+use App\Http\Controllers\MortageRecordsController;
 use App\Http\Controllers\PropertyImagesController;
 use App\Http\Controllers\PropertyReviewController;
 use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\MessageChatController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
@@ -167,6 +170,8 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('/companies/{type}', [DashboardController::class, 'companies'])->name('superadmin.companies.index');
     Route::get('/user/{type}/search', [UsersController::class, 'search'])->name('superadmin.users.search');
 
+    Route::post('/change-password', [AuthController::class, 'changePasswordPost'])->name('superadmin.change_password.store');
+
     Route::patch('user/{id}/update-role', [UsersController::class, 'updateRole'])->name('superadmin.users.updateRole');
     Route::delete('users/{id}', [UsersController::class, 'destroy'])->name('superadmin.users.destroy');
     Route::resource('/testimonials', TestimonialsController::class);
@@ -231,7 +236,6 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('/tenant-agreement/restore/{id}', [TenantAgreementwithSystemController::class, 'restore'])->name('tenant_agreement.restore');
     Route::patch('/tenant-agreement/{id}/verify', [TenantAgreementwithSystemController::class, 'verify'])->name('systemandtenant-agreements.verify');
 
-
     Route::resource('sliders', SliderImagesController::class);
     Route::get('slider/trash-view', action: [SliderImagesController::class, 'trashView'])->name('sliders.trash-view');
     Route::delete('slider/trash/{id}', [SliderImagesController::class, 'trashDelete'])->name('slider.trash');
@@ -247,6 +251,13 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('gallery/restore/{id}', [GalleryController::class, 'restore'])->name('gallery.restore');
     Route::patch('gallery/{id}/publish', [GalleryController::class, 'publish'])->name('gallery.publish');
     Route::patch('gallery/{id}/unpublish', [GalleryController::class, 'unpublish'])->name('gallery.unpublish');
+
+    Route::get('categories/', action: [CategoriesController::class, 'index'])->name('superadmin.category.index');
+    Route::get('Subcategories/', action: [SubCategoriesController::class, 'index'])->name('superadmin.subcategory.index');
+    Route::get('properties/', action: [PropeertyController::class, 'index'])->name('superadmin.property.index');
+    Route::get('property/{id}/view', action: [PropeertyController::class, 'show'])->name('superadmin.property.show');
+    Route::get('payments', action: [PaymentsController::class, 'index'])->name('superadmin.payment.index');
+    Route::get('/payment-invoice/{transaction_uuid}', [PaymentsController::class, 'paymentInvoice'])->name('superadmin.payment.invoice');
 });
 
 
@@ -254,8 +265,10 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
 
 
 // Admin Routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('Owner')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin_dashboard'])->name('admin.dashboard');
+
+    Route::post('/change-password', [AuthController::class, 'changePasswordPost'])->name('admin.change_password.store');
     Route::get('/users/{type?}', [UsersController::class, 'index'])->name('admin.users.index');
     Route::get('/companies/{type}', [DashboardController::class, 'companies'])->name('admin.companies.index');
     Route::get('/user/{type}/search', [UsersController::class, 'search'])->name('admin.users.search');
@@ -296,6 +309,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/product/message/{id}', [PropeertyController::class, 'message'])->name('property.contact');
     Route::delete('/product/message/delete/{id}', [PropeertyController::class, 'messageDelete'])->name('property.message.delete');
     Route::get('/property/payments/{id}', [PropeertyController::class, 'payments_details'])->name('property.payments');
+    Route::patch('/product/book_status_update/{id}', [PropeertyController::class, 'updateBookStatus'])->name('product.book_status_update');
 
     Route::resource('property-images', PropertyImagesController::class)->except('index');
     Route::get('/property-image/trash-view/{id}', action: [PropertyImagesController::class, 'trashView'])->name('property-images.trash-view');
@@ -303,4 +317,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/property-image/restore/{id}', [PropertyImagesController::class, 'restore'])->name('property-image.restore');
     Route::patch('/property-image/{id}/publish', [PropertyImagesController::class, 'publish'])->name('property-image.publish');
     Route::patch('/property-image/{id}/unpublish', [PropertyImagesController::class, 'unpublish'])->name('property-image.unpublish');
+
+    Route::resource('/payments', PaymentsController::class);
+    Route::get('/payment-invoice/{transaction_uuid}', [PaymentsController::class, 'paymentInvoice'])->name('payment.invoice');
+
+
+    Route::resource('property-contracts', ContractsController::class);
+    Route::get('property-contracts/fetch-paid-users/{productId}', [ContractsController::class, 'fetchPaidUsers'])
+        ->name('fetch.paid.users');
+    Route::resource('/property-mortage', MortageRecordsController::class);
 });

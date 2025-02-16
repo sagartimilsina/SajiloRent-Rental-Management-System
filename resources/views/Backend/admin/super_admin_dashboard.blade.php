@@ -1,42 +1,26 @@
 @extends('backend.layouts.main')
-@section('title', 'Dashboard')
+@section('title', 'Super Admin Dashboard')
 @section('content')
-
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-            <div class="col-lg-12 mb-4 flex-wrap">
-                <div class="card">
-                    <!-- Welcome Card -->
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">Welcome, {{ Auth::user()->name }}! 🎉</h5>
-                        <p class="card-text">Here's an overview of your activities and statistics.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Congratulations Card -->
+            <!-- Welcome Card -->
             <div class="col-lg-6 mb-4 order-0">
                 <div class="card">
                     <div class="d-flex align-items-end row">
                         <div class="col-sm-6">
                             <div class="card-body">
-                                <h5 class="card-title text-primary">Congratulations {{ Auth::user()->name }}! 🎉</h5>
-                                <p class="card-text">You have created:</p>
+                                <h5 class="card-body text-primary">Congratulations {{ Auth::user()->name }}! 🎉</h5>
+                                <p class="card-text">System Stats:</p>
                                 <ul>
-                                    <li>{{ $total_categories_created_by_you }} Categories</li>
-                                    <li>{{ $total_subcategories_created_by_you }} Subcategories</li>
-                                    <li>{{ $total_product_created_by_you }} Products</li>
+                                    <li>{{ $total_categories }} Categories</li>
+                                    <li>{{ $total_subcategories }} Subcategories</li>
+                                    <li>{{ $total_products }} Products</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-sm-6 text-center text-sm-left">
-                            <div class="card-body pb-0 px-0 px-md-4">
-                                <img src="/sneat_backend/assets/img/illustrations/man-with-laptop-light.png" height="140"
-                                    alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                    data-app-light-img="illustrations/man-with-laptop-light.png" />
-                            </div>
+                            <img src="/sneat_backend/assets/img/illustrations/man-with-laptop-light.png" height="140"
+                                alt="User" />
                         </div>
                     </div>
                 </div>
@@ -49,8 +33,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Statistics Cards -->
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12 order-3 order-md-2">
 
@@ -118,19 +100,7 @@
                 </div>
                 <div class="row">
                     <!-- Total Interacted Users Card -->
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                        <div class="card shadow-sm border-0 rounded-3">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-center justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <i class="bx bx-user" style="font-size: 2rem; color: #4CAF50;"></i>
-                                    </div>
-                                    <h3 class="card-title mb-1 text-danger">{{ $totalUsersInteracted }}</h3>
-                                </div>
-                                <span class="fw-medium d-block mb-1 text-center text-primary">Total Interacted Users</span>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
                         <div class="card shadow-sm border-0 rounded-3">
@@ -198,68 +168,48 @@
             </div>
         </div>
 
-        <!-- Additional Statistics -->
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-center justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <i class="bx bx-calendar-week" style="font-size: 2rem; color: #28A745;"></i>
-                            </div>
-                            <h3 class="card-title mb-1 text-danger">{{ $weeklyEnrollments }}</h3>
-                        </div>
-                        <span class="fw-medium d-block mb-1 text-center text-primary">Weekly Enrollments</span>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-center justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <i class="bx bx-calendar" style="font-size: 2rem; color: #DC3545;"></i>
+        <!-- User Statistics Cards -->
+        <div class="row mt-4">
+            @foreach ([['Total Users', $total_users, 'bx-user', 'primary'], ['Super Admins', $total_super_admins, 'bx-user', 'danger'], ['Admins', $total_admins, 'bx-user', 'warning'], ['Regular Users', $total_regular_users, 'bx-user', 'info']] as [$title, $count, $icon, $color])
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <i class="bx {{ $icon }}"
+                                    style="font-size: 2rem; color: var(--bs-{{ $color }});"></i>
+                                <h3 class="text-{{ $color }}">{{ $count }}</h3>
                             </div>
-                            <h3 class="card-title mb-1 text-danger">{{ $monthlyEnrollments }}</h3>
+                            <span class="fw-medium text-center text-{{ $color }}">{{ $title }}</span>
                         </div>
-                        <span class="fw-medium d-block mb-1 text-center text-primary">Monthly Enrollments</span>
                     </div>
                 </div>
-            </div>
+            @endforeach
+        </div>
 
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-center justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <i class="bx bx-calendar" style="font-size: 2rem; color: #17A2B8;"></i>
+        <!-- Request Applications Cards -->
+        <div class="row mt-4">
+            @foreach ([['Pending Requests', $pending_request_applications, 'bx-hourglass', 'warning'], ['Approved Requests', $approved_request_applications, 'bx-check-circle', 'success'], ['Rejected Requests', $rejected_request_applications, 'bx-x-circle', 'danger'], ['Expired Requests', $expired_request_applications, 'bx-timer', 'secondary']] as [$title, $count, $icon, $color])
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                    <a href="{{ route('RequestOwnerLists.index', ['status' => $title]) }}">
+                        <div class="card shadow-sm border-0 rounded-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <i class="bx {{ $icon }}"
+                                        style="font-size: 2rem; color: var(--bs-{{ $color }});"></i>
+                                    <h3 class="text-{{ $color }}">{{ $count }}</h3>
+                                </div>
+                                <span class="fw-medium text-center text-{{ $color }}">{{ $title }}</span>
                             </div>
-                            <h3 class="card-title mb-1 text-danger">{{ $yearlyEnrollments }}</h3>
                         </div>
-                        <span class="fw-medium d-block mb-1 text-center text-primary">Yearly Enrollments</span>
-                    </div>
-                </div>
-            </div>
+                    </a>
 
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-center justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <i class="bx bx-star" style="font-size: 2rem; color: #FFC107;"></i>
-                            </div>
-                            <h3 class="card-title mb-1 text-danger">{{ $newReviews }}</h3>
-                        </div>
-                        <span class="fw-medium d-block mb-1 text-center text-primary">New Reviews</span>
-                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
-    <!-- Chart.js Script -->
-    <!-- Chart.js Script -->
+    <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Get data passed from the controller
@@ -317,5 +267,4 @@
             }
         });
     </script>
-
 @endsection

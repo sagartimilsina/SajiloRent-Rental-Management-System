@@ -15,30 +15,51 @@
                             Product List
                         </h4>
                         <div class="d-flex flex-wrap align-items-center">
-                            <form action="{{ route('products.index') }}" method="GET"
-                                class="d-flex align-items-center me-3 mb-2 mb-sm-0">
-                                <div class="input-group">
-                                    <input type="search" id="search-input" name="search"
-                                        class="form-control-sm form-control " placeholder="Search by products name..."
-                                        aria-label="Search" value="{{ request('search') }}">
-                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
-                                        <i class="bx bx-search"></i>
-                                    </button>
-                                </div>
-                            </form>
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                <form action="{{ route('superadmin.property.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by products name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            @elseif(Auth::user()->role->role_name == 'Admin')
+                                <form action="{{ route('products.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by products name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            @endif
 
-                            <!-- End Search Form -->
-                            <a href="{{ route('products.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
-                                <i class="bx bx-refresh me-1"></i>
-                            </a>
-                            <a href="{{ route('products.create') }}" class="btn btn-sm btn-primary ms-2 shadow-sm">
-                                <i class="bx bx-plus me-1"></i>
-                            </a>
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                <a href="{{ route('superadmin.property.index') }}"
+                                    class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                                <!-- End Search Form -->
+                            @elseif(Auth::user()->role->role_name == 'Admin')
+                                <a href="{{ route('products.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                                <a href="{{ route('products.create') }}" class="btn btn-sm btn-primary ms-2 shadow-sm">
+                                    <i class="bx bx-plus me-1"></i>
+                                </a>
 
 
-                            <a href="{{ route('products.trash-view') }}" class="btn btn-sm btn-danger ms-2 shadow-sm">
-                                <i class="bx bx-trash me-1"></i>
-                            </a>
+                                <a href="{{ route('products.trash-view') }}" class="btn btn-sm btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-trash me-1"></i>
+                                </a>
+                            @endif
 
                         </div>
                     </div>
@@ -46,9 +67,17 @@
                         <!-- Breadcrumb Navigation -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-style1 py-3">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-                                </li>
+                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                    <li class="breadcrumb-item">
+
+                                        <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @elseif (Auth::user()->role->role_name == 'Admin')
+                                    <li class="breadcrumb-item">
+
+                                        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @endif
                                 <li class="breadcrumb-item ">
                                     Property/Product Management
                                 </li>
@@ -69,6 +98,11 @@
                                             <th>Created By</th>
                                         @endif
                                         <th>Product Image</th>
+                                        @if (Auth::user()->role->role_name == 'Admin')
+                                            <th>Property Quantity</th>
+                                            <th>Booked Quantity</th>
+                                            <th>Available Quantity</th>
+                                        @endif
                                         <th>Publish Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -81,13 +115,21 @@
                                                 <td><strong>{{ $item->category->category_name }}</strong></td>
                                                 <td><strong>{{ @$item->subcategory->sub_category_name }}</strong></td>
                                                 <td>{{ $item->property_name }}</td>
-
-                                                <td><img src="{{ asset('storage/' . $item->property_image) }}"
-                                                        alt="Icon" style="width: 100px; height: 100px; "></td>
-
                                                 @if (Auth::user()->role->role_name == 'Super Admin')
                                                     <td><strong>{{ @$item->user->name }}</strong></td>
                                                 @endif
+
+                                                <td><img src="{{ asset('storage/' . $item->property_image) }}"
+                                                        alt="Icon" style="width: 100px; height: 100px; "></td>
+                                                @if (Auth::user()->role->role_name == 'Admin')
+                                                    <td>
+                                                        {{ $item->property_quantity }}
+                                                    </td>
+                                                    <td>{{ $item->property_booked_quantity }}</td>
+                                                    <td> {{ $item->property_quantity - $item->property_booked_quantity }}
+                                                    </td>
+                                                @endif
+
 
 
                                                 @if ($item->property_publish_status == 1)
@@ -103,30 +145,31 @@
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a href="{{ route('property.payments', $item->id) }}"
-                                                                    class="dropdown-item text-info">
-                                                                    <i class="bx bx-show me-1"></i> View Payment List
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route('property.review', $item->id) }}"
-                                                                    class="dropdown-item text-info">
-                                                                    <i class="bx bx-show me-1"></i> View Review
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route('property.contact', $item->id) }}"
-                                                                    class="dropdown-item text-primary">
-                                                                    <i class="bx bx-show me-1"></i> View Contact Response
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="{{ route('products.show', $item->id) }}"
+                                                                <a href="{{ route('superadmin.property.show', $item->id) }}"
                                                                     class="dropdown-item text-info">
                                                                     <i class="bx bx-show me-1"></i> View
                                                                 </a>
                                                             </li>
                                                             @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
+                                                                <li>
+                                                                    <a href="{{ route('products.show', $item->id) }}"
+                                                                        class="dropdown-item text-info">
+                                                                        <i class="bx bx-show me-1"></i> View
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{{ route('property.review', $item->id) }}"
+                                                                        class="dropdown-item text-info">
+                                                                        <i class="bx bx-show me-1"></i> View Review
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="{{ route('property.contact', $item->id) }}"
+                                                                        class="dropdown-item text-primary">
+                                                                        <i class="bx bx-show me-1"></i> View Contact
+                                                                        Response
+                                                                    </a>
+                                                                </li>
                                                                 <li>
                                                                     <a href="{{ route('products.edit', $item->id) }}"
                                                                         class="dropdown-item text-primary">
@@ -139,6 +182,14 @@
                                                                         <i class="bx bx-plus me-1 text-warning"></i>
                                                                         Add or View Images
                                                                     </a>
+                                                                </li>
+                                                                <li>
+                                                                    <button class="dropdown-item text-success"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#updateStatus{{ $item->id }}">
+                                                                        <i class="bx bx-edit me-1"></i>
+                                                                        Update Book Status
+                                                                    </button>
                                                                 </li>
 
                                                                 @if ($item->property_publish_status == 1)
@@ -163,7 +214,8 @@
                                                                 @endif
 
                                                                 <li>
-                                                                    <button type="button" class="dropdown-item text-danger"
+                                                                    <button type="button"
+                                                                        class="dropdown-item text-danger"
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#deleteModal{{ $item->id }}">
                                                                         <i class="bx bx-trash me-1"></i> Delete
@@ -284,28 +336,86 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="modal fade" id="updateStatus{{ $item->id }}"
+                                                    tabindex="-1" aria-labelledby="updateStatusLabel{{ $item->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="updateStatusLabel{{ $item->id }}">
+                                                                    Update Book Status
+                                                                </h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form
+                                                                action="{{ route('product.book_status_update', $item->id) }}"
+                                                                method="POST">
+                                                                @method('PATCH')
+                                                                @csrf
+                                                                <div class="modal-body">
+                                                                    <p>Are you sure you want to update the book status for
+                                                                        <strong>{{ $item->property_name }}</strong>?
+                                                                    </p>
+                                                                    <!-- Input field for the number of free items -->
+                                                                    <div class="mb-3">
+                                                                        <label for="freeItems{{ $item->id }}"
+                                                                            class="form-label">
+                                                                            Number of Free Items
+                                                                        </label>
+                                                                        <input type="number" class="form-control"
+                                                                            id="freeItems{{ $item->id }}"
+                                                                            name="free_items" min="0"
+                                                                            placeholder="Enter the number of quantity to relaease the booked item"
+                                                                            required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+
+                                                                    <!-- Hidden input to store the number of free items -->
+                                                                    <input type="hidden" name="free_items"
+                                                                        id="freeItemsInput{{ $item->id }}">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-primary">Save
+                                                                        Changes</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                        </div>
+
+                        <!-- JavaScript to update the hidden input field -->
+                        <script>
+                            document.getElementById('freeItems{{ $item->id }}').addEventListener('input', function() {
+                                // Update the hidden input field with the value from the visible input field
+                                document.getElementById('freeItemsInput{{ $item->id }}').value = this.value;
+                            });
+                        </script>
 
 
 
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="8" class="text-center">No data available</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
+
+                        </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="8" class="text-center">No data available</td>
+                        </tr>
+                        @endif
+                        </tbody>
 
 
-                            </table>
-                            <div class="d-flex justify-content-center mt-3 p-3">
-                                {{ $products->links() }}
-                            </div>
+                        </table>
+                        <div class="d-flex justify-content-center mt-3 p-3">
+                            {{ $products->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="modal fade" id="modalToggle" tabindex="-1" aria-labelledby="modalToggleLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

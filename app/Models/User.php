@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TenantAgreementwithSystem::class, 'user_id');
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payments::class, 'user_id');
+    }
 }

@@ -9,14 +9,25 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between  ">
                         <h5 class="mb-0 text-primary">View Product</h5>
-                        <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm me-2">
-                            <i class="fa fa-arrow-left me-2" aria-hidden="true"></i> Back
-                        </a>
+                        @if (Auth::user()->role->role_name == 'Super Admin')
+                            <a href="{{ route('superadmin.property.index') }}" class="btn btn-primary btn-sm me-2">
+                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i> Back
+                            </a>
+                        @elseif(Auth::user()->role->role_name == 'Admin')
+                            <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm me-2">
+                                <i class="fa fa-arrow-left me-2" aria-hidden="true"></i> Back
+                            </a>
+                        @endif
                     </div>
                     <div class="card-body">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb py-3 mb-4 bg-light">
-                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                    <li class="breadcrumb-item"><a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @elseif (Auth::user()->role->role_name == 'Admin')
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                @endif
                                 <li class="breadcrumb-item">Property/Product Management</li>
                                 <li class="breadcrumb-item active text-primary">View Product</li>
                             </ol>
@@ -90,6 +101,16 @@
                                 <label class="form-label">Quantity</label>
                                 <p class="form-control bg-light" readonly>{{ $product->property_quantity ?? 'N/A' }}</p>
                             </div>
+                        </div>
+                        <div class="form-group mb-3 col-md-12">
+                            <label for="map_link" class="form-label">Property Location Map Link</label>
+                            <input type="text" id="map_link" name="map_link"
+                                class="form-control @error('map_link') is-invalid @enderror"
+                                value="{{ old('map_link', isset($product) ? $product->map_link : '') }}" required autofocus
+                                placeholder="Enter property location map link">
+                            @error('map_link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <!-- Description -->

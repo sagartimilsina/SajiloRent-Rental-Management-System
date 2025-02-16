@@ -13,18 +13,31 @@ class CategoriesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+      
         $userRole = Auth::user()->role->role_name;
+        $search = $request->input('search');
 
         // Fetch categories based on the user's role
         if ($userRole == 'Admin') {
             $categories = Categories::with('user:id,name')
                 ->orderBy('created_at', 'desc')
+                ->where(
+                    function ($query) use ($search) {
+                        $query->where('category_name', 'like', '%' . $search . '%');
+                    }
+                )
                 ->paginate(30);
         } elseif ($userRole == 'Super Admin') {
             $categories = Categories::with('user:id,name')
+
                 ->orderBy('created_at', 'desc')
+                ->where(
+                    function ($query) use ($search) {
+                        $query->where('category_name', 'like', '%' . $search . '%');
+                    }
+                )
                 ->paginate(30);
         } else {
             return redirect()->back()->with('error', 'You are not authorized to access this page.');

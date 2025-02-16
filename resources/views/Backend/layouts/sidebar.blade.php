@@ -87,28 +87,37 @@
                 </ul>
             </li>
 
-            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            <li
+                class="menu-item {{ request()->routeIs('superadmin.category.*') || request()->routeIs('superadmin.subcategory.*') || request()->routeIs('superadmin.property.*') || request()->routeIs('superadmin.payment.*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Property/Product Management</div>
                 </a>
-                <ul class="menu-sub {{ request()->is('superadmin.companies.index*') ? 'show' : '' }}">
-                    <li class="menu-item {{ request()->type === 'super-admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
+                <ul
+                    class="menu-sub {{ request()->routeIs('superadmin.category.*') || request()->routeIs('superadmin.subcategory.*') || request()->routeIs('superadmin.property.*') || request()->routeIs('superadmin.payment.*') ? 'show' : '' }}">
+                    <li class="menu-item {{ request()->routeIs('superadmin.category.index*') ? 'active' : '' }}">
+                        <a href="{{ route('superadmin.category.index') }}" class="menu-link">
                             Product Category
                         </a>
                     </li>
-
-                    <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('superadmin.subcategory.index*') ? 'active' : '' }}">
+                        <a href="{{ route('superadmin.subcategory.index') }}" class="menu-link">
+                            Product Sub Category
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('superadmin.property.index*') ? 'active' : '' }}">
+                        <a href="{{ route('superadmin.property.index') }}" class="menu-link">
                             Product Lists
                         </a>
                     </li>
-
-
+                    <li class="menu-item {{ request()->routeIs('superadmin.payment.index*') ? 'active' : '' }}">
+                        <a href="{{ route('superadmin.payment.index') }}" class="menu-link">
+                            Payment List
+                        </a>
+                    </li>
                 </ul>
             </li>
-            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Maintenance and Support</div>
@@ -125,8 +134,8 @@
                         </a>
                     </li>
                 </ul>
-            </li>
-            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            </li> --}}
+            {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Analytical and Reports</div>
@@ -153,7 +162,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
             <li
                 class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') || request()->routeIs('sliders.index') || request()->routeIs('galleries.index') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
@@ -253,7 +262,8 @@
     request()->routeIs('subCategory.trash-view*') ||
     request()->routeIs('category.trash-view*') ||
     request()->routeIs('products.index*') ||
-    request()->routeIs('product.trash-view*')
+    request()->routeIs('product.trash-view*') ||
+    request()->routeIs('payments.index*')
         ? 'active open'
         : '' }}">
                 <a href="#" class="menu-link menu-toggle">
@@ -267,7 +277,8 @@
         request()->routeIs('subCategory.trash-view*') ||
         request()->routeIs('category.trash-view*') ||
         request()->routeIs('products.index*') ||
-        request()->routeIs('product.trash-view*')
+        request()->routeIs('product.trash-view*') ||
+        request()->routeIs('payments.index*')
             ? 'show'
             : '' }}">
                     <li
@@ -293,22 +304,26 @@
                     </li>
                     <li
                         class="menu-item 
-            {{ request()->routeIs('products.index*') || request()->routeIs('product.trash-view*') ? 'active' : '' }}">
-                        <a href="{{ route('products.index') }}" class="menu-link">
-                            Payment Management
+            {{ request()->routeIs('payments.index*') || request()->routeIs('product.trash-view*') ? 'active' : '' }}">
+                        <a href="{{ route('payments.index') }}" class="menu-link">
+                            Payment List
                         </a>
                     </li>
-
                 </ul>
             </li>
-            <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active open' : '' }}">
-                <a href="{{ route('admin.dashboard') }}" class="menu-link text-wrap">
-                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                    <div data-i18n="Dashboards">Dashboard</div>
+
+            <li class="menu-item {{ request()->routeIs('property-contracts.index*') ? 'active' : '' }}">
+                <a href="{{ route('property-contracts.index') }}" class="menu-link text-wrap">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Dashboards">Contract</div>
                 </a>
             </li>
-
-
+            <li class="menu-item {{ request()->routeIs('property-contracts.index*') ? 'active' : '' }}">
+                <a href="{{ route('property-contracts.index') }}" class="menu-link text-wrap">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Dashboards">Message Chat</div>
+                </a>
+            </li>
         </ul>
     @elseif(Auth::check() && Auth::user()->role->role_name == 'User')
     @endif

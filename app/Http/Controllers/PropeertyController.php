@@ -163,6 +163,7 @@ class PropeertyController extends Controller
      */
     public function show($id)
     {
+      
         $Categories = Categories::orderBy('created_at', 'desc')->select('id', 'category_name')
             ->where('publish_status', 1)
             ->get();
@@ -500,5 +501,34 @@ class PropeertyController extends Controller
         $propertyName = Propeerty::where('id', $id)->value('property_name');
 
         return view('Backend.ManagePayment.index', compact('propertyPayments', 'propertyName', 'id'));
+    }
+
+
+    public function updateBookStatus(Request $request, $id)
+    {
+        // Find the property by ID
+        $property = Propeerty::findOrFail($id);
+
+        // Validate the request
+        $request->validate([
+            'free_items' => 'required|min:0|numeric',
+        ]);
+
+        // Get the free_items value from the request
+        $freeItems = $request->input('free_items');
+
+        // Ensure that the free_items value does not exceed the booked quantity
+        if ($freeItems > $property->property_booked_quantity) {
+            return redirect()->back()->with(['error' => 'Free items cannot exceed response booked quantity'], 400);
+        }
+
+        // Update the property quantities
+        $property->property_booked_quantity -= $freeItems;
+        $property->property_quantity += $freeItems;
+
+        // Save the updated property
+        $property->save();
+
+        return redirect()->back()->with(['success' => 'Property quantities updated successfully']);
     }
 }

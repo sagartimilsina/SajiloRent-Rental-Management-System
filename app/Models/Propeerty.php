@@ -30,14 +30,13 @@ class Propeerty extends Model
         'created_by',
         'map_link',
         'views_count',
+        'property_booked_quantity',
 
     ];
 
     public function category()
     {
         return $this->belongsTo(Categories::class);
-
-
     }
 
     public function subcategory()
@@ -55,4 +54,13 @@ class Propeerty extends Model
         return $this->hasMany(Property_Images::class, 'property_id', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payments::class, 'property_id');
+    }
 }

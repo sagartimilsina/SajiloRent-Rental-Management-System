@@ -527,6 +527,7 @@ class AuthController extends Controller
 
     public function changePasswordPost(Request $request)
     {
+    
         $key = 'change-password-attempts:' . $request->ip();
 
         // Check rate limiting

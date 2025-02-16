@@ -19,7 +19,7 @@
                 <div class="card shadow-sm border-0 rounded-lg">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0 text-{{ $statusColor }}">
-                            {{ ucfirst($currentStatus) }} Request List
+                            {{ ucfirst($currentStatus) }}  List
                         </h4>
                         <div class="d-flex flex-wrap align-items-center">
 

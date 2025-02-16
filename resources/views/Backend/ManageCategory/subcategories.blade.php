@@ -16,33 +16,53 @@
                         </h4>
                         <div class="d-flex flex-wrap align-items-center">
 
+                            @if (Auth::check() && Auth::user()->role->role_name == 'Super Admin')
+                                <form action="{{ route('superadmin.subcategory.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by category name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            @elseif(Auth::check() && Auth::user()->role->role_name == 'Admin')
+                                <form action="{{ route('subCategories.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by category name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            @endif
+
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                <!-- End Search Form -->
+                                <a href="{{ route('superadmin.subcategory.index') }}"
+                                    class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                            @elseif (Auth::user()->role->role_name == 'Admin')
+                                <a href="{{ route('subCategories.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-primary ms-2 shadow-sm" data-bs-toggle="modal"
+                                    data-bs-target="#modalToggle" id="addCategoryclicked">
+                                    <i class="bx bx-plus me-1"></i>
+                                </a>
 
 
-                            <form action="{{ route('subCategories.index') }}" method="GET"
-                                class="d-flex align-items-center me-3 mb-2 mb-sm-0">
-                                <div class="input-group">
-                                    <input type="search" id="search-input" name="search"
-                                        class="form-control-sm form-control " placeholder="Search by category name..."
-                                        aria-label="Search" value="{{ request('search') }}">
-                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
-                                        <i class="bx bx-search"></i>
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- End Search Form -->
-                            <a href="{{ route('subCategories.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
-                                <i class="bx bx-refresh me-1"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary ms-2 shadow-sm" data-bs-toggle="modal"
-                                data-bs-target="#modalToggle" id="addCategoryclicked">
-                                <i class="bx bx-plus me-1"></i>
-                            </a>
-
-
-                            <a href="{{ route('subCategory.trash-view') }}" class="btn btn-sm btn-danger ms-2 shadow-sm">
-                                <i class="bx bx-trash me-1"></i>
-                            </a>
+                                <a href="{{ route('subCategory.trash-view') }}"
+                                    class="btn btn-sm btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-trash me-1"></i>
+                                </a>
+                            @endif
 
                         </div>
                     </div>
@@ -69,11 +89,13 @@
                                         <th>Category Name</th>
                                         <th>Sub Category Name</th>
                                         <th>Category Icon</th>
-                                        @if (Auth::user()->role->role_name == 'Super Admin')
-                                            <th>Created By</th>
-                                        @endif
+
+                                        <th>Created By</th>
+
                                         <th>Publish Status</th>
-                                        <th>Action</th>
+                                        @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
+                                            <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="mock-test-table-body">
@@ -90,9 +112,9 @@
                                                     <td><img src="{{ asset('storage/' . $item->icon) }}" alt="Icon"
                                                             style="width: 50px; height: 50px; "></td>
                                                 @endif
-                                                @if (Auth::user()->role->role_name == 'Super Admin')
-                                                    <td><strong>{{ @$item->user->name }}</strong></td>
-                                                @endif
+
+                                                <td><strong>{{ @$item->user->name }}</strong></td>
+
 
 
                                                 @if ($item->publish_status == 1)
@@ -100,303 +122,283 @@
                                                 @else
                                                     <td><span class="badge bg-danger">UnPublished</span></td>
                                                 @endif
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button type="button" class="btn btn-link p-0 text-secondary"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
-                                                                <li>
-                                                                    <button type="button"
-                                                                        class="dropdown-item text-primary"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#editModal{{ $item->id }}">
-                                                                        <i class="bx bx-edit me-1"></i> Edit
-                                                                    </button>
-                                                                </li>
-                                                                @if ($item->publish_status == 1)
+                                                @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn btn-link p-0 text-secondary"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                @if ($item->created_by == Auth::user()->id)
                                                                     <li>
-                                                                        <button class="dropdown-item text-danger"
+                                                                        <button type="button"
+                                                                            class="dropdown-item text-primary"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#unpublishModal{{ $item->id }}">
-                                                                            <i class="bx bx-x-circle me-1 text-danger"></i>
-                                                                            UnPublish
+                                                                            data-bs-target="#editModal{{ $item->id }}">
+                                                                            <i class="bx bx-edit me-1"></i> Edit
                                                                         </button>
                                                                     </li>
-                                                                @else
+                                                                    @if ($item->publish_status == 1)
+                                                                        <li>
+                                                                            <button class="dropdown-item text-danger"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#unpublishModal{{ $item->id }}">
+                                                                                <i
+                                                                                    class="bx bx-x-circle me-1 text-danger"></i>
+                                                                                UnPublish
+                                                                            </button>
+                                                                        </li>
+                                                                    @else
+                                                                        <li>
+                                                                            <button class="dropdown-item text-success"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#publishModal{{ $item->id }}">
+                                                                                <i
+                                                                                    class="bx bx-check-circle me-1 text-success"></i>
+                                                                                Publish
+                                                                            </button>
+                                                                        </li>
+                                                                    @endif
+
                                                                     <li>
-                                                                        <button class="dropdown-item text-success"
+                                                                        <button type="button"
+                                                                            class="dropdown-item text-danger"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#publishModal{{ $item->id }}">
-                                                                            <i
-                                                                                class="bx bx-check-circle me-1 text-success"></i>
-                                                                            Publish
+                                                                            data-bs-target="#deleteModal{{ $item->id }}">
+                                                                            <i class="bx bx-trash me-1"></i> Delete
                                                                         </button>
                                                                     </li>
                                                                 @endif
-
-                                                                <li>
-                                                                    <button type="button" class="dropdown-item text-danger"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteModal{{ $item->id }}">
-                                                                        <i class="bx bx-trash me-1"></i> Delete
-                                                                    </button>
-                                                                </li>
-                                                            @endif
-
-
-                                                        </ul>
-                                                        <div class="modal fade" id="deleteModal{{ $item->id }}"
-                                                            tabindex="-1"
-                                                            aria-labelledby="deleteModalLabel{{ $item->id }}"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $item->id }}">
-                                                                            Delete Sub Category </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure you want to delete temporarily
-                                                                        <strong>{{ $item->sub_category_name }}</strong>?
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <form
-                                                                            action="{{ route('subCategory.trash', $item->id) }}"
-                                                                            method="POST">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="button" class="btn btn-secondary"
-                                                                                data-bs-dismiss="modal">Cancel</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger">Delete</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            </ul>
                                                         </div>
+                                                    </td>
+                                                @endif
 
-                                                    </div>
 
-                                                </td>
-                                                <!-- Publish Modal -->
-                                                <div class="modal fade" id="publishModal{{ $item->id }}"
-                                                    tabindex="-1" aria-labelledby="publishModalLabel{{ $item->id }}"
+                                                </ul>
+                                                <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1"
+                                                    aria-labelledby="deleteModalLabel{{ $item->id }}"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
-                                                                    id="publishModalLabel{{ $item->id }}">
-                                                                    Publish Sub Category</h5>
+                                                                    id="deleteModalLabel{{ $item->id }}">
+                                                                    Delete Sub Category </h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Are you sure you want to publish
+                                                                Are you sure you want to delete temporarily
                                                                 <strong>{{ $item->sub_category_name }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form
-                                                                    action="{{ route('subCategory.publish', $item->id) }}"
+                                                                <form action="{{ route('subCategory.trash', $item->id) }}"
                                                                     method="POST">
                                                                     @csrf
-                                                                    @method('PATCH')
-                                                                    @if ($item->publish_status === 0)
-                                                                        <input type="hidden" name="publish_status"
-                                                                            value="1">
-                                                                    @endif
+                                                                    @method('DELETE')
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
                                                                     <button type="submit"
-                                                                        class="btn btn-success">Publish</button>
+                                                                        class="btn btn-danger">Delete</button>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- Unpublish Modal -->
-                                                <div class="modal fade" id="unpublishModal{{ $item->id }}"
-                                                    tabindex="-1"
-                                                    aria-labelledby="unpublishModalLabel{{ $item->id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="unpublishModalLabel{{ $item->id }}">
-                                                                    Unpublish Sub Category</h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Are you sure you want to unpublish
-                                                                <strong>{{ $item->sub_category_name }}</strong>?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <form
-                                                                    action="{{ route('subCategory.unpublish', $item->id) }}"
-                                                                    method="POST">
-                                                                    @method('PATCH')
-                                                                    @csrf
-                                                                    @if ($item->publish_status === 1)
-                                                                        <input type="hidden" name="publish_status"
-                                                                            value="0">
-                                                                    @endif
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Cancel</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger">Unpublish</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {{-- edit modal --}}
-                                                <!-- Edit Modal -->
-                                                <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
-                                                    aria-labelledby="editModalLabel{{ $item->id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-xl">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="editModalLabel{{ $item->id }}">Edit Category
-                                                                </h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <form action="{{ route('subCategories.update', $item->id) }}"
-                                                                method="POST" enctype="multipart/form-data">
-                                                                @csrf
-                                                                @method('PUT')
+                        </div>
 
-                                                                <div class="modal-body">
-                                                                    <input type="hidden"
-                                                                        value=" {{ auth()->user()->id }}"
-                                                                        name="created_by">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="mb-3">
-                                                                                <label for=""
-                                                                                    class="form-label">Select Category
-                                                                                </label>
-                                                                                <select class="form-select form-control"
-                                                                                    name="category_id" id="">
-                                                                                    <option selected>Select one</option>
-                                                                                    @foreach ($Categories as $category)
-                                                                                        <option
-                                                                                            value="{{ $category->id }}"
-                                                                                            {{ $item->category_id == $category->id ? 'selected' : '' }}>
-                                                                                            {{ $category->category_name }}
-                                                                                        </option>
-                                                                                    @endforeach
-
-                                                                                </select>
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div class="mb-3 col-md-6">
-                                                                            <label for="category_name_{{ $item->id }}"
-                                                                                class="form-label">Sub Category
-                                                                                Name</label>
-                                                                            <input type="text" class="form-control"
-                                                                                name="sub_category_name"
-                                                                                id="category_name_{{ $item->id }}"
-                                                                                value="{{ $item->sub_category_name }}"
-                                                                                placeholder="Enter category name">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-12 mb-3">
-                                                                        <div class="mb-3">
-                                                                            <label for="category_icon_{{ $item->id }}"
-                                                                                class="form-label">Category
-                                                                                Icon</label>
-                                                                            <input type="file" class="form-control"
-                                                                                name="icon"
-                                                                                id="category_icon_{{ $item->id }}"
-                                                                                accept="image/*">
-                                                                            <small class="text-muted">Leave empty if
-                                                                                you don't
-                                                                                want to change the icon.</small>
-                                                                        </div>
-
-                                                                        <!-- Image Preview Section -->
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Selected Icon
-                                                                                Preview:</label>
-                                                                            <div>
-                                                                                <img id="iconPreview_{{ $item->id }}"
-                                                                                    src="{{ asset('storage/' . $item->icon) }}"
-                                                                                    alt="Current Category Icon"
-                                                                                    style="width: 100px; height: 100px; ">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <script>
-                                                                            // Event listener to preview the image when a user selects a file
-                                                                            document.getElementById('category_icon_{{ $item->id }}').addEventListener('change', function(event) {
-                                                                                const file = event.target.files[0];
-                                                                                const preview = document.getElementById('iconPreview_{{ $item->id }}');
-
-                                                                                if (file) {
-                                                                                    const reader = new FileReader();
-
-                                                                                    reader.onload = function(e) {
-                                                                                        preview.src = e.target.result;
-                                                                                    };
-
-                                                                                    reader.readAsDataURL(file);
-                                                                                } else {
-                                                                                    preview.src =
-                                                                                        "{{ asset('storage/' . $item->icon) }}"; // Fallback to the current icon if no file selected
-                                                                                }
-                                                                            });
-                                                                        </script>
-                                                                    </div>
-
-
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary btn-sm">Save
-                                                                        Changes</button>
-                                                                    <button type="button"
-                                                                        class="btn btn-secondary btn-sm"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="8" class="text-center">No data available</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-
-
-                            </table>
-                            <div class="d-flex justify-content-center mt-3 p-3">
-                                {{ $subCategories->links() }}
+                        </td>
+                        <!-- Publish Modal -->
+                        <div class="modal fade" id="publishModal{{ $item->id }}" tabindex="-1"
+                            aria-labelledby="publishModalLabel{{ $item->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="publishModalLabel{{ $item->id }}">
+                                            Publish Sub Category</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to publish
+                                        <strong>{{ $item->sub_category_name }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{{ route('subCategory.publish', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            @if ($item->publish_status === 0)
+                                                <input type="hidden" name="publish_status" value="1">
+                                            @endif
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-success">Publish</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+
+                        <!-- Unpublish Modal -->
+                        <div class="modal fade" id="unpublishModal{{ $item->id }}" tabindex="-1"
+                            aria-labelledby="unpublishModalLabel{{ $item->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="unpublishModalLabel{{ $item->id }}">
+                                            Unpublish Sub Category</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to unpublish
+                                        <strong>{{ $item->sub_category_name }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{{ route('subCategory.unpublish', $item->id) }}" method="POST">
+                                            @method('PATCH')
+                                            @csrf
+                                            @if ($item->publish_status === 1)
+                                                <input type="hidden" name="publish_status" value="0">
+                                            @endif
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger">Unpublish</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- edit modal --}}
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+                            aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel{{ $item->id }}">Edit Category
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ route('subCategories.update', $item->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+
+                                        <div class="modal-body">
+                                            <input type="hidden" value=" {{ auth()->user()->id }}" name="created_by">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="" class="form-label">Select Category
+                                                        </label>
+                                                        <select class="form-select form-control" name="category_id"
+                                                            id="">
+                                                            <option selected>Select one</option>
+                                                            @foreach ($Categories as $category)
+                                                                <option value="{{ $category->id }}"
+                                                                    {{ $item->category_id == $category->id ? 'selected' : '' }}>
+                                                                    {{ $category->category_name }}
+                                                                </option>
+                                                            @endforeach
+
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="category_name_{{ $item->id }}" class="form-label">Sub
+                                                        Category
+                                                        Name</label>
+                                                    <input type="text" class="form-control" name="sub_category_name"
+                                                        id="category_name_{{ $item->id }}"
+                                                        value="{{ $item->sub_category_name }}"
+                                                        placeholder="Enter category name">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                <div class="mb-3">
+                                                    <label for="category_icon_{{ $item->id }}"
+                                                        class="form-label">Category
+                                                        Icon</label>
+                                                    <input type="file" class="form-control" name="icon"
+                                                        id="category_icon_{{ $item->id }}" accept="image/*">
+                                                    <small class="text-muted">Leave empty if
+                                                        you don't
+                                                        want to change the icon.</small>
+                                                </div>
+
+                                                <!-- Image Preview Section -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Selected Icon
+                                                        Preview:</label>
+                                                    <div>
+                                                        <img id="iconPreview_{{ $item->id }}"
+                                                            src="{{ asset('storage/' . $item->icon) }}"
+                                                            alt="Current Category Icon"
+                                                            style="width: 100px; height: 100px; ">
+                                                    </div>
+                                                </div>
+
+                                                <script>
+                                                    // Event listener to preview the image when a user selects a file
+                                                    document.getElementById('category_icon_{{ $item->id }}').addEventListener('change', function(event) {
+                                                        const file = event.target.files[0];
+                                                        const preview = document.getElementById('iconPreview_{{ $item->id }}');
+
+                                                        if (file) {
+                                                            const reader = new FileReader();
+
+                                                            reader.onload = function(e) {
+                                                                preview.src = e.target.result;
+                                                            };
+
+                                                            reader.readAsDataURL(file);
+                                                        } else {
+                                                            preview.src =
+                                                                "{{ asset('storage/' . $item->icon) }}"; // Fallback to the current icon if no file selected
+                                                        }
+                                                    });
+                                                </script>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary btn-sm">Save
+                                                Changes</button>
+                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="8" class="text-center">No data available</td>
+                        </tr>
+                        @endif
+                        </tbody>
+
+
+                        </table>
+                        <div class="d-flex justify-content-center mt-3 p-3">
+                            {{ $subCategories->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="modal fade" id="modalToggle" tabindex="-1" aria-labelledby="modalToggleLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">

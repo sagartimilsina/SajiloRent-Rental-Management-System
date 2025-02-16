@@ -18,7 +18,11 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style1 py-3">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
+                            @elseif(Auth::user()->role->role_name == 'Admin')
+                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                            @endif
                         </li>
                         <li class="breadcrumb-item ">
                             User Management
@@ -29,7 +33,7 @@
                             @elseif($type === 'Super Admin')
                                 Super Admin Lists
                             @elseif($type === 'admin')
-                                Admin Lists
+                                Interacted User Lists
                             @endif
                         </li>
                     </ol>
@@ -37,10 +41,9 @@
 
                 <!-- Search Input -->
                 <div class="mb-3">
-                    <input type="search" id="search" class="form-control" placeholder="Search by name" autocomplete="off">
+                    <input type="search" id="search" class="form-control" placeholder="Search by name"
+                        autocomplete="off">
                 </div>
-
-
                 <!-- Results Table -->
                 <div class="table-responsive">
                     <table class="table table-striped" id="userTable">
@@ -52,7 +55,10 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                    <th>Action</th>
+                                @endif
+
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
@@ -60,7 +66,7 @@
                                 @foreach ($users as $user)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td><img src="{{ $user->avatar ? (filter_var($user->avatar, FILTER_VALIDATE_URL) ? $user->avatar : asset('storage/' . $user->avatar)) : asset('frontend/assets/images/default-thumbnail.png') }}"
+                                        <td><img src="{{ $user->avatar ? (filter_var($user->avatar, FILTER_VALIDATE_URL) ? $user->avatar : asset('storage/' . $user->avatar)) : asset('frontend/assets/images/profile.avif') }}"
                                                 class="rounded-circle" style="width:60px; height:60px;" />
                                         </td>
                                         <td>{{ $user->name }}</td>
@@ -73,30 +79,34 @@
                                                 {{ $user->status == 1 ? 'Active' : 'Inactive' }}
                                             </span>
                                         </td>
-                                        <td>
-                                            <div class="col-lg-3 col-sm-6 col-12">
-                                                <div class="demo-inline-spacing">
-                                                    <div class="btn-group">
-                                                        <button type="button"
-                                                            class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow btn-sm"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-small">
-                                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                                data-bs-target="#updateRoleModal{{ $user->id }}">
-                                                                Update Role
+                                        @if (Auth::user()->role->role_name == 'Super Admin')
+                                            <td>
+                                                <div class="col-lg-3 col-sm-6 col-12">
+                                                    <div class="demo-inline-spacing">
+                                                        <div class="btn-group">
+                                                            <button type="button"
+                                                                class="btn btn-primary btn-icon rounded-pill dropdown-toggle hide-arrow btn-sm"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
                                                             </button>
-                                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                                data-bs-target="#deleteUserModal"
-                                                                onclick="setDeleteUserModal({{ $user->id }}, '{{ $user->name }}')">
-                                                                Delete
-                                                            </button>
-                                                        </ul>
+                                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-small">
+                                                                <button class="btn btn-primary btn-sm"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#updateRoleModal{{ $user->id }}">
+                                                                    Update Role
+                                                                </button>
+                                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                                    data-bs-target="#deleteUserModal"
+                                                                    onclick="setDeleteUserModal({{ $user->id }}, '{{ $user->name }}')">
+                                                                    Delete
+                                                                </button>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endif
+
                                     </tr>
 
                                     <!-- Modal for Updating Role -->

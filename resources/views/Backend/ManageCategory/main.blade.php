@@ -17,32 +17,56 @@
                         <div class="d-flex flex-wrap align-items-center">
 
 
+                            @if (Auth::user()->role->role_name == 'Super Admin')
+                                <form action="{{ route('superadmin.category.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by category name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            @else
+                                <form action="{{ route('categories.index') }}" method="GET"
+                                    class="d-flex align-items-center me-3 mb-2 mb-sm-0">
+                                    <div class="input-group">
+                                        <input type="search" id="search-input" name="search"
+                                            class="form-control-sm form-control " placeholder="Search by category name..."
+                                            aria-label="Search" value="{{ request('search') }}">
+                                        <button type="submit" class="btn btn-outline-primary" id="search-button">
+                                            <i class="bx bx-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            @endif
 
-                            <form action="{{ route('categories.index') }}" method="GET"
-                                class="d-flex align-items-center me-3 mb-2 mb-sm-0">
-                                <div class="input-group">
-                                    <input type="search" id="search-input" name="search"
-                                        class="form-control-sm form-control " placeholder="Search by category name..."
-                                        aria-label="Search" value="{{ request('search') }}">
-                                    <button type="submit" class="btn btn-outline-primary" id="search-button">
-                                        <i class="bx bx-search"></i>
-                                    </button>
-                                </div>
-                            </form>
 
                             <!-- End Search Form -->
-                            <a href="{{ route('categories.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
-                                <i class="bx bx-refresh me-1"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary ms-2 shadow-sm" data-bs-toggle="modal"
-                                data-bs-target="#modalToggle" id="addCategoryclicked">
-                                <i class="bx bx-plus me-1"></i>
-                            </a>
 
 
-                            <a href="{{ route('category.trash-view') }}" class="btn btn-sm btn-danger ms-2 shadow-sm">
-                                <i class="bx bx-trash me-1"></i>
-                            </a>
+                            @if (Auth::user()->role->role_name == 'Admin')
+                                <a href="{{ route('categories.index') }}" class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-primary ms-2 shadow-sm" data-bs-toggle="modal"
+                                    data-bs-target="#modalToggle" id="addCategoryclicked">
+                                    <i class="bx bx-plus me-1"></i>
+                                </a>
+
+
+                                <a href="{{ route('category.trash-view') }}" class="btn btn-sm btn-danger ms-2 shadow-sm">
+                                    <i class="bx bx-trash me-1"></i>
+                                </a>
+                            @elseif(Auth::user()->role->role_name == 'Super Admin')
+                                <a href="{{ route('superadmin.category.index') }}"
+                                    class="btn btn-sm btn-info ms-2 shadow-sm">
+                                    <i class="bx bx-refresh me-1"></i>
+                                </a>
+                            @endif
+
 
                         </div>
                     </div>
@@ -50,9 +74,15 @@
                         <!-- Breadcrumb Navigation -->
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-style1 py-3">
-                                <li class="breadcrumb-item">
-                                    <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
-                                </li>
+                                @if (Auth::user()->role->role_name == 'Super Admin')
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @elseif(Auth::user()->role->role_name == 'Admin')
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                @endif
                                 <li class="breadcrumb-item ">
                                     Property/Product Management
                                 </li>
@@ -68,11 +98,15 @@
                                         <th>SN</th>
                                         <th>Category Name</th>
                                         <th>Category Icon</th>
-                                        @if (Auth::user()->role->role_name == 'Super Admin')
-                                            <th>Created By</th>
-                                        @endif
+
+                                        <th>Created By</th>
+
+
                                         <th>Publish Status</th>
-                                        <th>Action</th>
+
+                                        @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
+                                            <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="mock-test-table-body">
@@ -85,9 +119,9 @@
                                                 <td><img src="{{ asset('storage/' . $item->icon) }}" alt="Icon"
                                                         style="width: 100px; height: 100px; "></td>
 
-                                                @if (Auth::user()->role->role_name == 'Super Admin')
-                                                    <td><strong>{{ @$item->user->name }}</strong></td>
-                                                @endif
+
+                                                <td><strong>{{ @$item->user->name }}</strong></td>
+
 
 
                                                 @if ($item->publish_status == 1)
@@ -95,91 +129,99 @@
                                                 @else
                                                     <td><span class="badge bg-danger">UnPublished</span></td>
                                                 @endif
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button type="button" class="btn btn-link p-0 text-secondary"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
-                                                                <li>
-                                                                    <button type="button"
-                                                                        class="dropdown-item text-primary"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#editModal{{ $item->id }}">
-                                                                        <i class="bx bx-edit me-1"></i> Edit
-                                                                    </button>
-                                                                </li>
-                                                                @if ($item->publish_status == 1)
+                                                @if (Auth::user()->role->role_name != 'Super Admin' && Auth::user()->role->role_name != '')
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn btn-link p-0 text-secondary"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                @if ($item->created_by == Auth::user()->id)
                                                                     <li>
-                                                                        <button class="dropdown-item text-danger"
+                                                                        <button type="button"
+                                                                            class="dropdown-item text-primary"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#unpublishModal{{ $item->id }}">
-                                                                            <i class="bx bx-x-circle me-1 text-danger"></i>
-                                                                            UnPublish
+                                                                            data-bs-target="#editModal{{ $item->id }}">
+                                                                            <i class="bx bx-edit me-1"></i> Edit
                                                                         </button>
                                                                     </li>
-                                                                @else
+
+                                                                    @if ($item->publish_status == 1)
+                                                                        <li>
+                                                                            <button class="dropdown-item text-danger"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#unpublishModal{{ $item->id }}">
+                                                                                <i
+                                                                                    class="bx bx-x-circle me-1 text-danger"></i>
+                                                                                UnPublish
+                                                                            </button>
+                                                                        </li>
+                                                                    @else
+                                                                        <li>
+                                                                            <button class="dropdown-item text-success"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#publishModal{{ $item->id }}">
+                                                                                <i
+                                                                                    class="bx bx-check-circle me-1 text-success"></i>
+                                                                                Publish
+                                                                            </button>
+                                                                        </li>
+                                                                    @endif
+
                                                                     <li>
-                                                                        <button class="dropdown-item text-success"
+                                                                        <button type="button"
+                                                                            class="dropdown-item text-danger"
                                                                             data-bs-toggle="modal"
-                                                                            data-bs-target="#publishModal{{ $item->id }}">
-                                                                            <i
-                                                                                class="bx bx-check-circle me-1 text-success"></i>
-                                                                            Publish
+                                                                            data-bs-target="#deleteModal{{ $item->id }}">
+                                                                            <i class="bx bx-trash me-1"></i> Delete
                                                                         </button>
                                                                     </li>
                                                                 @endif
 
-                                                                <li>
-                                                                    <button type="button" class="dropdown-item text-danger"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteModal{{ $item->id }}">
-                                                                        <i class="bx bx-trash me-1"></i> Delete
-                                                                    </button>
-                                                                </li>
-                                                            @endif
 
 
-                                                        </ul>
-                                                        <div class="modal fade" id="deleteModal{{ $item->id }}"
-                                                            tabindex="-1"
-                                                            aria-labelledby="deleteModalLabel{{ $item->id }}"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $item->id }}">
-                                                                            Delete </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure you want to delete temporarily
-                                                                        <strong>{{ $item->category_name }}</strong>?
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <form
-                                                                            action="{{ route('category.trash', $item->id) }}"
-                                                                            method="POST">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="button" class="btn btn-secondary"
-                                                                                data-bs-dismiss="modal">Cancel</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger">Delete</button>
-                                                                        </form>
+                                                            </ul>
+                                                            <div class="modal fade" id="deleteModal{{ $item->id }}"
+                                                                tabindex="-1"
+                                                                aria-labelledby="deleteModalLabel{{ $item->id }}"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="deleteModalLabel{{ $item->id }}">
+                                                                                Delete </h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            Are you sure you want to delete temporarily
+                                                                            <strong>{{ $item->category_name }}</strong>?
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <form
+                                                                                action="{{ route('category.trash', $item->id) }}"
+                                                                                method="POST">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-bs-dismiss="modal">Cancel</button>
+                                                                                <button type="submit"
+                                                                                    class="btn btn-danger">Delete</button>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                         </div>
 
-                                                    </div>
+                                                    </td>
+                                                @endif
 
-                                                </td>
                                                 <!-- Publish Modal -->
                                                 <div class="modal fade" id="publishModal{{ $item->id }}"
                                                     tabindex="-1" aria-labelledby="publishModalLabel{{ $item->id }}"
@@ -370,7 +412,10 @@
                     <h5 class="modal-title" id="modalToggleLabel">Add Product Categories</h5>
                     {{-- <button type="button" class="btn-close" aria-label="Close"></button> --}}
                 </div>
+
                 <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
+
+
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="created_by" value="{{ auth()->user()->id }}">

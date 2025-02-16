@@ -30,11 +30,11 @@ class Payments extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function property()
     {
-        return $this->belongsTo(Propeerty::class);
+        return $this->belongsTo(Propeerty::class, 'property_id');
     }
 }
