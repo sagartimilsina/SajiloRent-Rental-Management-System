@@ -8,17 +8,7 @@
         }
     </style>
     <main>
-        <section class="breadcrumb-hero">
-            <hr>
-            <div class="container text-start breadcrumb-overlay" style="padding: 0;">
-                <nav class="breadcrumb">
-                    <a class="breadcrumb-item" href="{{ route('index') }}">Home</a>
-                    <a class="" href="{{ route('blog') }}">Blogs</a>
-                    <a href="#" class="active-nav" aria-current="page">{{ $blog->blog_title }}</a>
-                </nav>
-            </div>
-            <hr>
-        </section>
+     
 
         <section class="container container-left mt-4">
             <div class="row">

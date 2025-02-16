@@ -26,7 +26,8 @@
                         href="{{ route('index') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Route::is('product_or_property') ? 'active-nav' : '' }}" href="{{ route('product_or_property') }}">Our
+                    <a class="nav-link {{ Route::is('product_or_property') ? 'active-nav' : '' }}"
+                        href="{{ route('product_or_property') }}">Our
                         Product</a>
                 </li>
                 <li class="nav-item"><a class="nav-link {{ Route::is('about') ? 'active-nav' : '' }}"
@@ -143,12 +144,14 @@
                                 @endif
 
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('change.password') }}">
-                                    <i class="fa fa-cog me-2"></i>
-                                    <span class="align-middle">Change Password</span>
-                                </a>
-                            </li>
+                            @if (Auth::user()->role->role_name == 'User')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('change.password') }}">
+                                        <i class="fa fa-cog me-2"></i>
+                                        <span class="align-middle">Change Password</span>
+                                    </a>
+                                </li>
+                            @endif
 
                             <li>
                                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">

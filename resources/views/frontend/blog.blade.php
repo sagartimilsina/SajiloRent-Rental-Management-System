@@ -3,17 +3,7 @@
 @section('content')
 
     <main>
-        <section class="breadcrumb-hero ">
-            <hr>
-            <div class="container text-start breadcrumb-overlay" style="padding: 0;">
-                <nav class="breadcrumb">
-                    <a class="breadcrumb-item" href="{{ route('index') }}">Home</a>
-
-                    <a href="#" class="active-nav" aria-current="page">Blogs </a>
-                </nav>
-            </div>
-            <hr>
-        </section>
+       
         <!-- Blogs Section Start -->
         <section class="blog-section container">
             <div class="container text-center">

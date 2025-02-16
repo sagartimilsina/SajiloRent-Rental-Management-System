@@ -14,7 +14,7 @@
 
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('backend/images/favicon.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('frontend/assets/images/logo.png') }}" />
     <link href="https://unpkg.com/boxicons/css/boxicons.min.css" rel="stylesheet">
 
     <!-- Fonts -->

@@ -45,9 +45,9 @@
 
 
                             <!-- Recycle Bin Button -->
-                            <a href="{{ route('galleries.trash-view') }}" class="btn btn-danger ms-2 shadow-sm">
+                            {{-- <a href="{{ route('galleries.trash-view') }}" class="btn btn-danger ms-2 shadow-sm">
                                 <i class="bx bx-trash me-1"></i> Recycle Bin
-                            </a>
+                            </a> --}}
                             <!-- End Recycle Bin Button -->
                         </div>
 
@@ -111,7 +111,7 @@
                                                             <i class="bx bx-show me-1"></i> View
                                                         </button>
                                                     </li>
-                                                    @if ($item->blog_publish_status == 1)
+                                                    @if ($item->gallery_publish_status == 1)
                                                         <li>
                                                             <button class="dropdown-item text-danger" data-bs-toggle="modal"
                                                                 data-bs-target="#unpublishModal{{ $item->id }}">
@@ -153,7 +153,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
                                                                     id="publishModalLabel{{ $item->id }}">
-                                                                    Publish Blog</h5>
+                                                                    Publish Gallery</h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
@@ -162,12 +162,12 @@
                                                                 <strong>{{ $item->blog_title }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('blog.publish', $item->id) }}"
+                                                                <form action="{{ route('gallery.publish', $item->id) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('PATCH')
-                                                                    @if ($item->blog_publish_status === 0)
-                                                                        <input type="hidden" name="blog_publish_status"
+                                                                    @if ($item->gallery_publish_status === 0)
+                                                                        <input type="hidden" name="gallery_publish_status"
                                                                             value="1">
                                                                     @endif
                                                                     <button type="button" class="btn btn-secondary"
@@ -182,30 +182,29 @@
 
                                                 <!-- Unpublish Modal -->
                                                 <div class="modal fade" id="unpublishModal{{ $item->id }}"
-                                                    tabindex="-1"
-                                                    aria-labelledby="unpublishModalLabel{{ $item->id }}"
+                                                    tabindex="-1" aria-labelledby="unpublishModalLabel{{ $item->id }}"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
                                                                     id="unpublishModalLabel{{ $item->id }}">
-                                                                    Unpublish Blog</h5>
+                                                                    Unpublish Gallery</h5>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 Are you sure you want to unpublish
-                                                                <strong>{{ $item->blog_title }}</strong>?
+                                                                <strong>{{ $item->gallery_name }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('blog.unpublish', $item->id) }}"
+                                                                <form action="{{ route('gallery.unpublish', $item->id) }}"
                                                                     method="POST">
                                                                     @method('PATCH')
                                                                     @csrf
-                                                                    @if ($item->blog_publish_status === 1)
-                                                                        <input type="hidden" name="blog_publish_status"
-                                                                            value="0">
+                                                                    @if ($item->gallery_publish_status === 1)
+                                                                        <input type="hidden"
+                                                                            name="gallery_publish_status" value="0">
                                                                     @endif
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Cancel</button>
@@ -232,10 +231,10 @@
                                                             </div>
                                                             <div class="modal-body">
                                                                 Are you sure you want to delete temporarily
-                                                                <strong>{{ $item->blog_title }}</strong>?
+                                                                <strong>{{ $item->gallery_name }}</strong>?
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <form action="{{ route('blog.trash', $item->id) }}"
+                                                                <form action="{{ route('galleries.destroy', $item->id) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')

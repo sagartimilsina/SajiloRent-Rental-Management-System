@@ -508,9 +508,9 @@
                             @foreach ($galleries as $gallery)
                                 <div class="col-4 mb-3">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
-                                        data-bs-image="{{ asset('storage/' . $gallery->gallery_file) }}">
+                                        data-bs-image="{{ asset($gallery->image_url) }}">
                                         <img alt="{{ $gallery->title }}" class="img-fluid gallery-image"
-                                            src="{{ asset('storage/' . $gallery->gallery_file) }}" />
+                                            src="{{ asset($gallery->gallery_file) }}" />
                                     </a>
                                 </div>
                             @endforeach
@@ -525,17 +525,14 @@
                             Best of our Event Portfolio Photos
                         </h2>
                         <p class="gallery-description">
-                            Discover the highlights of our curated events and rental properties through our stunning photo
-                            collection. From cozy homes to professional workspaces and equipment rentals, our gallery
-                            showcases the best of what Sajilo Rent has to offer. Whether you're looking for a comfortable
-                            living space or planning a project with our tools, each image captures the essence of our
-                            commitment to providing top-notch rental solutions.
+                            Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl. Cras ettikis
+                            mauris
+                            eget lorem ultricies fermentum a inti diam. Morbi mollis pellentesque offs aiugueia nec rhoncus.
+                            Nam ute ultricies.
                         </p>
-                        <a href= "{{ route('gallery') }}">
-                            <button class="btn btn-primary btn-lg">
-                                ALL PHOTOS &amp; VIDEO
-                            </button>
-                        </a>
+                        <button class="btn btn-primary btn-lg">
+                            ALL PHOTOS &amp; VIDEO
+                        </button>
                     </div>
                 </div>
             </div>

@@ -46,23 +46,23 @@
                     <li><a href="{{ route('gallery') }}" style="color: #fff; text-decoration: none;">Gallery</a></li>
                     <li><a href="{{ route('contact') }}" style="color: #fff; text-decoration: none;">Contact</a></li>
                     <li><a href="{{ route('blog') }}" style="color: #fff; text-decoration: none;">Blogs</a></li>
+                   
+
                     @php
-                        // Fetch the latest application status for the authenticated user
-                        $application = DB::table('request_owner_lists')
-                            ->where('user_id', @Auth::user()->id)
-                            ->orderBy('created_at', 'desc') // Get the latest entry by date
-                            ->first();
-                    @endphp
+                    // Fetch the latest application status for the authenticated user
+                    $application = DB::table('request_owner_lists')
+                        ->where('user_id', @Auth::user()->id)
+                        ->orderBy('created_at', 'desc') // Get the latest entry by date
+                        ->first();
+                @endphp
 
-                    @if (is_null($application) || in_array($application->status, ['rejected', 'expired']))
-                        <li>
-                            <a style="color: #fff; text-decoration: none;" href="#" data-bs-toggle="modal"
-                                data-bs-target="#listPropertyModal">
-                                List your Property
-                            </a>
-                        </li>
-                    @endif
-
+                @if (is_null($application) || in_array($application->status, ['rejected', 'expired']))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('list-property') }}" style="color: #fff; text-decoration: none;">
+                            List your Property
+                        </a>
+                    </li>
+                @endif
                 </ul>
             </div>
 
@@ -70,26 +70,29 @@
             <div class="col-lg-2 col-md-6 mb-4 place-category">
                 <h2 class="section-title">Contact Us</h2>
                 <ul class="list-unstyled">
-                    <li><strong>Phone:</strong><a href="tel:+977-9819113548"
-                            style="color: #fff; text-decoration: none;">
-                            +977-9819113548
-                        </a></li>
-                    <li><strong>Email:</strong>
-                        <a href="mailto:support@sajiorent.com" style="color: #fff; text-decoration: none;">
-                            support@sajiorent.com
+                    <li><strong>Phone:</strong>
+                        <a href="tel:{{ $contactInfo->phone }}" style="color: #fff; text-decoration: none;">
+                            {{ $contactInfo->phone }}
                         </a>
                     </li>
-                    <li><strong>Address:</strong>Pokhara, Kaski, Nepal </li>
+                    <li><strong>Email:</strong>
+                        <a href="mailto:{{ $contactInfo->email }}" style="color: #fff; text-decoration: none;">
+                            {{ $contactInfo->email }}
+                        </a>
+                    </li>
+                    <li><strong>Address:</strong> {{ $contactInfo->address }} </li>
                     <li><strong>Follow Us:</strong>
-                        <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none; ">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" style="margin-left: 10px; color: #fff; text-decoration: none;">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                        @php
+                            $socialLinks = is_array($contactInfo->social_links)
+                                ? $contactInfo->social_links
+                                : json_decode($contactInfo->social_links, true);
+                        @endphp
+                        @foreach ($socialLinks as $link)
+                            <a href="{{ $link['link'] }}"
+                                style="margin-left: 10px; color: #fff; text-decoration: none;">
+                                <i class="{{ $link['icon'] }}"></i>
+                            </a>
+                        @endforeach
                     </li>
                 </ul>
             </div>
@@ -134,4 +137,3 @@
         </div>
     </div>
 </section>
-

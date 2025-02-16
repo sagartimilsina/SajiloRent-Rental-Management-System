@@ -54,7 +54,9 @@ class FrontendController extends Controller
         }
 
         $apartments = Propeerty::where('property_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
-        $galleries = Gallery::where('gallery_publish_status', 1)->get();
+        $galleries = Gallery::where('gallery_publish_status', 1)->orderBy('created_at', 'desc')
+            ->where('gallery_type', 'image')
+            ->take(6)->get();
         $testimonials = Testimonials::where('testimonials_publish_status', 1)->get();
         $blogs = Blogs::where('blog_publish_status', 1)->orderBy('created_at', 'desc')->take(8)->get();
 
@@ -140,7 +142,18 @@ class FrontendController extends Controller
     }
     public function gallery()
     {
-        return view('frontend.gallery');
+        // Fetch 16 images and 4 videos initially
+        $gallery_images = Gallery::where('gallery_publish_status', 1)
+            ->where('gallery_type', 'image')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20); // Fetch 16 images per page
+
+        $gallery_videos = Gallery::where('gallery_publish_status', 1)
+            ->where('gallery_type', 'video')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Fetch 4 videos per page
+
+        return view('frontend.gallery', compact('gallery_images', 'gallery_videos'));
     }
 
     public function property_details($id)

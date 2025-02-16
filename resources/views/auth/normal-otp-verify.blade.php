@@ -1,4 +1,3 @@
-
 @include('frontend.layouts.header')
 @include('frontend.layouts.navbar')
 
@@ -120,3 +119,4 @@
 </script>
 
 @include('frontend.layouts.footer');
+@include('frontend.layouts.script');

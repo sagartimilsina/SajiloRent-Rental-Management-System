@@ -380,7 +380,7 @@ a.btn.btn-outline-warning.register-button:hover {
 /* We Provide Section End */
 /* Available Section Start */
 .container {
-    text-align: center;
+    /* text-align: center; */
     padding: 30px 25px;
 }
 

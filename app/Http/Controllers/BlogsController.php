@@ -44,7 +44,7 @@ class BlogsController extends Controller
     {
         $request->validate([
             'title' => 'required|string|min:5|max:255',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // Allow uploaded images
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:25600', // Allow uploaded images
             'cropped_image' => 'nullable|string', // Allow base64 cropped image data
             'description' => 'nullable|min:5',
         ]);
@@ -113,7 +113,7 @@ class BlogsController extends Controller
     {
         $request->validate([
             'title' => 'required|string|min:5|max:255',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // Allow uploaded images
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:25600', // Allow uploaded images
             'cropped_image' => 'nullable|string', // Allow base64 cropped image data
             'description' => 'nullable|min:5',
         ]);

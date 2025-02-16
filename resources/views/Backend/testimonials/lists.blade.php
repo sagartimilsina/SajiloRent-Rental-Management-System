@@ -4,8 +4,6 @@
 
 @section('content')
     <div class="container py-5">
-<<<<<<< HEAD
-=======
         {{-- <!-- Success Alert -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
@@ -14,7 +12,6 @@
             </div>
         @endif
         <!-- End of Success Alert --> --}}
->>>>>>> e6e0a1f4e1304c5ead4ad7deaaf72830573ecbed
 
         <div class="row">
             <div class="col-12">

@@ -36,6 +36,7 @@ use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,29 +54,55 @@ Route::get('/send-otp', function () {
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-
 Route::get('/send-message', [MessageChatController::class, 'index'])->name('send-message')->middleware('auth');
 Route::get('/message', [MessageChatController::class, 'show'])->name('message.show')->middleware('auth');
 Route::get('/chat/{user}', [MessageChatController::class, 'getUserChat']);
 Route::resource('messages', MessageChatController::class);
 Route::get('/send-message/{user_id}/{user_name}', [MessageChatController::class, 'showChat'])->name('send-message-user')->middleware('auth');
-
+// web.php
+Route::get('/load-more-gallery', [GalleryController::class, 'loadMore'])->name('load.more.gallery');
 // Auth Routes
+
+
 Route::prefix('auth')->group(function () {
+    // Login Routes
     Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login-store', [AuthController::class, 'login_store'])->name('login.store');
+
+    // Registration Routes
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register-store', [AuthController::class, 'register_store'])->name('register.store');
+
+    // Logout Route
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Password and OTP routes
-    Route::get('/forgot-password', [AuthController::class, 'forgot_password_page'])->name('forgot-password');
-    Route::post('/forgot-password', [AuthController::class, 'forgot_password'])->name('forgot-password.post');
-    Route::get('/reset-password', [AuthController::class, 'reset_password_page'])->name('reset-password');
-    Route::post('/reset-password', [AuthController::class, 'reset_password'])->name('reset-password.post');
+    // OTP Routes
     Route::get('/otp', [AuthController::class, 'otp_page'])->name('otp');
     Route::post('/verify-otp', [AuthController::class, 'otp_verify'])->name('verify.otp');
     Route::get('/resend-otp/{user_id}', [AuthController::class, 'resend_otp_page'])->name('resend.otp');
+
+    // Forgot Password Routes
+    Route::prefix('forgot-password')->group(function () {
+        // Show the "Forgot Password" form
+        Route::get('/', [AuthController::class, 'showVerificationPage'])->name('forgot-password');
+
+        // Handle the "Forgot Password" form submission
+        Route::post('/', [AuthController::class, 'forgot_password'])->name('forgot-password.post');
+
+        // Show the OTP verification page
+        Route::get('/otp-verify', [AuthController::class, 'showOtpVerificationPage'])->name('otp.verification');
+
+        // Handle OTP verification for forgot password
+        Route::post('/otp-verify', [AuthController::class, 'verify_otp_forgot'])->name('verify.otp_forgot.post');
+
+        // Show the "Reset Password" page
+        Route::get('/reset-password', [AuthController::class, 'showChangeCredentialsPage'])->name('reset-password');
+
+        // Handle the "Reset Password" form submission
+        Route::post('/reset-password', [AuthController::class, 'changeCredentials'])->name('reset-password.post');
+
+        Route::get('/resend-otp', [AuthController::class, 'resend_otp_forgot'])->name('resend-otp-forgot');
+    });
 });
 // Google Login Routes
 Route::prefix('auth/google')->group(function () {
@@ -264,6 +291,11 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('property/{id}/view', action: [PropeertyController::class, 'show'])->name('superadmin.property.show');
     Route::get('payments', action: [PaymentsController::class, 'index'])->name('superadmin.payment.index');
     Route::get('/payment-invoice/{transaction_uuid}', [PaymentsController::class, 'paymentInvoice'])->name('superadmin.payment.invoice');
+
+    //contactinfo route
+    Route::get('/admin/contact', [ContactInfoController::class, 'index'])->name('contact.index');
+    Route::get('/admin/contact/edit', [ContactInfoController::class, 'edit'])->name('contact.edit');
+    Route::post('/admin/contact/update', [ContactInfoController::class, 'update'])->name('contact.update');
 });
 
 

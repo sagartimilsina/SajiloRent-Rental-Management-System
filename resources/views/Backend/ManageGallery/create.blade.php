@@ -36,10 +36,10 @@
                                         class="form-control @error('gallery_type') is-invalid @enderror" required>
                                         <option value="">-- Select Gallery Type --</option>
                                         <option value="Image"
-                                            {{ old('gallery_type', isset($gallery) ? $gallery->gallery_type : '') == 'Image' ? 'selected' : '' }}>
+                                            {{ old('gallery_type', isset($gallery) ? $gallery->gallery_type : '') == 'image' ? 'selected' : '' }}>
                                             Image</option>
                                         <option value="Video"
-                                            {{ old('gallery_type', isset($gallery) ? $gallery->gallery_type : '') == 'Video' ? 'selected' : '' }}>
+                                            {{ old('gallery_type', isset($gallery) ? $gallery->gallery_type : '') == 'video' ? 'selected' : '' }}>
                                             Video</option>
                                     </select>
                                     @error('gallery_type')
@@ -68,9 +68,9 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <img id="imagePreview"
-                                        src="{{ isset($gallery) && $gallery->gallery_image ? asset('storage/' . $gallery->gallery_image) : '' }}"
+                                        src="{{ isset($gallery) && $gallery->gallery_file ? asset('storage/' . $gallery->gallery_file) : '' }}"
                                         alt="Image Preview"
-                                        style="display: {{ isset($gallery->gallery_image) ? 'block' : 'none' }}; margin-top: 10px; max-width: 200px; max-height: 150px; object-fit: cover;" />
+                                        style="display: {{ isset($gallery->gallery_file) ? 'block' : 'none' }}; margin-top: 10px; max-width: 200px; max-height: 150px; object-fit: cover;" />
                                 </div>
                             </div>
 

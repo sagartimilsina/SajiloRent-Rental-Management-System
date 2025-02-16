@@ -13,9 +13,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/logo.png') }}" type="image/x-icon">
     @php
         // List of routes for authentication-related pages
-        $authRoutes = ['login', 'register', 'forgot-password', 'otp', 'change.password'];
+        $authRoutes = [
+            'login',
+            'register',
+            'forgot-password',
+            'otp',
+            'change.password',
+            'otp.verification',
+            'reset-password',
+        ];
     @endphp
     @if (Request::routeIs($authRoutes))
         {{-- Load CSS for authentication pages --}}

@@ -13,7 +13,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Psy\CodeCleaner\FunctionReturnInWriteContextPass;
@@ -84,10 +86,11 @@ class AuthController extends Controller
         // Generate OTP code and set expiry time
         $otp_code = random_int(100000, 999999);
         $currentTime = Carbon::now();
-        $nepalitime = $currentTime->addHours(5)->addMinutes(45);
+        // dd($currentTime);
+        // $nepalitime = $currentTime->addHours(5)->addMinutes(45);
         $user->otp_code = $otp_code;
-        $user->otp_code_expires_at = $nepalitime->addMinutes(2);
-        $user->otp_code_send_at = $nepalitime;
+        $user->otp_code_expires_at = $currentTime->addMinutes(2);
+        $user->otp_code_send_at = $currentTime;
 
 
         $user->save();
@@ -152,8 +155,8 @@ class AuthController extends Controller
 
         if ($user) {
             $curentTime = Carbon::now();
-            $nepalitime = $curentTime->addHours(5)->addMinutes(45);
-            if ($user->otp_code_expires_at < $nepalitime) {
+            // $nepalitime = $curentTime->addHours(5)->addMinutes(45);
+            if ($user->otp_code_expires_at < $curentTime) {
                 return redirect()->back()->with('error', 'OTP code has expired');
             }
             $user->otp_code = null;
@@ -170,17 +173,17 @@ class AuthController extends Controller
     public function resend_otp_page(Request $request)
     {
         $currentTime = Carbon::now();
-        $nepalitime = $currentTime->addHours(5)->addMinutes(45);
+
         $user = User::where('id', $request->user_id)->first();
-        if ($user->otp_code_expires_at > $nepalitime) {
-            return redirect()->back()->with('error', 'OTP code  has been sent successfully, Please wait for 2 minutes');
+        if ($user->otp_code_expires_at > $currentTime) {
+            return redirect()->back()->with('error', 'OTP code  has been sent successfully, Please wait for');
         }
 
         $otp_code = random_int(100000, 999999);
         $user->otp_code = $otp_code;
         $currentTime = Carbon::now();
-        $nepalitime = $currentTime->addHours(5)->addMinutes(45);
-        $user->otp_code_expires_at = $nepalitime->addMinutes(2);
+        // $nepalitime = $currentTime->addHours(5)->addMinutes(45);
+        $user->otp_code_expires_at = $currentTime->addMinutes(2);
         $user->otp_code_send_at = $nepalitime;
         Mail::to($user->email)->send(new OTPMail($otp_code, $user->name));
         $user->save();
@@ -486,11 +489,11 @@ class AuthController extends Controller
                 // Generate OTP
                 $otp = random_int(100000, 999999);
                 $currentTime = Carbon::now();
-                $nepaliTime = $currentTime->addHours(5)->addMinutes(45);
+                // $nepaliTime = $currentTime->addHours(5)->addMinutes(45);
 
                 $newUser->otp_code = $otp;
-                $newUser->otp_code_expires_at = $nepaliTime->addMinutes(2);
-                $newUser->otp_code_send_at = $nepaliTime;
+                $newUser->otp_code_expires_at = $currentTime->addMinutes(2);
+                $newUser->otp_code_send_at = $currentTime;
                 $newUser->save();
 
                 // Send OTP via email
@@ -527,7 +530,7 @@ class AuthController extends Controller
 
     public function changePasswordPost(Request $request)
     {
-    
+
         $key = 'change-password-attempts:' . $request->ip();
 
         // Check rate limiting
@@ -583,66 +586,129 @@ class AuthController extends Controller
 
     public function showVerificationPage()
     {
-        return view('backend.auth.email-verification');
+        return view('auth.normal-forgot-password');
     }
 
 
+    public function forgot_password(Request $request)
+    {
 
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
 
+        $user = User::where('email', $request->email)->first();
 
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->route('forgot-password')->with('error', 'User not found');
+        }
+
+        $user->otp_code = random_int(100000, 999999);
+        $currentTime = Carbon::now();
+        $user->otp_is_verified = 0;
+        $user->otp_code_expires_at = $currentTime->addMinutes(2);
+        $user->otp_code_send_at = $currentTime;
+        Mail::to($user->email)->send(new OTPMail($user->otp_code, $user->name));
+
+        $user->save();
+        $formattedOtpExpire = Carbon::parse($user->otp_code_expires_at)->format('Y-m-d H:i:s');
+        session()->put('formattedOtpExpire', $formattedOtpExpire);
+        session()->put('email', $user->email);
+        return redirect()->route('otp.verification')->with('success', 'OTP code sent successfully');
+    }
 
     public function showOtpVerificationPage()
     {
-        return view('backend.auth.otp-verification');
+        $formattedOtpExpire = session()->get('formattedOtpExpire');
+
+        if (!$formattedOtpExpire) {
+            return redirect()->route('forgot-password')->with('error', 'Email not found');
+        }
+
+        return view('auth.otp-verification-forgot', compact('formattedOtpExpire'));
     }
 
-    // public function otp_verify(Request $request)
-    // {
+    public function verify_otp_forgot(Request $request)
+    {
+        $request->validate([
+            'otp_code' => 'required|numeric|digits:6',
+        ]);
 
-    //     // Validate the OTP code
-    //     $request->validate([
-    //         'otp_code' => 'required|numeric|digits:6',
-    //     ]);
+        $user = User::where('email', session()->get('email'))->first();
 
-    //     // Find the user by email
-    //     $user = EmpolyeeUsers::where('email', $request->session()->get('email'))->first();
-
-    //     if ($user) {
-    //         // Verify the OTP code
-    //         if ($user->otp_code == $request->otp_code) {
-    //             $user->otp_is_verified = 1; // Set as verified
-    //             $user->save();
-
-    //             return redirect()->route('employee.change-credentials')->with('success', 'OTP verified successfully. You can change your password.');
-    //         } else {
-    //             return redirect()->route('employee.otp.verification')->withErrors(['otp_code' => 'Invalid OTP code.']);
-    //         }
-    //     }
-    // }
+        if ($user) {
+            if ($user->otp_code == $request->otp_code) {
+                $user->otp_is_verified = 1;
+                $user->save();
+                return redirect()->route('reset-password')->with('success', 'OTP verified successfully. You can change your password.');
+            } else {
+                return redirect()->route('otp.verification')->withErrors(['otp_code' => 'Invalid OTP code.']);
+            }
+        }
+    }
 
     public function showChangeCredentialsPage()
     {
-
-        return view('backend.auth.new-password');
+        return view('auth.reset-password');
     }
-    // public function changeCredentials(Request $request)
-    // {
 
-    //     $request->validate([
-    //         'email' => 'required|email|exists:empolyee_users,email',
-    //         'password' => 'required|min:8',
-    //         'confirm_password' => 'required|min:8|same:password',
-    //     ]);
+    public function changeCredentials(Request $request)
+    {
 
-    //     $user = EmpolyeeUsers::where('email', $request->email)->select('id')->first();
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'new_password' => 'required|min:8',
+            'password_confirmation' => 'required|min:8|same:new_password',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-    //     $user->update([
-    //         'password' => Hash::make($request->password),
-    //     ]);
-    //     Auth::guard('employee')->logout();
-    //     $request->session()->invalidate();
-    //     $request->session()->flush();
-    //     return redirect()->route('employee-login')->with('success', 'Password changed successfully. Please login again as employee.');
-    // }
 
+        $user = User::where('email', $request->email)->first();
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        Session::forget('email');
+
+
+
+        return redirect()->route('login')->with('success', 'Password changed successfully. Please login again as employee.');
+    }
+
+    /**
+     * Resends the OTP code to the user when the user clicks on the resend OTP button while forgot password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+
+    public function resend_otp_forgot(Request $request)
+    {
+        $user = User::where('email', session()->get('email'))->first();
+
+        if (!$user) {
+            return redirect()->route('forgot-password')->with('error', 'User not found');
+        }
+        if ($user->otp_code_expires_at > Carbon::now()) {
+            return redirect()->route('otp.verification')->with('error', 'OTP code is still valid. Please wait.');
+        }
+
+        $currentTime = Carbon::now();
+        $user->otp_code = random_int(100000, 999999);
+        $user->otp_is_verified = 0;
+        $user->otp_code_expires_at = $currentTime->addMinutes(2);
+        $user->otp_code_send_at = $currentTime;
+        Mail::to($user->email)->send(new OTPMail($user->otp_code, $user->name));
+        $user->save();
+        $formattedOtpExpire = Carbon::parse($user->otp_code_expires_at)->format('Y-m-d H:i:s');
+        session()->put('formattedOtpExpire', $formattedOtpExpire);
+        return redirect()->route('otp.verification')->with('success', 'OTP code sent successfully');
+    }
 }

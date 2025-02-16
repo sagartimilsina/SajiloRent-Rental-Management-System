@@ -61,6 +61,7 @@
                     </li>
                 </ul>
             </li>
+
             <li
                 class="menu-item {{ request()->routeIs('RequestOwnerLists.*') || request()->routeIs('tenants-agreements.*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
@@ -116,6 +117,12 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li class="menu-item {{ request()->routeIs('contact.index') ? 'active open' : '' }}">
+                <a href="{{ route('contact.index') }}" class="menu-link text-wrap">
+                    <i class="menu-icon tf-icons bx bx-info-circle"></i>
+                    <div data-i18n="Contact Info">Contact Info</div>
+                </a>
             </li>
             {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
@@ -256,7 +263,7 @@
             </li> --}}
 
             <li
-                class="menu-item 
+                class="menu-item
     {{ request()->routeIs('categories.index*') ||
     request()->routeIs('subCategories.index*') ||
     request()->routeIs('subCategory.trash-view*') ||
@@ -271,7 +278,7 @@
                     <div data-i18n="Layouts">Property / Product Management</div>
                 </a>
                 <ul
-                    class="menu-sub 
+                    class="menu-sub
         {{ request()->routeIs('categories.index*') ||
         request()->routeIs('subCategories.index*') ||
         request()->routeIs('subCategory.trash-view*') ||
@@ -282,28 +289,28 @@
             ? 'show'
             : '' }}">
                     <li
-                        class="menu-item 
+                        class="menu-item
             {{ request()->routeIs('categories.index*') || request()->routeIs('category.trash-view*') ? 'active' : '' }}">
                         <a href="{{ route('categories.index') }}" class="menu-link">
                             Product Category
                         </a>
                     </li>
                     <li
-                        class="menu-item 
+                        class="menu-item
             {{ request()->routeIs('subCategories.index*') || request()->routeIs('subCategory.trash-view*') ? 'active' : '' }}">
                         <a href="{{ route('subCategories.index') }}" class="menu-link">
                             Product Sub Category
                         </a>
                     </li>
                     <li
-                        class="menu-item 
+                        class="menu-item
             {{ request()->routeIs('products.index*') || request()->routeIs('product.trash-view*') ? 'active' : '' }}">
                         <a href="{{ route('products.index') }}" class="menu-link">
                             Product Lists
                         </a>
                     </li>
                     <li
-                        class="menu-item 
+                        class="menu-item
             {{ request()->routeIs('payments.index*') || request()->routeIs('product.trash-view*') ? 'active' : '' }}">
                         <a href="{{ route('payments.index') }}" class="menu-link">
                             Payment List
