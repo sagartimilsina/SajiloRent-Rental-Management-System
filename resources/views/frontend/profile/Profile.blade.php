@@ -20,8 +20,8 @@
                         class="list-group-item list-group-item-action profile-link text-start border-0">Your Favorites</a>
                     <a href="#" data-section="myChats"
                         class="list-group-item list-group-item-action profile-link text-start border-0">My Chats</a>
-                    <a href="#" data-section="helpSupport"
-                        class="list-group-item list-group-item-action profile-link text-start border-0">Help & Support</a>
+                    {{-- <a href="#" data-section="helpSupport"
+                        class="list-group-item list-group-item-action profile-link text-start border-0">Help & Support</a> --}}
                 </div>
             </div>
 

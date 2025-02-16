@@ -598,7 +598,7 @@ class DashboardController extends Controller
             'phone' => 'nullable|string|max:20|unique:users,phone,' . $user->id,
             'current_location' => 'nullable|string|max:255',
             'permanent_location' => 'nullable|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'file' => 'nullable|file|mimes:pdf,jpeg,png,jpg|max:5120',
 
         ]);
