@@ -46,148 +46,6 @@
                                 </li>
                             </ol>
                         </nav>
-
-                        {{-- <form id="product-form"
-                            action="{{ isset($product) ? route('products.update', ['product' => $product->id]) : route('products.store') }}"
-                            method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @if (isset($product))
-                                @method('PUT')
-                            @endif
-                            <!-- Name Input -->
-                            <div class="row">
-                                <div class="form-group col-md-3 mb-3">
-                                    <label for="" class="form-label">Select Category</label>
-                                    <select
-                                        class="form-select form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}"
-                                        name="category_id" id="">
-                                        <option selected>Select one Category</option>
-                                        @foreach ($Categories as $category)
-                                            <option value="{{ $category->id }}">{{ isset($category->category_name) ? $category->category_name : $category->category_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('category_id'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('category_id') }}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group col-md-3 mb-3">
-
-                                    <label for="" class="form-label">Select Sub Category</label>
-                                    <select
-                                        class="form-select form-control {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}"
-                                        name="sub_category_id" id="">
-                                        <option selected>Select Sub Category</option>
-                                        @foreach ($subCategories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->sub_category_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('category_id'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('category_id') }}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3 col-md-3 ">
-                                    <label for="property_name" class="form-label">Property Name</label>
-                                    <input type="text" id="property_name" name="property_name"
-                                        class="form-control @error('property_name') is-invalid @enderror"
-                                        value="{{ old('property_name', isset($product) ? $product->property_name : '') }}"
-                                        required autofocus placeholder="Enter property_name">
-                                    @error('property_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <!-- Thumbnail Input and Preview -->
-                                <div class="mb-3 col-md-3">
-                                    <label for="thumbnail" class="form-label">Thumbnail</label>
-                                    <input type="file" id="thumbnail" name="thumbnail"
-                                        class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
-                                    @error('thumbnail')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <img id="imagePreview"
-                                        src="{{ isset($product) && $product->product_image ? asset('storage/' . $product->product_image) : '' }}"
-                                        alt="Image Preview"
-                                        style="display: {{ isset($product->product_image) ? 'block' : 'none' }}; margin-top: 10px; max-width: 200px; max-height: 150px; object-fit: cover;" />
-                                </div>
-                                <div class="pricing-container form-group mb-3 col-md-6">
-
-                                    <label for="pricingType" class="form-label"> Pricing Type</label>
-                                    <div class="mb-3">
-                                        <select class="form-select form-control" id="pricingType" name="pricing_type"
-                                            onchange="togglePricingDetails()">
-                                            <option value="free">Free</option>
-                                            <option value="paid">Paid</option>
-                                        </select>
-                                    </div>
-                                    <div id="pricingDetails">
-                                        <div class="input-group d-flex flex-wrap">
-
-                                            <input type="number" class="form-control" name="normal_price" id="normalPrice"
-                                                placeholder="Normal Price">
-                                            <input type="number" class="form-control" name="sell_price" id="sellPrice"
-                                                placeholder="Discount Price">
-
-
-                                            <button type="button" class="btn btn-primary"
-                                                onclick="addPricing()">Add</button>
-                                        </div>
-
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-
-                                                    <th>Normal Price</th>
-                                                    <th>Sell Price</th>
-
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="pricingTable">
-                                            </tbody>
-                                            <input type="hidden" name="pricings" id="pricingsInput">
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 col-md-3">
-                                    <label for="property_location" class="form-label">Property Location</label>
-                                    <input type="text" id="property_location" name="property_location"
-                                        class="form-control @error('property_location') is-invalid @enderror"
-                                        value="{{ old('property_location', isset($product) ? $product->property_location : '') }}"
-                                        required autofocus placeholder="Enter property location">
-                                    @error('property_location')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-3 col-md-3">
-                                    <label for="property_quantity" class="form-label">Property Quantity</label>
-                                    <input type="number" id="property_quantity" name="property_quantity"
-                                        class="form-control @error('property_quantity') is-invalid @enderror"
-                                        value="{{ old('property_quantity', isset($product) ? $product->property_quantity : '') }}"
-                                        required autofocus placeholder="Enter property quantity">
-                                    @error('property_quantity')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Description Textarea -->
-                            <div class="form-group mb-3 col-md-12">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', isset($product) ? $product->product_description : '') }}</textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary">
-                                {{ isset($product) ? 'Update product' : 'Create product' }}
-                            </button>
-                        </form> --}}
                         <form id="product-form"
                             action="{{ isset($product) ? route('products.update', ['product' => $product->id]) : route('products.store') }}"
                             method="POST" enctype="multipart/form-data">
@@ -197,7 +55,7 @@
                             @endif
                             <!-- Name Input -->
                             <div class="row">
-                                <div class="form-group col-md-3 mb-3">
+                                {{-- <div class="form-group col-md-3 mb-3">
                                     <label for="" class="form-label">Select Category</label>
                                     <select
                                         class="form-select form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}"
@@ -234,7 +92,68 @@
                                             {{ $errors->first('sub_category_id') }}
                                         </div>
                                     @endif
+                                </div> --}}
+                                <div class="form-group col-md-3 mb-3">
+                                    <label for="" class="form-label">Select Category</label>
+                                    <select
+                                        class="form-select form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}"
+                                        name="category_id" id="categorySelect">
+                                        <option selected>Select one Category</option>
+                                        @foreach ($Categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ old('category_id', isset($product) ? $product->category_id : '') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->category_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('category_id'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('category_id') }}
+                                        </div>
+                                    @endif
                                 </div>
+
+                                <div class="form-group col-md-3 mb-3">
+                                    <label for="" class="form-label">Select Sub Category</label>
+                                    <select
+                                        class="form-select form-control {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}"
+                                        name="sub_category_id" id="subCategorySelect">
+                                        <option selected>Select Sub Category</option>
+                                    </select>
+                                    @if ($errors->has('sub_category_id'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('sub_category_id') }}
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <script>
+                                    document.getElementById('categorySelect').addEventListener('change', function() {
+                                        let categoryId = this.value;
+                                        let subCategorySelect = document.getElementById('subCategorySelect');
+
+                                        subCategorySelect.innerHTML = '<option selected>Loading...</option>'; // Show loading text
+
+                                        if (categoryId) {
+                                            fetch(`/get-subcategories/${categoryId}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    subCategorySelect.innerHTML = '<option selected>Select Sub Category</option>';
+                                                    data.forEach(subCategory => {
+                                                        subCategorySelect.innerHTML +=
+                                                            `<option value="${subCategory.id}">${subCategory.sub_category_name}</option>`;
+                                                    });
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error fetching subcategories:', error);
+                                                    subCategorySelect.innerHTML = '<option selected>Error loading subcategories</option>';
+                                                });
+                                        } else {
+                                            subCategorySelect.innerHTML = '<option selected>Select Sub Category</option>';
+                                        }
+                                    });
+                                </script>
+
                                 <div class="form-group mb-3 col-md-3">
                                     <label for="property_name" class="form-label">Property Name</label>
                                     <input type="text" id="property_name" name="property_name"
@@ -309,6 +228,16 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3 col-md-3">
+                                    <label for="map_link" class="form-label">Property Location Map Link</label>
+                                    <input type="text" id="map_link" name="map_link"
+                                        class="form-control @error('map_link') is-invalid @enderror"
+                                        value="{{ old('map_link', isset($product) ? $product->map_link : '') }}" required
+                                        autofocus placeholder="Enter property location">
+                                    @error('map_link')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-3 col-md-3">
                                     <label for="property_quantity" class="form-label">Property Quantity</label>
                                     <input type="number" id="property_quantity" name="property_quantity"
                                         class="form-control @error('property_quantity') is-invalid @enderror"
@@ -319,7 +248,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <!-- Description Textarea -->
                             <div class="form-group mb-3 col-md-12">
                                 <label for="description" class="form-label">Description</label>

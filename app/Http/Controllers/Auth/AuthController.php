@@ -23,6 +23,8 @@ class AuthController extends Controller
 
     public function login()
     {
+
+
         return view('auth.login');
     }
     /*************  ✨ Codeium Command ⭐  *************/
@@ -278,8 +280,74 @@ class AuthController extends Controller
 
 
 
+    // public function login_store(Request $request)
+    // {
+    //     $key = 'login-attempts:' . $request->ip() . ':' . $request->login_field;
+    //     $maxAttempts = 5;
+    //     $decaySeconds = 120;
+
+    //     if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
+    //         $seconds = RateLimiter::availableIn($key);
+    //         $minutes = ceil($seconds / 60);
+    //         return redirect()->back()->withErrors([
+    //             'error' => "Too many attempts. Please try again after {$minutes} minute(s)."
+    //         ])->withInput();
+    //     }
+
+    //     $validated = $request->validate([
+    //         'login_field' => ['required', 'string', 'max:255'],
+    //         'password' => ['required'],
+    //     ], [
+    //         'login_field.required' => 'The email or phone field is required.',
+    //         'password.required' => 'The password field is required.',
+    //     ]);
+
+    //     $loginType = $this->determineLoginType($validated['login_field']);
+
+    //     try {
+    //         if (Auth::attempt([$loginType => $validated['login_field'], 'password' => $validated['password']])) {
+    //             $user = Auth::user();
+
+    //             if ($user->otp_is_verified) {
+    //                 RateLimiter::clear($key);
+    //                 $userRole = cache()->remember("role_name_{$user->role_id}", now()->addMinutes(30), function () use ($user) {
+    //                     return UserRoleManagement::where('id', $user->role_id)->value('role_name');
+    //                 });
+
+    //                 switch ($userRole) {
+    //                     case 'Super Admin':
+    //                         return redirect()->route('super.admin.dashboard')->with('success', "{$user->name}, Login successfully");
+    //                     case 'Admin':
+    //                         return redirect()->route('admin.dashboard')->with('success', "{$user->name}, Login successfully");
+    //                     case 'User':
+    //                         return redirect()->route('index')->with('success', "{$user->name}, Login successfully");
+    //                     default:
+    //                         Log::warning("Unexpected role ID: {$user->role_id}");
+    //                         return redirect()->route('index')->with('success', "{$user->name}, Login successfully");
+    //                 }
+    //             } else {
+    //                 Auth::logout();
+    //                 return redirect()->route('otp', ['user' => encrypt($user->id)])
+    //                     ->with('info', 'Please verify the OTP to complete your login.');
+    //             }
+    //         } else {
+    //             RateLimiter::hit($key, $decaySeconds);
+    //             return redirect()->back()->withErrors([
+    //                 'error' => 'The provided credentials are incorrect.',
+    //             ])->withInput();
+    //         }
+    //     } catch (\Exception $e) {
+    //         Log::error('Login error: ' . $e->getMessage());
+    //         return redirect()->back()->withErrors([
+    //             'error' => 'An unexpected error occurred. Please try again later.',
+    //         ])->withInput();
+    //     }
+    // }
+
+
     public function login_store(Request $request)
     {
+        $redirect_url = session()->get('redirectUrl');
         $key = 'login-attempts:' . $request->ip() . ':' . $request->login_field;
         $maxAttempts = 5;
         $decaySeconds = 120;
@@ -302,37 +370,37 @@ class AuthController extends Controller
 
         $loginType = $this->determineLoginType($validated['login_field']);
 
+        $user = User::where($loginType, $validated['login_field'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            RateLimiter::hit($key, $decaySeconds);
+            return redirect()->back()->withErrors(['error' => 'Invalid credentials.'])->withInput();
+        }
+
         try {
             if (Auth::attempt([$loginType => $validated['login_field'], 'password' => $validated['password']])) {
                 $user = Auth::user();
 
-                if ($user->otp_is_verified) {
-                    RateLimiter::clear($key);
-                    $userRole = cache()->remember("role_name_{$user->role_id}", now()->addMinutes(30), function () use ($user) {
-                        return UserRoleManagement::where('id', $user->role_id)->value('role_name');
-                    });
-
-                    switch ($userRole) {
-                        case 'Super Admin':
-                            return redirect()->route('super.admin.dashboard')->with('success', "{$user->name}, Login successfully");
-                        case 'Admin':
-                            return redirect()->route('admin.dashboard')->with('success', "{$user->name}, Login successfully");
-                        case 'User':
-                            return redirect()->route('index')->with('success', "{$user->name}, Login successfully");
-                        default:
-                            Log::warning("Unexpected role ID: {$user->role_id}");
-                            return redirect()->route('index')->with('success', "{$user->name}, Login successfully");
-                    }
-                } else {
+                if (!$user->otp_is_verified) {
                     Auth::logout();
                     return redirect()->route('otp', ['user' => encrypt($user->id)])
                         ->with('info', 'Please verify the OTP to complete your login.');
                 }
-            } else {
-                RateLimiter::hit($key, $decaySeconds);
-                return redirect()->back()->withErrors([
-                    'error' => 'The provided credentials are incorrect.',
-                ])->withInput();
+
+                RateLimiter::clear($key);
+
+                $userRole = cache()->remember("role_name_{$user->role_id}", now()->addMinutes(30), function () use ($user) {
+                    return UserRoleManagement::where('id', $user->role_id)->value('role_name');
+                });
+
+                session()->forget('redirectUrl');
+
+                return match ($userRole) {
+                    'Super Admin' => redirect()->route('super.admin.dashboard')->with('success', "{$user->name}, Login successfully"),
+                    'Admin' => redirect()->route('admin.dashboard')->with('success', "{$user->name}, Login successfully"),
+                    'User' => $redirect_url ? redirect($redirect_url)->with('success', "{$user->name}, Login successfully") : redirect()->route('index')->with('success', "{$user->name}, Login successfully"),
+                    default => throw new \Exception("Unexpected role: {$userRole}")
+                };
             }
         } catch (\Exception $e) {
             Log::error('Login error: ' . $e->getMessage());
@@ -390,7 +458,14 @@ class AuthController extends Controller
             $existingUser = User::where('email', $googleUser->getEmail())->first();
             if ($existingUser) {
 
+                // If the user exists, log them in
+                $redirect_url = session()->get('redirectUrl');
+                session()->forget('redirectUrl');
+
                 Auth::login($existingUser);
+                if ($redirect_url) {
+                    return redirect($redirect_url)->with('success', 'Login successfully');
+                }
 
                 return redirect()->route('index')->with('success', 'Login successfully');
             } else {
@@ -426,7 +501,6 @@ class AuthController extends Controller
                 return redirect()->route('otp')
                     ->with('success', 'OTP sent to your email.');
             }
-
         } catch (\Exception $e) {
             // Handle exception
             return redirect()->route('login')->with('error', 'Failed to login with Google.');

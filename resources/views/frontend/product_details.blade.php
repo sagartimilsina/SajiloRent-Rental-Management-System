@@ -1,570 +1,379 @@
 @extends('frontend.layouts.main')
 @section('title', 'Product Details')
 @section('content')
-    <style>
-        .thumbnail {
-            width: 100px;
-            height: auto;
-            margin-right: 10px;
-        }
-
-        .price-details,
-        .property-details,
-        .apartment-overview {
-            margin-top: 20px;
-        }
-
-        .price-details h5,
-        .property-details h5,
-        .apartment-overview h5 {
-            color: #28a745;
-        }
-
-        .booking-form {
-            border: 2px solid #28a745;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        .booking-form h5 {
-            color: #28a745;
-        }
-
-        .btn-request {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .ad-unit {
-            border: 2px solid #28a745;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .ad-unit img {
-            width: 100%;
-            height: auto;
-        }
-
-        .ad-unit a {
-            display: block;
-            margin-top: 10px;
-            color: white;
-            background-color: #28a745;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-
-        .table th,
-        .table td {
-            text-align: center;
-        }
-
-        .container-left {
-            position: relative;
-            text-align: left;
-        }
-
-        .booking-form {
-            position: sticky;
-            top: 30px;
-        }
-
-        .container-left .img-lists {
-            display: flex;
-            flex-wrap: wrap;
-            row-gap: 20px;
-            column-gap: 20px;
-        }
-    </style>
+    @if (!Auth::check())
+        @php
+            session()->put('redirectUrl', url()->current());
+        @endphp
+    @endif
     <main>
-        <section class="breadcrumb-hero ">
+        {{-- <section class="breadcrumb-hero ">
             <hr>
             <div class="container text-start breadcrumb-overlay" style="padding: 0;">
                 <nav class="breadcrumb">
-                    <a class="breadcrumb-item" href="index.html">Home</a>
-                    <a class="" href="product.html">Product</a>
+                    <a class="breadcrumb-item" href="{{ route('index') }}">Home</a>
+                    <a class="" href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product</a>
+                    <a class="breadcrumb-item" href="{{ route('index') }}">Home</a>
+                    <a class="" href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product</a>
 
-                    <a href="#" class="active-nav" aria-current="page">Product Name </a>
+                    <a href="#" class="active-nav" aria-current="page">{{ $property->property_name }}</a>
+                    <a href="#" class="active-nav" aria-current="page">{{ $property->property_name }}</a>
                 </nav>
             </div>
             <hr>
-        </section>
+        </section> --}}
 
-        <section class="container container-left  mt-4">
+        <section class="container container-left mt-4">
+
             <div class="row">
-                <div class="col-xl-8 col-lg-7 col-md-7  col-sm-12">
+                <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12">
+
                     <div class="image-pic">
                         <!-- Main Image -->
                         <img id="mainImage" alt="Main image of the family apartment" class="img-fluid" height="auto"
-                            src="https://storage.googleapis.com/a1aa/image/i51jgJIoiUJJP1F3b11UJ8RkwYZRo7t2rEV1hqtCBG0O9e5JA.jpg" />
+                            src="{{ asset('storage/' . $property->property_image) }}" />
+
 
                         <!-- Thumbnails Carousel -->
                         <div class="img-lists owl-carousel owl-theme mt-2">
-                            <div class="item">
-                                <img alt="Thumbnail image 1" class="thumbnail img-fluid" height="100"
-                                    src="https://storage.googleapis.com/a1aa/image/jwGALZI8GqI4JxeWiw8yTffKqbrUqfoqxevVMMEn7mTvnee5JA.jpg"
-                                    width="100" onclick="changeMainImage(this)" />
-                            </div>
-                            <div class="item">
-                                <img alt="Thumbnail image 2" class="thumbnail img-fluid" height="100"
-                                    src="https://storage.googleapis.com/a1aa/image/xqnG5IUwZgI8C5w70owNIqdH9nn9cxouxr2XkVhFF0TN9e5JA.jpg"
-                                    width="100" onclick="changeMainImage(this)" />
-                            </div>
-                            <div class="item">
-                                <img alt="Thumbnail image 3" class="thumbnail img-fluid" height="100"
-                                    src="https://storage.googleapis.com/a1aa/image/YUMOhQeCFBW8GKllUYUEm6QzlKS7lkrkBrUySkFH2c4f07zTA.jpg"
-                                    width="100" onclick="changeMainImage(this)" />
-                            </div>
-                            <div class="item">
-                                <img alt="Thumbnail image 4" class="thumbnail img-fluid" height="100"
-                                    src="https://storage.googleapis.com/a1aa/image/zzCSvHZOoWbOIRQCdbfTGHvvroPlbbj9QGplEGk9Q7hb695JA.jpg"
-                                    width="100" onclick="changeMainImage(this)" />
-                            </div>
+                            @foreach ($property->propertyImages as $image)
+                                <div class="item">
+                                    <img alt="Thumbnail image" class="thumbnail img-fluid" height="400"
+                                        src="{{ asset('storage/' . $image->property_image) }}" width="400"
+                                        onclick="changeMainImage(this)" />
+                                </div>
+                            @endforeach
+
                         </div>
                     </div>
 
-                    <h3 class="mt-3">
-                        Family Apartment
-                    </h3>
-                    <p>
-                        Rent/Month: $550
-                    </p>
-                    <p>
-                        3000 sq-ft., 3 Bedroom, Semi-furnished, Luxurious, South facing Apartment for Rent in Rangas
-                        Malancha, Melbourne.
-                    </p>
-                    <div class="price-details">
-                        <h5>
-                            Price Details-
-                        </h5>
+                    <div class="data">
+                        <h2 class="mt-3" style="color: #f39c12;">
+                            {{ $property->property_name }}
+                        </h2>
+
                         <p>
-                            <strong>
-                                Rent/Month:
-                            </strong>
-                            $550 (negotiable)
+                            Normal Price: {{ $property->property_price }}
                         </p>
                         <p>
-                            <strong>
-                                Service Charge:
-                            </strong>
-                            8,000/- Tk per month, subject to change
+                            Discount Price: {{ $property->property_discount }}
                         </p>
                         <p>
-                            <strong>
-                                Security Deposit:
-                            </strong>
-                            3 month's rent
+                            Negotiable Price: {{ $property->property_sell_price }}
                         </p>
-                        <p>
-                            <strong>
-                                Flat Release Policy:
-                            </strong>
-                            3 months earlier notice required
-                        </p>
+
+
+
                     </div>
-                    <div class="property-details">
-                        <h5>
-                            Property Details-
-                        </h5>
-                        <p>
-                            <strong>
-                                Address &amp; Area:
-                            </strong>
-                            Rangas Malancha, House-68, Road-6A (Dead End Road), Dhanmondi Residential Area.
-                        </p>
-                        <p>
-                            <strong>
-                                Flat Size:
-                            </strong>
-                            3000 Sq Feet.
-                        </p>
-                        <p>
-                            <strong>
-                                Floor:
-                            </strong>
-                            A5 (5th Floor) (6 storied Building ) (South Facing Unit)
-                        </p>
-                        <p>
-                            <strong>
-                                Room Category:
-                            </strong>
-                            3 Large Bed Rooms with 3 Verandas, Spacious Drawing, Dining &amp; Family Living Room,
-                            Highly
-                            Decorated Kitchen with Store Room and Servant room with attached Toilet.
-                        </p>
-                        <p>
-                            <strong>
-                                Facilities:
-                            </strong>
-                            1 Modern Lift, All Modern Amenities &amp; Semi Furnished.
-                        </p>
-                        <p>
-                            <strong>
-                                Additional Facilities:
-                            </strong>
-                            a. Electricity with full generator load, b. Central Gas Geyser, c. 2 Car Parking with
-                            Driver's
-                            Accommodation, d. Community Conference Hall, e. Roof Top Beautified Garden and Grassy
-                            Ground, f.
-                            Cloth Hanging facility with CC camera
-                        </p>
+                    <p>{!! $property->property_description !!}</p>
+                    <div class="map-section ">
+                        <iframe src="{{ $property->map_link }}" width="100%" height="400" style="border:0;"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
                     </div>
-                    <div class="apartment-overview">
-                        <h5>
-                            Apartment Overview
-                        </h5>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Deposit / Bond
-                                    </th>
-                                    <th>
-                                        Computer
-                                    </th>
-                                    <th>
-                                        Q3
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        $220000.00
-                                    </td>
-                                    <td>
-                                        Computer
-                                    </td>
-                                    <td>
-                                        Q3
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        Total Area (sq. ft.)
-                                    </th>
-                                    <th>
-                                        Total Floors
-                                    </th>
-                                    <th>
-                                        Q8
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        300
-                                    </td>
-                                    <td>
-                                        8
-                                    </td>
-                                    <td>
-                                        Q8
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        Car Parking Per Space
-                                    </th>
-                                    <th>
-                                        Air Condition
-                                    </th>
-                                    <th>
-                                        Yes
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        02
-                                    </td>
-                                    <td>
-                                        Yes
-                                    </td>
-                                    <td>
-                                        Yes
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                    <!-- Review Section -->
+                    <div class="review mt-5">
+                        <!-- Submit a Review -->
+                        <h4 class="mt-5">Leave a Review</h4>
+                        <form action="{{ route('property.review.store', $property->id) }}" method="POST">
+                            @csrf
+
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+
+                            <style>
+                                .star {
+                                    font-size: 24px;
+                                    color: gray;
+                                    cursor: pointer;
+                                    transition: color 0.2s;
+                                }
+
+                                .star.selected {
+                                    color: gold;
+                                }
+                            </style>
+
+                            <div class="mb-3 mt-2">
+                                <label for="rating" class="form-label">Rate the Property</label>
+                                <div id="star-rating">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="fa fa-star star" data-value="{{ $i }}"></i>
+                                    @endfor
+                                </div>
+                                <input type="hidden" name="rating" id="rating" value="">
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea name="comment" id="comment" class="form-control {{ $errors->has('comment') ? 'is-invalid' : '' }}"
+                                    rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
+                        </form>
+
+
+                        <!-- Existing Reviews -->
+                        <div id="reviews-list" class="mt-3">
+                            <h5 class="mb-4">Reviews</h5>
+
+                            @forelse ($property_review as $review)
+                                <div class="review-item mb-4 card p-4 shadow">
+                                    <div class="d-flex justify-content-between align-items-center p-3 pb-1">
+                                        <strong>{{ $review->user->name }}</strong>
+                                        <div class="ms-3 text-muted">{{ $review->created_at->format('d M, Y') }}</div>
+                                    </div>
+                                    <div class="rating mb-1 d-flex p-3">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i
+                                                class="fas fa-star {{ $i <= $review->property_rating ? 'text-warning' : 'text-muted' }}"></i>
+                                        @endfor
+                                    </div>
+                                    <p class="px-3">{{ $review->property_review }}</p>
+                                </div>
+                            @empty
+                                <p class="px-3">No reviews yet. Be the first to leave a review!</p>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
+
+
                 <div class="col-md-5 col-xl-4 col-lg-5 col-sm-12">
+
+
                     <div class="booking-form">
-                        <h5>BOOK THIS APARTMENT</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label" for="fullName">Full Name</label>
-                                <input class="form-control" id="fullName" placeholder="Full name" type="text" />
+                        <div class="card shadow">
+                            <div class="d-flex gap-3 m-3 flex-row favorite-link align-items-center justify-content-between">
+
+                                @if (Auth::check())
+                                    <a href="javascript:void(0);"
+                                        class="favorite-link {{ in_array($property->id, $favoriteIds) ? 'text-warning' : 'text-warning' }} "
+                                        onclick="toggleFavorite({{ Auth::id() }}, {{ $property->id }})"
+                                        title="Add to Favorites">
+                                        <i
+                                            class="{{ in_array($property->id, $favoriteIds) ? 'fas fa-heart' : 'far fa-heart' }} fa-lg"></i>
+                                    </a>
+                                @elseif(!Auth::check())
+                                    <a href="{{ route('login') }}"
+                                        class="favorite-link {{ in_array($property->id, $favoriteIds) ? 'text-warning' : 'text-warning' }} "
+                                        title="Add to Favorites">
+                                        <i
+                                            class="{{ in_array($property->id, $favoriteIds) ? 'fas fa-heart' : 'far fa-heart' }} fa-lg"></i>
+                                    </a>
+                                @endif
+
+
+
+
+                                <!-- Add to Cart -->
+                                <form action="{{ route('cart.add') }}" method="POST" style="display: inline;"
+                                    class="cart-add">
+                                    @csrf
+                                    <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                    <button type="submit" class="btn btn-link text-primary p-0" title="Add to Cart">
+                                        <i class="fas fa-shopping-cart me-1 fa-lg"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Chatbox -->
+                                <a href="javascript:void(0);" class="text-info" onclick="openChatbox({{ $property->id }})"
+                                    title="Chat">
+                                    <i class="fas fa-comments me-1 fa-lg"></i>
+                                </a>
+
+                                <!-- Share Property Link -->
+                                <a href="javascript:void(0);" class="text-warning "
+                                    onclick="shareProperty('{{ route('property.details', ['id' => $property->id]) }}')"
+                                    style="position: relative;" title="Share this property">
+                                    <i class="fas fa-share-alt fa-lg"></i>
+                                </a>
+
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="phoneNumber">Phone Number</label>
-                                <input class="form-control" id="phoneNumber" placeholder="+(00)0-9999-9999"
-                                    type="text" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="emailAddress">Email Address</label>
-                                <input class="form-control" id="emailAddress" placeholder="example@domain.com"
-                                    type="email" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="familyMember">Family Member</label>
-                                <input class="form-control" id="familyMember" placeholder="Family member" type="text" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="children">Children</label>
-                                <input class="form-control" id="children" placeholder="1" type="number" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="yourMessage">Your Message</label>
-                                <textarea class="form-control" id="yourMessage" placeholder="Message" rows="3"></textarea>
-                            </div>
-                            <button class="btn btn-request w-100" type="submit">
-                                Request Booking
-                            </button>
-                        </form>
+
+                        </div>
+
+                        <div class="form mt-4">
+                            <h5 class="text-uppercase text-center fw-bold-5">Contact Us About This Property</h5>
+
+                            <form method="POST" action="{{ route('property.message.store', $property->id) }}">
+                                @csrf
+                                <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                <div class="mb-3">
+                                    <label class="form-label" for="fullName">Full Name</label>
+                                    <input class="form-control @error('full_name') is-invalid @enderror" id="fullName"
+                                        name="full_name" placeholder="Full name" type="text"
+                                        value="{{ old('full_name', @Auth::user()->name) }}" readonly />
+                                    @error('full_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="phoneNumber">Phone Number</label>
+                                    <input class="form-control @error('phone_number') is-invalid @enderror"
+                                        id="phoneNumber" name="phone_number" placeholder="Enter your phone number"
+                                        type="text" value="{{ old('phone_number', @Auth::user()->phone) }}" />
+                                    @error('phone_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="emailAddress">Email Address</label>
+                                    <input class="form-control @error('email_address') is-invalid @enderror"
+                                        id="emailAddress" name="email_address" placeholder="example@domain.com"
+                                        type="email" value="{{ old('email_address', @Auth::user()->email) }}"
+                                        readonly />
+                                    @error('email_address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="familyMember">Subject</label>
+                                    <input class="form-control @error('subject') is-invalid @enderror" id="familyMember"
+                                        name="subject" placeholder="Subject" type="text"
+                                        value="{{ old('subject') }}" />
+                                    @error('subject')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="yourMessage">Your Message</label>
+                                    <textarea class="form-control @error('message') is-invalid @enderror" id="yourMessage" name="message"
+                                        placeholder="Message" rows="3">{{ old('message') }}</textarea>
+                                    @error('message')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <button class="btn btn-primary w-100" type="submit">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
                     </div>
+
+
                 </div>
             </div>
-
         </section>
+
+
+
+
         <section class="rent-property mt-5">
             <div class="container">
                 <!-- Header -->
                 <div class="header mb-5 text-center">
-                    <h1> Related &amp; Apartments</h1>
+                    <h1> Related &amp; Property or Product</h1>
+
                 </div>
 
                 <!-- Navigation Tabs -->
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                            <div class="card">
-                                <img alt="Family Apartment 6" class="img-fluid"
-                                    src="https://storage.googleapis.com/a1aa/image/PWGDLPshtN5iDdQkZkydACT8bgzmHSq1JMpdN7wlXCuX3b8E.jpg" />
-                                <a href="#" class="text-decoration-none">
-                                    <div class="card-body">
-                                        <h5 class="card-title ">
-                                            Family Apartment 1
-                                        </h5>
-                                        <p class="card-text">
-                                            <i class="fas fa-map-marker-alt">
-                                            </i>
-                                            Dhanmondi, Dhaka
-                                        </p>
-                                        <div class="row ">
 
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bed">
-                                                    </i>
-                                                    3 Bedrooms
-                                                </p>
-                                            </div>
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bath">
-                                                    </i>
-                                                    2 Bathroom
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price">
-                                            <p class="text-center">
-                                                $200
-                                            </p>
-                                        </div>
+                    @if (@$similar_properties->count() > 0)
+                        <div class="row justify-content-center">
+                            @foreach ($similar_properties as $apartment)
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <a href="{{ route('property.details', ['id' => $apartment->id]) }}"
+                                            class="text-decoration-none">
+                                            <img alt="{{ $apartment->property_name }}" class="card-img-top img-fluid"
+                                                src="{{ asset('storage/' . $apartment->property_image) }}" />
 
+                                            <div class="card-body">
+                                                <h5 class="card-title text-truncate">
+                                                    {{ $apartment->property_name }}
+                                                </h5>
+                                                <p class="card-text text-justify">
+                                                    {!! \Illuminate\Support\Str::limit(strip_tags($apartment->property_description), 70, '...') !!}
+                                                </p>
+
+
+                                                <p class="card-text small text-muted">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    {{ $apartment->property_location }}
+                                                </p>
+                                                <div class="price mt-2">
+                                                    <p
+                                                        class="text-center d-flex align-items-center justify-content-between">
+                                                        <del class="text-danger small">Rs.
+                                                            {{ $apartment->property_price }}</del>
+
+                                                        Rs. {{ $apartment->property_sell_price }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div
+                                            class="card-footer bg-white border-0 d-flex justify-content-between align-items-center favorite-link">
+                                            <!-- Share Button -->
+                                            <a href="javascript:void(0);" class="text-warning"
+                                                onclick="shareProperty('{{ route('property.details', ['id' => $apartment->id]) }}')"
+                                                style="position: relative;" title="Share this property">
+                                                <i class="fas fa-share-alt fa-lg"></i>
+                                            </a>
+                                            <!-- Add to Favorites Link -->
+                                            <a href="javascript:void(0);"
+                                                class="favorite-link {{ in_array($apartment->id, $favoriteIds) ? 'text-warning' : 'text-warning' }} "
+                                                onclick="toggleFavorite({{ Auth::id() }}, {{ $apartment->id }})"
+                                                title="Add to Favorites">
+                                                <i
+                                                    class="{{ in_array($apartment->id, $favoriteIds) ? 'fas fa-heart' : 'far fa-heart' }} fa-lg"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                </a>
-                                <div class="card-footer d-flex justify-content-between  ">
-
-                                    <a class="text-muted" href="#">
-                                        <i class="fas fa-share-alt">
-                                        </i>
-                                    </a>
-                                    <a class="text-muted" href="#">
-                                        <i class="far fa-star">
-                                        </i>
-                                    </a>
-
                                 </div>
+                            @endforeach
+
+                            <div class="text-center mb-4">
+                                <button class="btn btn-primary">View All</button>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                            <div class="card">
-                                <img alt="Family Apartment 6" class="img-fluid"
-                                    src="https://storage.googleapis.com/a1aa/image/PWGDLPshtN5iDdQkZkydACT8bgzmHSq1JMpdN7wlXCuX3b8E.jpg" />
-                                <a href="#" class="text-decoration-none">
-                                    <div class="card-body">
-                                        <h5 class="card-title ">
-                                            Family Apartment 1
-                                        </h5>
-                                        <p class="card-text">
-                                            <i class="fas fa-map-marker-alt">
-                                            </i>
-                                            Dhanmondi, Dhaka
-                                        </p>
-                                        <div class="row ">
-
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bed">
-                                                    </i>
-                                                    3 Bedrooms
-                                                </p>
-                                            </div>
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bath">
-                                                    </i>
-                                                    2 Bathroom
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price">
-                                            <p class="text-center">
-                                                $200
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </a>
-                                <div class="card-footer d-flex justify-content-between  ">
-
-                                    <a class="text-muted" href="#">
-                                        <i class="fas fa-share-alt">
-                                        </i>
-                                    </a>
-                                    <a class="text-muted" href="#">
-                                        <i class="far fa-star">
-                                        </i>
-                                    </a>
-
-                                </div>
-                            </div>
+                    @else
+                        <div class="text-center">
+                            <h3>No Similar Properties Found</h3>
                         </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                            <div class="card">
-                                <img alt="Family Apartment 6" class="img-fluid"
-                                    src="https://storage.googleapis.com/a1aa/image/PWGDLPshtN5iDdQkZkydACT8bgzmHSq1JMpdN7wlXCuX3b8E.jpg" />
-                                <a href="#" class="text-decoration-none">
-                                    <div class="card-body">
-                                        <h5 class="card-title ">
-                                            Family Apartment 1
-                                        </h5>
-                                        <p class="card-text">
-                                            <i class="fas fa-map-marker-alt">
-                                            </i>
-                                            Dhanmondi, Dhaka
-                                        </p>
-                                        <div class="row ">
+                    @endif
 
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bed">
-                                                    </i>
-                                                    3 Bedrooms
-                                                </p>
-                                            </div>
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bath">
-                                                    </i>
-                                                    2 Bathroom
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price">
-                                            <p class="text-center">
-                                                $200
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </a>
-                                <div class="card-footer d-flex justify-content-between  ">
-
-                                    <a class="text-muted" href="#">
-                                        <i class="fas fa-share-alt">
-                                        </i>
-                                    </a>
-                                    <a class="text-muted" href="#">
-                                        <i class="far fa-star">
-                                        </i>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                            <div class="card">
-                                <img alt="Family Apartment 6" class="img-fluid"
-                                    src="https://storage.googleapis.com/a1aa/image/PWGDLPshtN5iDdQkZkydACT8bgzmHSq1JMpdN7wlXCuX3b8E.jpg" />
-                                <a href="#" class="text-decoration-none">
-                                    <div class="card-body">
-                                        <h5 class="card-title ">
-                                            Family Apartment 1
-                                        </h5>
-                                        <p class="card-text">
-                                            <i class="fas fa-map-marker-alt">
-                                            </i>
-                                            Dhanmondi, Dhaka
-                                        </p>
-                                        <div class="row ">
-
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bed">
-                                                    </i>
-                                                    3 Bedrooms
-                                                </p>
-                                            </div>
-                                            <div class="col-6 services-icon">
-                                                <p class="card-text">
-                                                    <i class="fas fa-bath">
-                                                    </i>
-                                                    2 Bathroom
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price">
-                                            <p class="text-center">
-                                                $200
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </a>
-                                <div class="card-footer d-flex justify-content-between  ">
-
-                                    <a class="text-muted" href="#">
-                                        <i class="fas fa-share-alt">
-                                        </i>
-                                    </a>
-                                    <a class="text-muted" href="#">
-                                        <i class="far fa-star">
-                                        </i>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="text-center mb-4">
-                            <button class="btn btn-primary">Load More</button>
-                        </div>
-                    </div>
                 </div>
 
 
             </div>
         </section>
+
+
     </main>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const stars = document.querySelectorAll("#star-rating .star");
+            const ratingInput = document.getElementById("rating");
+
+            stars.forEach(star => {
+                star.addEventListener("click", function() {
+                    let value = this.getAttribute("data-value");
+                    ratingInput.value = value;
+
+                    // Highlight stars up to the selected one
+                    stars.forEach(s => {
+                        s.classList.toggle("selected", s.getAttribute("data-value") <=
+                            value);
+                    });
+                });
+            });
+        });
+    </script>
     <script>
         // Initialize Owl Carousel
         $(document).ready(function() {
@@ -597,9 +406,6 @@
             thumbnail.classList.add('selected-thumbnail');
         }
     </script>
-
-
-
     <script>
         // JavaScript to dynamically adjust dropdown alignment
         document.querySelectorAll('.dropdown-submenu').forEach(function(submenu) {

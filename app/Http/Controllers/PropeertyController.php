@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\User;
 use App\Models\Propeerty;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\SubCategories;
 use App\Models\Users_Property;
+use App\Models\PropertyMessage;
+use App\Mail\PropertyMessageMail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
@@ -87,7 +90,7 @@ class PropeertyController extends Controller
             'property_quantity' => 'required|integer|min:1',
             'description' => 'required|string',
             'cropped_image' => 'nullable|string',
-            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         // Process the pricing data
@@ -395,4 +398,49 @@ class PropeertyController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    public function message_store(Request $request)
+    {
+        // Validate incoming request data
+        $request->validate([
+            'message' => 'nullable|string',
+            'property_id' => 'required|exists:propeerties,id',
+            'user_id' => 'required|exists:users,id',
+            'full_name' => 'required|string|max:255',
+            'email_address' => 'required|email|max:255',
+            'phone_number' => 'required|string|max:15',
+            'subject' => 'required|string|max:255',
+        ]);
+
+        // Get the user and property data based on their IDs
+        $user = User::find($request->user_id);
+        $property = Propeerty::find($request->property_id);
+
+        // Ensure the user and property exist
+        if (!$user || !$property) {
+            return redirect()->back()->with('error', 'User or Property not found');
+        }
+
+        // Create a new property message
+        $message = PropertyMessage::create([
+            'property_id' => $request->property_id,
+            'user_id' => $request->user_id,
+            'subject' => $request->subject,
+            'message' => $request->message,
+        ]);
+
+        // Prepare the login route (or wherever the user needs to go)
+        $loginRoute = route('login');  // This could be a link to the login page or dashboard
+
+        // Send the email notification to the user
+        Mail::to($user->email)->send(new PropertyMessageMail($message, $user->name, $property->property_name, $request->subject, $request->message, $loginRoute));
+
+        // Redirect with success message
+        return redirect()->back()->with('success', 'Message sent successfully.');
+    }
+    
+
+
+
+
 }

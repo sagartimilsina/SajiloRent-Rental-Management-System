@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbox with Emoji Picker</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .chatbox {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            resize: none;
+            height: 50px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            width: 100%;
+        }
+        .emoji {
+            cursor: pointer;
+            font-size: 20px;
+            margin: 5px;
+        }
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chatbox">
+    <div class="message-wrapper">
+        <textarea id="chatInput" placeholder="Type your message..."></textarea>
+        <button type="button" class="btn btn-outline-primary m-2 mb-3" id="emojiBtn">
+            <i class="fas fa-smile"></i> <!-- Emoji icon -->
+        </button>
+        <button id="sendMessage" class="btn btn-primary">Send</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="emojiModal" tabindex="-1" aria-labelledby="emojiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emojiModalLabel">Select an Emoji</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="emojiPicker"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap and FontAwesome JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<script>
+    const apiKey = 'a9b4cc674a0d974d760cdf772b2a38b82fbb5146'; // Replace with your actual API key
+    const apiUrl = `https://emoji-api.com/emojis?access_key=${apiKey}`;
+
+    // Function to populate the emoji picker from the API
+    async function populateEmojiPicker() {
+        try {
+            const response = await fetch(apiUrl);
+            const emojis = await response.json();
+            const emojiPicker = document.getElementById('emojiPicker');
+
+            // Limit to 20 emojis for display
+            const limitedEmojis = emojis.slice(0, 20);
+            limitedEmojis.forEach(emoji => {
+                const span = document.createElement('span');
+                span.classList.add('emoji');
+                span.textContent = emoji.character; // Use the emoji character
+                span.dataset.emoji = emoji.character; // Store the emoji in a data attribute
+                emojiPicker.appendChild(span);
+            });
+        } catch (error) {
+            console.error('Error fetching emojis:', error);
+        }
+    }
+
+    // Open modal and populate emojis when button is clicked
+    document.getElementById('emojiBtn').addEventListener('click', () => {
+        const emojiModal = new bootstrap.Modal(document.getElementById('emojiModal'));
+        emojiModal.show(); // Open the modal
+        populateEmojiPicker(); // Populate the emoji picker
+    });
+
+    // Add event listener to emoji picker
+    document.getElementById('emojiPicker').addEventListener('click', (event) => {
+        if (event.target.classList.contains('emoji')) {
+            const emoji = event.target.dataset.emoji;
+            const chatInput = document.getElementById('chatInput');
+            chatInput.value += emoji; // Append emoji to the textarea
+            chatInput.focus(); // Keep focus on the chat input
+        }
+    });
+
+    // Function to send the message
+    document.getElementById('sendMessage').addEventListener('click', () => {
+        const message = document.getElementById('chatInput').value.trim();
+        if (message) {
+            console.log('Sending message:', message);
+            // Here you can handle sending the message to the server
+            document.getElementById('chatInput').value = ''; // Clear the input after sending
+        }
+    });
+</script>
+</body>
+</html>

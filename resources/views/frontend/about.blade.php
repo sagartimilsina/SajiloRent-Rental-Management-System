@@ -7,7 +7,7 @@
             <hr>
             <div class="container text-start breadcrumb-overlay" style="padding: 0;">
                 <nav class="breadcrumb">
-                    <a class="breadcrumb-item" href="index.html">Home</a>
+                    <a class="breadcrumb-item" href="{{ route('index') }}">Home</a>
                     <a href="#" class="active-nav" aria-current="page">About</a>
                 </nav>
             </div>
@@ -19,44 +19,22 @@
         <section class="container mt-3">
             <div class="about-section">
                 <div class="row">
-                    <div class="col-lg-6 col-md-12">
-                        <h1 class="title text-dark text-start">About Us</h1>
-                        <h4 class="text-secondary fs-5 text-start">WELCOME TO OUR <span style="color: #f39c12;">SAJIO
-                                RENT</span>
-                            COMPANY </h4>
-                        <p class="text-start"> Amorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh
-                            nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Cras vitae nibh nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Cras vitae nibh nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Cras vitae nibh nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Cras vitae nibh nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Cras vitae nibh nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.Amorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Cras vitae nibh nisl.
-                            Cras etitikis mauris egeth lorem ultricies ferme is ntum a inti diam. Morbi
-                            mollis pellden tesque offs aiug ueia nec rhoncus. Nam ute ultricies.
-                        </p>
+                    <div class="{{ @$about->image ? 'col-lg-6 col-md-12' : 'col-12' }}">
+                        <h1 class="title text-dark text-start">{{ @$about->head }}</h1>
+                        <h4 class="text-secondary fs-5 text-start">{{ @$about->title }}</h4>
+                        <p class="text-start"> {!! @$about->description !!} </p>
                     </div>
-                    <div class="col-lg-6 col-md-12">
-                        <img alt="A beautiful house with a red roof surrounded by trees and greenery"
-                            class="img-fluid rounded shadow"
-                            src="https://storage.googleapis.com/a1aa/image/jR8EVe5c5VS1EavtbJOQSChAT4DGOyXAT9NgeirfcTiGipgnA.jpg" />
-                    </div>
+
+                    @if (@$about->image)
+                        <div class="col-lg-6 col-md-12">
+                            <img class="img-fluid rounded shadow" src="{{ asset('storage/' . $about->image) }}"
+                                alt="About Image" />
+                        </div>
+                    @endif
                 </div>
             </div>
-
         </section>
+
         <!-- About Section End -->
         <!-- Rooms and property Section Start -->
 
@@ -70,60 +48,21 @@
                 </div>
                 <div class="row justify-content-center">
                     <!-- Team Member 1 -->
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                        <div class="card">
-                            <img alt="Sagar Timilsina" class="img-fluid" height="200px"
-                                src="{{ asset('frontend//assets/images/team2.jpeg') }}" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Sagar Timilsina</h5>
-                                    <p class="card-text">Rental Property Manager</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- Team Member 2 -->
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                        <div class="card">
-                            <img alt="Prakriti Timilsina" class="img-fluid"
-                                src="{{ asset('frontend//assets/images/team2.jpeg') }}" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Prakriti Timilsina</h5>
-                                    <p class="card-text">Customer Relations Manager</p>
-                                </div>
-                            </a>
+                    @foreach ($teams as $team)
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
+                            <div class="card">
+                                <img alt="{{ $team->name }}" class="img-fluid" height="200px"
+                                    src="{{ asset('storage/' . $team->image) }}" />
+                                <a href="#" class="text-decoration-none">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">{{ $team->name }}</h5>
+                                        <p class="card-text">{{ $team->position }}</p>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Team Member 3 -->
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                        <div class="card">
-                            <img alt="Aashish Paudel" class="img-fluid"
-                                src="{{ asset('frontend//assets/images/team2.jpeg') }}" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Aashish Paudel</h5>
-                                    <p class="card-text">Marketing Specialist</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Team Member 4 -->
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
-                        <div class="card">
-                            <img alt="Pramila Timilsina" class="img-fluid"
-                                src="{{ asset('frontend//assets/images/team2.jpeg') }}" />
-                            <a href="#" class="text-decoration-none">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Pramila Timilsina</h5>
-                                    <p class="card-text">Operations Manager</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -138,56 +77,29 @@
                     </h2>
                 </div>
                 <div id="testimonial-carousel" class="owl-carousel owl-theme">
-                    <!-- Testimonial 1 -->
-                    <div class="item">
-                        <div class="testimonial-card text-center">
-                            <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                alt="Single Rakib" class="rounded-circle mb-3" width="100" height="100">
-                            <h3>Single Rakib</h3>
-                            <h4 class="text-secondary">Softhopper Manager</h4>
-                            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae nibh nisl."</p>
-                            <div class="stars text-warning">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                    @if ($testimonials->count() > 0)
+                        @foreach ($testimonials as $item)
+                            <div class="item">
+                                <div class="testimonial-card text-center">
+                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                        class="rounded-circle mb-3" width="100" height="100">
+                                    <h3>{{ $item->name }}</h3>
+                                    <h4 class="text-secondary">{{ $item->position }}</h4>
+                                    <p>{!! $item->description !!}</p>
+                                    <div class="stars text-warning">
+                                        @for ($i = 0; $i < $item->rating; $i++)
+                                            <i class="fas fa-star"></i>
+                                        @endfor
+                                        @for ($i = $item->rating; $i < 5; $i++)
+                                            <i class="far fa-star"></i>
+                                        @endfor
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Add more testimonials below -->
-                    <div class="item">
-                        <div class="testimonial-card text-center">
-                            <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                alt="Sophia Johnson" class="rounded-circle mb-3" width="100" height="100">
-                            <h3>Sophia Johnson</h3>
-                            <h4 class="text-secondary">Product Manager</h4>
-                            <p>"Amazing service! The process was smooth and hassle-free. Highly recommend."</p>
-                            <div class="stars text-warning">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimonial-card text-center">
-                            <img src="https://storage.googleapis.com/a1aa/image/D32lJ6Gz1up8K1Wlu1NNtfggfdYbVhfWMRa4OTPhc9ifwXIPB.jpg"
-                                alt="Michael Lee" class="rounded-circle mb-3" width="100" height="100">
-                            <h3>Michael Lee</h3>
-                            <h4 class="text-secondary">Entrepreneur</h4>
-                            <p>"The team is professional and attentive. My rental needs were handled perfectly."</p>
-                            <div class="stars text-warning">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @else
+                        <p>No testimonials available.</p>
+                    @endif
                 </div>
             </div>
         </section>
@@ -202,63 +114,39 @@
                     <h1>Frequently Asked Questions</h1>
                     <p>Find answers to some of the most commonly asked questions about our rental system.</p>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h5>How does the rental system work?</h5>
-                        <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Our rental system allows you to browse available items, select your preferred rental period, and
-                            complete
-                            your booking online. You can also manage your rentals through your account.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h5>What items can I rent?</h5>
-                        <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>You can rent a wide variety of items, including:</p>
-                        <ul>
-                            <li>Electronics (e.g., laptops, cameras)</li>
-                            <li>Furniture</li>
-                            <li>Event supplies</li>
-                            <li>Vehicles</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h5>What is the payment process?</h5>
-                        <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>You can pay securely through our platform using credit/debit cards, online wallets, or bank
-                            transfers.
-                            Payments must be completed before the rental period begins.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h5>Can I extend my rental period?</h5>
-                        <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes, you can extend your rental period by logging into your account and modifying your booking.
-                            Additional charges may apply.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h5>What is the cancellation policy?</h5>
-                        <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>You can cancel your booking up to 24 hours before the rental period starts for a full refund.
-                            Cancellations made within 24 hours may incur a fee.</p>
-                    </div>
-                </div>
+                @if ($faqs->count() > 0)
+                    @foreach ($faqs as $faq)
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h5>{{ $faq->question }}</h5>
+                                <span class="toggle-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="faq-answer" style="display: none;">
+                                {!! $faq->answer !!}
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p>No FAQs available.</p>
+                @endif
+
+                <script>
+                    document.querySelectorAll('.faq-question').forEach(item => {
+                        item.addEventListener('click', () => {
+                            const answer = item.nextElementSibling;
+                            const icon = item.querySelector('.toggle-icon i');
+
+                            // Toggle visibility of the answer
+                            if (answer.style.display === 'block') {
+                                answer.style.display = 'none';
+                                icon.className = 'fa fa-plus';
+                            } else {
+                                answer.style.display = 'block';
+                                icon.className = 'fa fa-minus';
+                            }
+                        });
+                    });
+                </script>
             </div>
         </section>
         <!-- FAQ Section End -->
@@ -266,7 +154,7 @@
 
     </main>
 
-    <script>
+    {{-- <script>
         document.querySelectorAll('.faq-question').forEach(item => {
             item.addEventListener('click', () => {
                 const answer = item.nextElementSibling;
@@ -282,7 +170,7 @@
                 }
             });
         });
-    </script>
+    </script> --}}
     <script>
         $(document).ready(function() {
             $("#testimonial-carousel").owlCarousel({

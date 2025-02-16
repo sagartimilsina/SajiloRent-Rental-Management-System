@@ -48,17 +48,17 @@
                 <ul class="menu-sub {{ request()->is('superAdmin/users*') ? 'show' : '' }}">
                     <li class="menu-item {{ request()->type === 'Super Admin' ? 'active' : '' }}">
                         <a href="{{ route('superadmin.users.index', ['type' => 'Super Admin']) }}" class="menu-link">
-                            Super Admin Lists
+                            Super Admin Users
                         </a>
                     </li>
                     <li class="menu-item {{ request()->type === 'admin' ? 'active' : '' }}">
                         <a href="{{ route('superadmin.users.index', ['type' => 'admin']) }}" class="menu-link">
-                            Admin Lists
+                            House / Company Owner Users
                         </a>
                     </li>
                     <li class="menu-item {{ request()->type === 'user' ? 'active' : '' }}">
                         <a href="{{ route('superadmin.users.index', ['type' => 'user']) }}" class="menu-link">
-                            User Lists
+                            Client Users
                         </a>
                     </li>
                 </ul>
@@ -80,12 +80,12 @@
                         </a>
                     </li>
                     <!-- Tenant Agreements -->
-                    <li
+                    {{-- <li
                         class="menu-item {{ request()->routeIs('tenants-agreements.index') || request()->routeIs('tenants-agreements.trash*') ? 'active' : '' }}">
                         <a href="{{ route('tenants-agreements.index') }}" class="menu-link">
                             Tenant Agreements
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 
@@ -157,7 +157,7 @@
                 </ul>
             </li>
             <li
-                class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') || request()->routeIs('sliders.index') ? 'active open' : '' }}">
+                class="menu-item {{ request()->routeIs('blogs.index') || request()->routeIs('teams.index') || request()->routeIs('testimonials.index') || request()->routeIs('faqs.index') || request()->routeIs('abouts.index') || request()->routeIs('sites.index') || request()->routeIs('sliders.index') || request()->routeIs('galleries.index') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Content Management</div>
@@ -168,8 +168,8 @@
                             Slider
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->is('superAdmin/users') ? 'active' : '' }}">
-                        <a href="{{ route('superadmin.users.index', ['type' => 'super-admin']) }}" class="menu-link">
+                    <li class="menu-item {{ request()->is('superAdmin/galleries') ? 'active' : '' }}">
+                        <a href="{{ route('galleries.index') }}" class="menu-link">
                             Gallery
                         </a>
                     </li>
@@ -228,7 +228,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu-item {{ request()->routeIs('admin.agreement.index*') ? 'active open' : '' }}">
+            {{-- <li class="menu-item {{ request()->routeIs('admin.agreement.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Agreements</div>
@@ -246,7 +246,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
             <li
                 class="menu-item 

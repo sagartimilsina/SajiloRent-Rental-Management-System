@@ -4,14 +4,14 @@
 
 @section('content')
     <div class="container py-5">
-        <!-- Success Alert -->
+        {{-- <!-- Success Alert -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <!-- End of Success Alert -->
+        <!-- End of Success Alert --> --}}
 
         <div class="row">
             <div class="col-12">
@@ -70,7 +70,7 @@
                                                     alt="Default Thumbnail" class="img-thumbnail" style="max-width: 60px;">
                                             @endif
                                         </td>
-                                        @if ($item->publish_status == 1)
+                                        @if ($item->testimonials_publish_status == 1)
                                             <td><span class="badge bg-success">Published</span></td>
                                         @else
                                             <td><span class="badge bg-danger">Unpublished</span></td>

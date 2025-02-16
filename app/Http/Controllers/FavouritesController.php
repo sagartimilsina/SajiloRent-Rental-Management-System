@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Favourites;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavouritesController extends Controller
 {
@@ -28,8 +29,46 @@ class FavouritesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'property_id' => 'required|exists:propeerties,id',
+        ]);
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+            $propertyId = $request->property_id;
+
+            $favorite_true = Favourites::where('user_id', $userId)->where('property_id', $propertyId)
+                ->where('favourite_status', true)
+                ->first();
+            $favorite_false = Favourites::where('user_id', $userId)->where('property_id', $propertyId)
+                ->where('favourite_status', false)
+                ->first();
+
+            if ($favorite_true) {
+
+                // Remove from favorites
+                $favorite_true->favourite_status = false;
+                $favorite_true->save();
+
+                return response()->json(['success' => true, 'isFavorite' => false]);
+            } elseif ($favorite_false) {
+                $favorite_false->favourite_status = true;
+                $favorite_false->save();
+                return response()->json(['success' => true, 'isFavorite' => true]);
+            } else {
+                // Add to favorites
+                Favourites::create([
+                    'user_id' => $userId,
+                    'property_id' => $propertyId,
+                    'favourite_status' => true,
+                ]);
+                return response()->json(['success' => true, 'isFavorite' => true]);
+            }
+        } else {
+            return redirect()->route('login')->with('error', 'Please login first');
+        }
     }
+
 
     /**
      * Display the specified resource.

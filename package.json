@@ -11,6 +11,8 @@
     },
     "dependencies": {
         "@firebase/auth": "^1.8.1",
-        "firebase": "^11.1.0"
+        "firebase": "^11.1.0",
+        "laravel-echo": "^1.19.0",
+        "pusher-js": "^8.4.0"
     }
 }

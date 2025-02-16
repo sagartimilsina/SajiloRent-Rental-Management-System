@@ -12,11 +12,10 @@ return new class extends Migration {
     {
         Schema::create('property__reviews', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('property_id');
-            $table->foreignId('property_id');
-            // $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('property_id');
+            $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
             $table->foreignId('user_id');
-            $table->string('property_review');
+            $table->longText('property_review');
             $table->string('property_rating');
             $table->softDeletes();
 

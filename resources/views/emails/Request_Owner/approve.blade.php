@@ -93,11 +93,7 @@
             <p><a href="{{ $loginRoute }}"><button>Login Page</button></a></p>
             <p>Once logged in, you can navigate to your admin dashboard through the profile dropdown menu.</p>
             <p>We’re thrilled to have you on board. Let's enjoy this journey together!</p>
-            <p><strong>Note:</strong> After logging in, you will find the agreement file in the sidebar. If it does not
-                exist, please contact our support team for assistance. Once the agreement is properly completed, you
-                will gain access to add products and utilize the platform's full features.</p>
-            <p><strong>Reminder:</strong> After one year, you will need to subscribe to our service through the
-                available payment methods to continue enjoying our services.</p>
+            <p>Thank you for choosing Sajilo Rent Organization.</p>
             <p>If you have any questions, feel free to contact us at any time.</p>
         </div>
         <div class="footer">

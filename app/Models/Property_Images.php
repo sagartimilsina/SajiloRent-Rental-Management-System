@@ -20,8 +20,7 @@ class Property_Images extends Model
 
     public function property()
     {
-        return $this->belongsTo(Propeerty::class, 'property_id');
+        return $this->belongsTo(Propeerty::class, 'property_id', 'id');
     }
-
 
 }
