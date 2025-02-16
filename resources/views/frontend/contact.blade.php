@@ -17,42 +17,40 @@
                 <h1>We Are Available For You 24/7</h1>
                 <p>OUR ONLINE SUPPORT SERVICE IS ALWAYS 24 HOURS</p>
                 <div class="row align-items-center">
-                    <div class="col-lg-6  card ">
+                    <div class="col-lg-6 card">
                         <h1 class="text-start p-4 pb-0">Get In <span style="color: #f39c12;">Touch</span> with Us</h1>
                         <div class="contact-info p-4 pt-0">
+                            @if(session('success'))
+                                <div class="alert alert-success">{{ session('success') }}</div>
+                            @endif
 
-                            <form action="" method="post">
+                            <form action="{{ route('contact.store') }}" method="post">
+                                @csrf
                                 <div class="row justify-content-center">
                                     <div class="mb-2 form-group col-md-6">
                                         <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" required
-                                            placeholder="Enter your name">
+                                        <input type="text" class="form-control" id="name" name="name" required placeholder="Enter your name">
                                     </div>
                                     <div class="mb-2 form-group col-md-6">
                                         <label for="email" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="email" name="email" required
-                                            placeholder="Enter your email">
+                                        <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
                                     </div>
                                     <div class="mb-2 form-group col-md-6">
                                         <label for="phone" class="form-label">Phone</label>
-                                        <input id="phone" type="tel" name="phone" placeholder="Phone no."
-                                            class="form-control w-100" value="+977" required
-                                            placeholder="Enter your phone number" />
+                                        <input id="phone" type="tel" name="phone" class="form-control w-100" required placeholder="Enter your phone number" />
                                     </div>
                                     <div class="mb-2 form-group col-md-6">
                                         <label for="subject" class="form-label">Subject</label>
-                                        <input type="text" class="form-control" id="subject" name="subject" required
-                                            placeholder="Enter your subject">
+                                        <input type="text" class="form-control" id="subject" name="subject" required placeholder="Enter your subject">
                                     </div>
                                     <div class="mb-2">
                                         <label for="message" class="form-label">Message</label>
-                                        <textarea class="form-control" id="message" name="message" rows="4" required>Write a message</textarea>
+                                        <textarea class="form-control" id="message" name="message" rows="4" required placeholder="Write a message"></textarea>
                                     </div>
                                 </div>
-                                <button type="submit" class=" btn btn-primary  rounded-full">Send</button>
+                                <button type="submit" class="btn btn-primary rounded-full">Send</button>
                             </form>
                         </div>
-                    </div>
 
                     <!-- Contact Information -->
                     <div class="col-lg-6 p-3 p-md-5 ">

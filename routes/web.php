@@ -32,6 +32,8 @@ use App\Http\Controllers\MessageChatController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
+use App\Http\Controllers\ContactController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -249,6 +251,10 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::patch('gallery/{id}/unpublish', [GalleryController::class, 'unpublish'])->name('gallery.unpublish');
 });
 
+// contact form store
+
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 
