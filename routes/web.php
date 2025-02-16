@@ -33,6 +33,7 @@ use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -253,6 +254,11 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('gallery/restore/{id}', [GalleryController::class, 'restore'])->name('gallery.restore');
     Route::patch('gallery/{id}/publish', [GalleryController::class, 'publish'])->name('gallery.publish');
     Route::patch('gallery/{id}/unpublish', [GalleryController::class, 'unpublish'])->name('gallery.unpublish');
+
+    //contactinfo route
+    Route::get('/admin/contact', [ContactInfoController::class, 'index'])->name('contact.index');
+    Route::get('/admin/contact/edit', [ContactInfoController::class, 'edit'])->name('contact.edit');
+    Route::post('/admin/contact/update', [ContactInfoController::class, 'update'])->name('contact.update');
 });
 
 

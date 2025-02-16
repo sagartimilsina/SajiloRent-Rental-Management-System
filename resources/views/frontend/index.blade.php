@@ -577,8 +577,12 @@
                         <h6 class=" " style="color:#f39c12">Call us and list your property here.</h6>
                     </div>
                     <div class="col-md-6">
-                        <h6>+977 9819113548</h6>
-                        <h6>info.sajilorent@gmail.com</h6>
+                        <h6><a href="tel:{{ $contactInfo->phone }}" style="color: #fff; text-decoration: none;">
+                                {{ $contactInfo->phone }}
+                            </a></h6>
+                        <h6> <a href="mailto:{{ $contactInfo->email }}" style="color: #fff; text-decoration: none;">
+                                {{ $contactInfo->email }}
+                            </a></h6>
                         <a href="contact.html" class="btn btn-primary "> Contact Us</a>
                     </div>
                 </div>
@@ -642,29 +646,42 @@
                             <div class="row justify-content-between ">
                                 <div class="mb-5 col-md-6 ">
                                     <h5> <i class="fas fa-map-marker-alt me-2"></i>Address</h5>
-                                    <a href="#" class="text-decoration-none p">112/B - Road 121, King/St Melbourne
-                                        Australia</a>
+                                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($contactInfo->address) }}"
+                                        class="text-decoration-none p" target="_blank">
+                                        {{ $contactInfo->address }}
+                                    </a>
+
                                 </div>
                                 <div class="mb-5 col-md-6">
                                     <h5> <i class="fas fa-envelope me-2"></i>Mail</h5>
-                                    <a href="mailto:yourmail@domain.com"
-                                        class="text-decoration-none ">yourmail@domain.com</a> <br> <a
-                                        href="mailto:houserent@domain.com"
-                                        class="text-decoration-none ">houserent@domain.com</a>
+                                    <a href="mailto:{{ $contactInfo->email }}"
+                                        class="text-decoration-none ">{{ $contactInfo->email }}</a> <br> <a
+                                        href="mailto:{{ $contactInfo->email_2 }}"
+                                        class="text-decoration-none ">{{ $contactInfo->email_2 }}</a>
                                 </div>
                             </div>
                             <div class="row justify-content-between ">
                                 <div class="mb-5 col-md-6">
                                     <h5> <i class="fas fa-phone-alt me-2"></i>Call</h5>
-                                    <a href="tel:+99 0215469875" class="text-decoration-none ">+99 0215469875<br> <a
-                                            href="tel:+88 0215469875" class="text-decoration-none "> +88 0215469875</a>
+                                    <a href="tel:{{ $contactInfo->phone }}"
+                                        class="text-decoration-none ">{{ $contactInfo->phone }}</a><br> <a
+                                        href="tel:{{ $contactInfo->phone_2 }}"
+                                        class="text-decoration-none ">{{ $contactInfo->phone_2 }}</a>
                                 </div>
                                 <div class="mb-5 col-md-6">
                                     <h5> <i class="fas fa-user me-2"></i>Social account</h5>
                                     <div class="social-icons">
-                                        <a href="#"><i class="fab fa-facebook "></i></a>
-                                        <a href="#"><i class="fab fa-twitter "></i></a>
-                                        <a href="#"><i class="fab fa-instagram "></i></a>
+                                        @php
+                                            $socialLinks = is_array($contactInfo->social_links)
+                                                ? $contactInfo->social_links
+                                                : json_decode($contactInfo->social_links, true);
+                                        @endphp
+                                        @foreach ($socialLinks as $link)
+                                            <a href="{{ $link['link'] }}"
+                                                style="margin-left: 5px; color: #fff; text-decoration: none;">
+                                                <i class="{{ $link['icon'] }}"></i>
+                                            </a>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

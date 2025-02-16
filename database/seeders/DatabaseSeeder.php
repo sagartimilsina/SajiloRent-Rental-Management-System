@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserRoleSeeder::class,
             ContactSeeder::class,
             SuperAdminSeeder::class,
+            ContactInfoSeeder::class,
         ]);
         }
 }
