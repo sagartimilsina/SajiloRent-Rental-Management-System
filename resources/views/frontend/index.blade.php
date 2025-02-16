@@ -478,22 +478,12 @@
         <section class="achievement-section">
             <div class="container">
                 <div class="row text-center">
+                    @foreach($achievements as $achievement)
                     <div class="col-lg-3 col-md-6">
-                        <h1>1000+</h1>
-                        <h2>Happy Customers</h2>
+                        <h1>{{ $achievement->count }}+</h1>
+                        <h2>{{ $achievement->title }}</h2>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h1>500+</h1>
-                        <h2>Projects Completed</h2>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h1>200+</h1>
-                        <h2>Team Members</h2>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h1>50+</h1>
-                        <h2>Awards Won</h2>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>

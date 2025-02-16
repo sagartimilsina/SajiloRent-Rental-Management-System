@@ -34,6 +34,7 @@ use App\Http\Controllers\TenantAgreementwithSystemController;
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactInfoController;
+use App\Http\Controllers\AchievementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -259,6 +260,7 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('/admin/contact', [ContactInfoController::class, 'index'])->name('contact.index');
     Route::get('/admin/contact/edit', [ContactInfoController::class, 'edit'])->name('contact.edit');
     Route::post('/admin/contact/update', [ContactInfoController::class, 'update'])->name('contact.update');
+    Route::resource('achievements', AchievementController::class)->except(['create', 'store', 'destroy']);
 });
 
 
@@ -316,4 +318,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/property-image/restore/{id}', [PropertyImagesController::class, 'restore'])->name('property-image.restore');
     Route::patch('/property-image/{id}/publish', [PropertyImagesController::class, 'publish'])->name('property-image.publish');
     Route::patch('/property-image/{id}/unpublish', [PropertyImagesController::class, 'unpublish'])->name('property-image.unpublish');
+
 });

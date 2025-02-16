@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             SuperAdminSeeder::class,
             ContactInfoSeeder::class,
+            AchievementSeeder::class,
         ]);
         }
 }
