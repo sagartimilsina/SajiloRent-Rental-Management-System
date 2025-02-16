@@ -8,9 +8,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark position-relative ">
     <div class="container-fluid">
 
-        <a class="navbar-brand mx-5" href="{{ route('index') }}">
-            <img alt="House Rent Logo" height="75" src="{{ asset('frontend/assets/images/logo.png') }}" width="75"
-                class="img-fluid rounded-circle">
+        <a class="navbar-brand d-flex align-items-center mx-5" href="{{ route('index') }}">
+            <img src="{{ asset('frontend/assets/images/logo.png') }}" class="img-fluid"
+                style="height: 60px; width: auto; max-width: 180px; object-fit: contain;">
         </a>
         <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button">
