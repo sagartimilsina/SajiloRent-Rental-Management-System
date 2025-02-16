@@ -3,8 +3,8 @@
 @section('content')
     <main class="py-5">
         <div class="container-left">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
+            <div class="row justify-content-center p-5 py-0 ">
+                <div class="col-lg-12">
                     <div class="card shadow">
                         <div class="card-header bg-white py-3">
                             <h3 class="text-center" style="color: #f39c12;">Application Form to List Your Property</h3>
@@ -134,10 +134,16 @@
                                     </div>
                                 </div>
 
+                                <style>
+                                    .form-check-input[type=checkbox] {
+                                        border-radius: .25em;
+                                        border-color: #f39c12
+                                    }
+                                </style>
                                 <!-- Terms and Submit -->
                                 <div class="mb-4">
                                     <div class="form-check mb-3">
-                                        <input type="checkbox" class="form-check-input" id="agreeTerms"
+                                        <input type="checkbox" class="form-check-input text-dark" id="agreeTerms"
                                             name="agree_terms">
                                         <label class="form-check-label" for="agreeTerms">
                                             I agree to the terms and conditions of the system.

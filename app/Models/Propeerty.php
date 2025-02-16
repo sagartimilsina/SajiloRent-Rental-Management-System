@@ -29,6 +29,7 @@ class Propeerty extends Model
         'property_publish_status',
         'created_by',
         'map_link',
+        'views_count',
 
     ];
 

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Payments;
 use App\Models\Propeerty;
 use App\Models\Categories;
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\SubCategories;
 use App\Models\Users_Property;
 use App\Models\PropertyMessage;
 use App\Mail\PropertyMessageMail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
@@ -55,10 +57,12 @@ class PropeertyController extends Controller
     public function create()
     {
         $Categories = Categories::orderBy('created_at', 'desc')->select('id', 'category_name')
-            ->where('created_by', Auth::id())
+            ->where('publish_status', 1)
+
             ->get();
         $subCategories = SubCategories::orderBy('created_at', 'desc')->select('id', 'sub_category_name')
-            ->where('created_by', Auth::id())
+            ->where('publish_status', 1)
+
             ->get();
         return view('backend.ManageProducts.create', compact('Categories', 'subCategories'));
     }
@@ -79,6 +83,7 @@ class PropeertyController extends Controller
     /******  993c756c-3587-4dd6-a2c1-b96803f1cad7  *******/
     public function store(Request $request)
     {
+
         // Validate the request data
         $validatedData = $request->validate([
             'category_id' => 'required|integer|exists:categories,id',
@@ -90,7 +95,9 @@ class PropeertyController extends Controller
             'property_quantity' => 'required|integer|min:1',
             'description' => 'required|string',
             'cropped_image' => 'nullable|string',
-            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
+            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:25600',
+            'map_link' => 'nullable|string',
+            'views_count' => 'nullable|integer|min:0',
         ]);
 
         // Process the pricing data
@@ -113,7 +120,6 @@ class PropeertyController extends Controller
             $croppedImagePath = 'properties/cropped_' . uniqid() . '.jpg';
             Storage::disk('public')->put($croppedImagePath, $image);
             $property->property_image = $croppedImagePath;
-
         } elseif ($request->hasFile('thumbnail')) {
             $thumbnail = Image::make($request->file('thumbnail')->getRealPath())
                 ->encode('jpg', 90); // Convert to JPG with 90% quality
@@ -121,7 +127,6 @@ class PropeertyController extends Controller
             Storage::disk('public')->put($thumbnailPath, $thumbnail);
 
             $property->property_image = $thumbnailPath;
-
         }
         $property->category_id = $validatedData['category_id'];
         $property->sub_category_id = $validatedData['sub_category_id'];
@@ -130,6 +135,8 @@ class PropeertyController extends Controller
         $property->property_quantity = $validatedData['property_quantity'];
         $property->property_description = $validatedData['description'];
         $property->pricing_type = $validatedData['pricing_type'];
+        $property->map_link = $validatedData['map_link'];
+        $property->views_count = $validatedData['views_count'] ?? 0;
         $property->created_by = auth()->user()->id;
 
         if ($validatedData['pricing_type'] === 'paid') {
@@ -157,10 +164,10 @@ class PropeertyController extends Controller
     public function show($id)
     {
         $Categories = Categories::orderBy('created_at', 'desc')->select('id', 'category_name')
-            ->where('created_by', Auth::id())
+            ->where('publish_status', 1)
             ->get();
         $subCategories = SubCategories::orderBy('created_at', 'desc')->select('id', 'sub_category_name')
-            ->where('created_by', Auth::id())
+            ->where('publish_status', 1)
             ->get();
         $product = Propeerty::findOrFail($id);
         return view('backend.ManageProducts.view', compact('product', 'Categories', 'subCategories'));
@@ -172,13 +179,13 @@ class PropeertyController extends Controller
     public function edit($id)
     {
         $Categories = Categories::orderBy('created_at', 'desc')->select('id', 'category_name')
-            ->where('created_by', Auth::id())
+            ->where('publish_status', 1)
             ->get();
         $subCategories = SubCategories::orderBy('created_at', 'desc')->select('id', 'sub_category_name')
-            ->where('created_by', Auth::id())
+            ->where('publish_status', 1)
             ->get();
-        $product = Propeerty::with
-        ('category:id,category_name', 'subcategory:id,sub_category_name')->findOrFail($id);
+
+        $product = Propeerty::with('category:id,category_name', 'subcategory:id,sub_category_name')->findOrFail($id);
 
         return view('backend.ManageProducts.create', compact('Categories', 'subCategories', 'product'));
     }
@@ -199,7 +206,10 @@ class PropeertyController extends Controller
             'property_quantity' => 'required|integer|min:1',
             'description' => 'required|string',
             'cropped_image' => 'nullable|string',
-            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail' => 'nullable|file|mimes:jpg,jpeg,png|max:25600',
+            'map_link' => 'nullable|string',
+            'views_count' => 'nullable|integer|min:0',
+
         ]);
 
         // Find the property
@@ -251,6 +261,8 @@ class PropeertyController extends Controller
         $property->property_quantity = $validatedData['property_quantity'];
         $property->property_description = $validatedData['description'];
         $property->pricing_type = $validatedData['pricing_type'];
+        $property->map_link = $validatedData['map_link'];
+        $property->views_count = $validatedData['views_count'];
         $property->created_by = auth()->user()->id;
 
         if ($validatedData['pricing_type'] === 'paid' && !empty($pricings)) {
@@ -294,7 +306,6 @@ class PropeertyController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
-
     }
 
     public function publish(Request $request, $id)
@@ -316,7 +327,6 @@ class PropeertyController extends Controller
 
 
             return redirect()->route('products.index')->with('success', 'Property published successfully.');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle the validation failure case
             $errors = implode(', ', array_map(function ($error) {
@@ -326,7 +336,6 @@ class PropeertyController extends Controller
 
             // Redirect back with the error notification and input
             return redirect()->back()->with('error', $errors)->withInput();
-
         } catch (\Exception $e) {
             // General exception handling
             return redirect()->back()->with('error', $e->getMessage());
@@ -438,9 +447,58 @@ class PropeertyController extends Controller
         // Redirect with success message
         return redirect()->back()->with('success', 'Message sent successfully.');
     }
-    
+
+    public function message($id)
+    {
+        // Fetch the property message by id
+        $property_message = PropertyMessage::with('property:id,property_name', 'user:id,name,email,phone')
+            ->where('property_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Check if no messages were found
+        if ($property_message->isEmpty()) {
+            return redirect()->back()->with('error', 'Message not found for this property.');
+        }
+
+        // Fetch the property name for the given propertyId
+        $propertyName = Propeerty::where('id', $id)->value('property_name');
+
+        // Return the view with the property details
+        return view('Backend.Manageproducts.propertyContact', compact('property_message', 'propertyName', 'id'));
+    }
 
 
 
 
+    public function messageDelete($id)
+    {
+        try {
+            $message = PropertyMessage::find($id);  // Better to use $message for clarity, rather than $blog
+            if ($message === null) {
+                return redirect()->back()->with('error', 'Message not found.');
+            }
+
+            $message->delete();  // Delete the message
+
+            return redirect()->back()->with('success', 'Message deleted successfully.');
+        } catch (\Exception $e) {
+            // Log the exception for debugging purposes
+            Log::error('Error deleting message: ' . $e->getMessage());
+
+            // Return with error message
+            return redirect()->back()->with('error', 'An error occurred while deleting the message. Please try again later.');
+        }
+    }
+    public function payments_details($id)
+    {
+        $propertyPayments = Payments::with('property:id,property_name', 'user:id,name,email,phone')->where('property_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+
+        $propertyName = Propeerty::where('id', $id)->value('property_name');
+
+        return view('Backend.ManagePayment.index', compact('propertyPayments', 'propertyName', 'id'));
+    }
 }

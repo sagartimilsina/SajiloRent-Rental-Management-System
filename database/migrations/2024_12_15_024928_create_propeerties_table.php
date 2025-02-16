@@ -30,7 +30,8 @@ return new class extends Migration {
             $table->boolean('property_publish_status')->default(false);
             // $table->unsignedBigInteger('created_by');
             $table->foreignId('created_by');
-            $table->string('map_link')->nullable();
+            $table->longText('map_link')->nullable();
+            $table->integer('views_count')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

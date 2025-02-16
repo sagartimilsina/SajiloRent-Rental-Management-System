@@ -20,7 +20,6 @@ class CategoriesController extends Controller
         // Fetch categories based on the user's role
         if ($userRole == 'Admin') {
             $categories = Categories::with('user:id,name')
-                ->where('created_by', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->paginate(30);
         } elseif ($userRole == 'Super Admin') {

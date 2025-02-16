@@ -30,10 +30,8 @@
 
                     <div class="image-pic">
                         <!-- Main Image -->
-                        <img id="mainImage" alt="Main image of the family apartment" class="img-fluid" height="auto"
+                        <img id="mainImage" alt="Main image of the family apartment" class="img-fluid w-100" height="auto"
                             src="{{ asset('storage/' . $property->property_image) }}" />
-
-
                         <!-- Thumbnails Carousel -->
                         <div class="img-lists owl-carousel owl-theme mt-2">
                             @foreach ($property->propertyImages as $image)
@@ -66,11 +64,14 @@
 
                     </div>
                     <p>{!! $property->property_description !!}</p>
-                    <div class="map-section ">
-                        <iframe src="{{ $property->map_link }}" width="100%" height="400" style="border:0;"
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    @if ($property->map_link != null)
+                        <div class="map-section ">
+                            <iframe src="{{ $property->map_link }}" width="100%" height="400" style="border:0;"
+                                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-                    </div>
+                        </div>
+                    @endif
+
 
                     <!-- Review Section -->
                     <div class="review mt-5">
@@ -333,7 +334,8 @@
                             @endforeach
 
                             <div class="text-center mb-4">
-                                <button class="btn btn-primary">View All</button>
+                                <a href="{{ route('product_or_property') }}"> <button class="btn btn-primary">View
+                                        All</button></a>
                             </div>
                         </div>
                     @else

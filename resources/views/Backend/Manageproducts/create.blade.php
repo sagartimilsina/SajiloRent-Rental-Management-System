@@ -53,46 +53,9 @@
                             @if (isset($product))
                                 @method('PUT')
                             @endif
+
                             <!-- Name Input -->
                             <div class="row">
-                                {{-- <div class="form-group col-md-3 mb-3">
-                                    <label for="" class="form-label">Select Category</label>
-                                    <select
-                                        class="form-select form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}"
-                                        name="category_id" id="">
-                                        <option selected>Select one Category</option>
-                                        @foreach ($Categories as $category)
-                                            <option value="{{ $category->id }}"
-                                                {{ old('category_id', isset($product) ? $product->category_id : '') == $category->id ? 'selected' : '' }}>
-                                                {{ $category->category_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('category_id'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('category_id') }}
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="form-group col-md-3 mb-3">
-                                    <label for="" class="form-label">Select Sub Category</label>
-                                    <select
-                                        class="form-select form-control {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}"
-                                        name="sub_category_id" id="">
-                                        <option selected>Select Sub Category</option>
-                                        @foreach ($subCategories as $subcategory)
-                                            <option value="{{ $subcategory->id }}"
-                                                {{ old('sub_category_id', isset($product) ? $product->sub_category_id : '') == $subcategory->id ? 'selected' : '' }}>
-                                                {{ $subcategory->sub_category_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('sub_category_id'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('sub_category_id') }}
-                                        </div>
-                                    @endif
-                                </div> --}}
                                 <div class="form-group col-md-3 mb-3">
                                     <label for="" class="form-label">Select Category</label>
                                     <select
@@ -119,6 +82,14 @@
                                         class="form-select form-control {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}"
                                         name="sub_category_id" id="subCategorySelect">
                                         <option selected>Select Sub Category</option>
+                                        @if (isset($product) || old('category_id'))
+                                            @foreach ($subCategories as $subCategory)
+                                                <option value="{{ $subCategory->id }}"
+                                                    {{ old('sub_category_id', isset($product) ? $product->sub_category_id : '') == $subCategory->id ? 'selected' : '' }}>
+                                                    {{ $subCategory->sub_category_name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     @if ($errors->has('sub_category_id'))
                                         <div class="invalid-feedback">
@@ -128,29 +99,50 @@
                                 </div>
 
                                 <script>
-                                    document.getElementById('categorySelect').addEventListener('change', function() {
-                                        let categoryId = this.value;
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        let categorySelect = document.getElementById('categorySelect');
                                         let subCategorySelect = document.getElementById('subCategorySelect');
 
-                                        subCategorySelect.innerHTML = '<option selected>Loading...</option>'; // Show loading text
+                                        // Function to load sub-categories
+                                        function loadSubCategories(categoryId) {
+                                            if (categoryId) {
+                                                fetch(`/get-subcategories/${categoryId}`)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        subCategorySelect.innerHTML = '<option selected>Select Sub Category</option>';
+                                                        data.forEach(subCategory => {
+                                                            subCategorySelect.innerHTML +=
+                                                                `<option value="${subCategory.id}">${subCategory.sub_category_name}</option>`;
+                                                        });
 
-                                        if (categoryId) {
-                                            fetch(`/get-subcategories/${categoryId}`)
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    subCategorySelect.innerHTML = '<option selected>Select Sub Category</option>';
-                                                    data.forEach(subCategory => {
-                                                        subCategorySelect.innerHTML +=
-                                                            `<option value="${subCategory.id}">${subCategory.sub_category_name}</option>`;
+                                                        // Set the old value if there is one
+                                                        let oldSubCategoryId =
+                                                            "{{ old('sub_category_id', isset($product) ? $product->sub_category_id : '') }}";
+                                                        if (oldSubCategoryId) {
+                                                            subCategorySelect.value = oldSubCategoryId;
+                                                        }
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error fetching subcategories:', error);
+                                                        subCategorySelect.innerHTML =
+                                                            '<option selected>Error loading subcategories</option>';
                                                     });
-                                                })
-                                                .catch(error => {
-                                                    console.error('Error fetching subcategories:', error);
-                                                    subCategorySelect.innerHTML = '<option selected>Error loading subcategories</option>';
-                                                });
-                                        } else {
-                                            subCategorySelect.innerHTML = '<option selected>Select Sub Category</option>';
+                                            } else {
+                                                subCategorySelect.innerHTML = '<option selected>Select Sub Category</option>';
+                                            }
                                         }
+
+                                        // Load sub-categories on page load if a category is already selected
+                                        let initialCategoryId = categorySelect.value;
+                                        if (initialCategoryId) {
+                                            loadSubCategories(initialCategoryId);
+                                        }
+
+                                        // Load sub-categories when the category changes
+                                        categorySelect.addEventListener('change', function() {
+                                            let categoryId = this.value;
+                                            loadSubCategories(categoryId);
+                                        });
                                     });
                                 </script>
 
@@ -228,16 +220,6 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3 col-md-3">
-                                    <label for="map_link" class="form-label">Property Location Map Link</label>
-                                    <input type="text" id="map_link" name="map_link"
-                                        class="form-control @error('map_link') is-invalid @enderror"
-                                        value="{{ old('map_link', isset($product) ? $product->map_link : '') }}" required
-                                        autofocus placeholder="Enter property location">
-                                    @error('map_link')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-3 col-md-3">
                                     <label for="property_quantity" class="form-label">Property Quantity</label>
                                     <input type="number" id="property_quantity" name="property_quantity"
                                         class="form-control @error('property_quantity') is-invalid @enderror"
@@ -247,6 +229,17 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="form-group mb-3 col-md-12">
+                                    <label for="map_link" class="form-label">Property Location Map Link</label>
+                                    <input type="text" id="map_link" name="map_link"
+                                        class="form-control @error('map_link') is-invalid @enderror"
+                                        value="{{ old('map_link', isset($product) ? $product->map_link : '') }}" required
+                                        autofocus placeholder="Enter property location map link">
+                                    @error('map_link')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                             </div>
 
                             <!-- Description Textarea -->

@@ -29,7 +29,7 @@
                     <div class="d-flex align-items-center">
                         <i class="fas fa-envelope fa-2x me-2"></i>
                         <input type="text" name="email_or_phone" class="form-control rounded-full"
-                            placeholder="Email or Phone Number" value="{{ old('email_or_phone') }}">
+                            placeholder="Please enter your valid email" value="{{ old('email_or_phone') }}">
                     </div>
                     @error('email_or_phone')
                         <div class="text-danger m-1 mx-5">
