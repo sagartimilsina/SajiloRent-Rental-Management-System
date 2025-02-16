@@ -58,7 +58,7 @@
                                 <img src="{{ asset('storage/' . $category->icon) }}"
                                     style="width: 50px; height: 50px ; display: block; margin: 0 auto;"
                                     alt="{{ $category->icon }}">
-                                <p>{{ $category->category_name }}</p>
+                                <p style="font-size: 14px;">{{ $category->category_name }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -72,26 +72,38 @@
             <div class="container py-5">
                 <h1>For rates & Availability</h1>
                 <h2>Search for Rent property</h2>
-                <form class="row g-3 justify-content-center">
+                {{-- <form class="row g-3 justify-content-center" action="{{ route('properties.search') }}" method="GET">
+                    @csrf
                     <div class="col-md-3">
                         <label for="livingArea" class="form-label">Location</label>
-                        <input type="text" class="form-control" id="livingArea" name="location"
-                            placeholder="Where do you want ?" required>
+                        <input type="text" class="form-control {{ $errors->has('location') ? 'is-invalid' : '' }}"
+                            id="livingArea" name="location" placeholder="Where do you want ?">
                     </div>
                     <div class="col-md-3">
                         <label for="type" class="form-label">Category</label>
-                        <select id="type" class="form-select">
+                        <select id="type" class="form-select {{ $errors->has('category') ? 'is-invalid' : '' }}"
+                            required name="category_id">
                             <option selected>Select a Category</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                             @endforeach
                         </select>
+                        @error('category_id')
+                            <div class="invalid-feedback">{{ $message }}
+                            </div>
+                        @enderror
                     </div>
                     <div class="col-md-3">
                         <label for="for" class="form-label">Sub Category</label>
-                        <select id="for" class="form-select">
+                        <select id="for" class="form-select{{ $errors->has('sub_category') ? 'is-invalid' : '' }}"
+                            required name="sub_category_id">
                             <option selected>Select a Sub Category</option>
                         </select>
+                        @error('sub_category_id')
+                            <div class="invalid-feedback">{{ $message }}
+                            </div>
+                        @enderror
+
                     </div>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
@@ -132,9 +144,11 @@
                     <div class="col-md-3">
                         <label for="priceMin" class="form-label">PRICE</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="priceMin" name="min_price" placeholder="min">
+                            <input type="text" class="form-control{{ $errors->has('min_price') ? 'is-invalid' : '' }}"
+                                id="priceMin" name="min_price" placeholder="min">
                             <span class="input-group-text">-</span>
-                            <input type="text" class="form-control" id="priceMax" name="max_price" placeholder="max">
+                            <input type="text" class="form-control{{ $errors->has('max_price') ? 'is-invalid' : '' }}"
+                                id="priceMax" name="max_price" placeholder="max">
                         </div>
                     </div>
 
@@ -142,7 +156,95 @@
                     <div class="col-md-12 mt-4">
                         <button type="submit" class="btn btn-primary">Check Availability</button>
                     </div>
+                </form> --}}
+
+                <form class="row g-3 justify-content-center" action="{{ route('properties.search') }}" method="GET">
+                    @csrf
+                    <div class="col-md-3">
+                        <label for="livingArea" class="form-label">Location</label>
+                        <input type="text" class="form-control {{ $errors->has('location') ? 'is-invalid' : '' }}"
+                            id="livingArea" name="location" placeholder="Where do you want ?">
+                        @error('location')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-3">
+                        <label for="type" class="form-label">Category</label>
+                        <select id="type" class="form-select {{ $errors->has('category_id') ? 'is-invalid' : '' }}"
+                            required name="category_id">
+                            <option selected>Select a Category</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-3">
+                        <label for="for" class="form-label">Sub Category</label>
+                        <select id="for"
+                            class="form-select {{ $errors->has('sub_category_id') ? 'is-invalid' : '' }}" required
+                            name="sub_category_id">
+                            <option selected>Select a Sub Category</option>
+                        </select>
+                        @error('sub_category_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-3">
+                        <label for="priceMin" class="form-label">PRICE</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control {{ $errors->has('min_price') ? 'is-invalid' : '' }}"
+                                id="priceMin" name="min_price" placeholder="min">
+                            <span class="input-group-text">-</span>
+                            <input type="text" class="form-control {{ $errors->has('max_price') ? 'is-invalid' : '' }}"
+                                id="priceMax" name="max_price" placeholder="max">
+                        </div>
+                        @error('min_price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        @error('max_price')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-12 mt-4">
+                        <button type="submit" class="btn btn-primary">Check Availability</button>
+                    </div>
                 </form>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        $('#type').on('change', function() {
+                            let categoryId = $(this).val();
+                            // Clear the subcategory dropdown
+                            $('#for').html('<option selected>Select a Sub Category</option>');
+
+                            if (categoryId) {
+                                let url = "{{ route('get.subcategories', ':id') }}".replace(':id', categoryId);
+
+                                $.ajax({
+                                    url: url,
+                                    type: 'GET',
+                                    success: function(response) {
+                                        if (response && response.length > 0) {
+                                            $.each(response, function(key, subCategory) {
+                                                $('#for').append(
+                                                    `<option value="${subCategory.id}">${subCategory.sub_category_name}</option>`
+                                                );
+                                            });
+                                        } else {
+                                            $('#for').append('<option>No Sub Categories Found</option>');
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('Error fetching subcategories');
+                                    },
+                                });
+                            }
+                        });
+                    });
+                </script>
             </div>
         </section>
         <!-- Availability Section End -->

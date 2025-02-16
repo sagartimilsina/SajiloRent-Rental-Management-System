@@ -1,3 +1,10 @@
+@php
+    $categories = App\Models\Categories::where('publish_status', 1)
+        ->distinct('category_name') // Assuming 'name' is the column that represents the category name
+        ->get();
+
+@endphp
+
 <nav class="navbar navbar-expand-lg navbar-dark position-relative ">
     <div class="container-fluid">
 
@@ -18,6 +25,10 @@
                     <a class="nav-link {{ Route::is('index') ? 'active-nav' : '' }}"
                         href="{{ route('index') }}">Home</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::is('product_or_property') ? 'active-nav' : '' }}" href="{{ route('product_or_property') }}">Our
+                        Product</a>
+                </li>
                 <li class="nav-item"><a class="nav-link {{ Route::is('about') ? 'active-nav' : '' }}"
                         href="{{ route('about') }}">About</a></li>
                 <li class="nav-item">
@@ -28,20 +39,25 @@
 
                 <li class="nav-item"><a class="nav-link {{ Route::is('gallery') ? 'active-nav' : '' }}"
                         href="{{ route('gallery') }}">Gallery</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownPages" role="button"
+
+                {{-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Product
+                        Product Category
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownPages">
-                        <li><a class="dropdown-item  "
-                                href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product
-                                Category 1</a></li>
-                        <li><a class="dropdown-item"
-                                href="{{ route('product', ['categoryId' => '1', 'subcategoryId' => '1']) }}">Product
-                                Category 2</a></li>
+                        @foreach ($categories as $category)
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ route('product', ['categoryId' => $category->id]) }}">
+                                    {{ $category->category_name }}
+                                    <!-- or use another field like $category->slug if needed -->
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
-                </li>
+                </li> --}}
+
                 <li class="nav-item"><a class="nav-link {{ Route::is('contact') ? 'active-nav' : '' }}"
                         href="{{ route('contact') }}">Contact</a></li>
 
@@ -68,7 +84,7 @@
                         <a class="nav-link">
                             <div class="avatar avatar-online">
                                 <!-- Check if avatar is a URL -->
-                                <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('storage/default-avatar.png') }}"
+                                <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('frontend/assets/images/profile.avif') }}"
                                     alt class="rounded-circle" style="width:40px; height:40px;" />
                                 <span class="text-white ms-1 " title="{{ Auth::user()->name }}">
                                     {{ strtok(Auth::user()->name, ' ') }}
@@ -83,8 +99,8 @@
                                         <div class="me-2">
                                             <div class="avatar avatar-online">
                                                 <!-- Same check for avatar here -->
-                                                <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('storage/default-avatar.png') }}"
-                                                    alt class="rounded-circle" style="width: 40px; height: 40px;" />
+                                                <img src="{{ Auth::user()->avatar ? (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL) ? Auth::user()->avatar : asset('storage/' . Auth::user()->avatar)) : asset('frontend/assets/images/profile.avif') }}"
+                                                    alt class="rounded-circle" style="width:40px; height:40px;" />
                                             </div>
                                         </div>
                                         <div class="">
@@ -106,12 +122,7 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a class="dropdown-item" href="">
-                                    <i class="fa fa-user me-2"></i>
-                                    <span class="align-middle">Profile</span>
-                                </a>
-                            </li>
+
                             <li>
                                 @if (Auth::user()->role->role_name == 'Admin')
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
@@ -120,8 +131,8 @@
                                     </a>
                                 @elseif(Auth::user()->role->role_name == 'User')
                                     <a class="dropdown-item" href="{{ route('user.dashboard') }}">
-                                        <i class="fa fa-home me-2"></i>
-                                        <span class="align-middle text-wrap"> Dashboard</span>
+                                        <i class="fa fa-user me-2"></i>
+                                        <span class="align-middle text-wrap"> My Profile</span>
                                     </a>
                                 @elseif(Auth::user()->role->role_name == 'Super Admin')
                                     <a class="dropdown-item" href="{{ route('super.admin.dashboard') }}">

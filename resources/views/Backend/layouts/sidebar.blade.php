@@ -12,26 +12,24 @@
                     'Admin' => 'admin.dashboard',
                     'User' => 'user.dashboard',
                 ];
-                $logoUrl =
-                    'https://storage.googleapis.com/a1aa/image/enphJxBPaMWWaiVGW65XhTEEsArCFfIRkcZfzUFhSKginlnnA.jpg';
+                $logoUrl = asset('frontend/assets/images/logo.png');
             @endphp
 
+
             @if (array_key_exists($userRole, $routes))
-                <a href="{{ route($routes[$userRole]) }}" class="app-brand-link">
-                    <span class="app-brand-logo demo m-auto align-middle d-block">
-                        <img src="{{ asset($logoUrl) }}" alt="Logo" style="width: 100px; height: 100px">
-                    </span>
+                <a href="{{ route($routes[$userRole]) }}" class="">
+                    <div class="">
+                        <img src="{{ asset($logoUrl) }}" class="img-fluid p-5 mt-2 rounded-circle" alt="Logo">
+                    </div>
                     {{-- Optional text rendering here --}}
                 </a>
             @endif
         @endif
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-            <i class="bx bx-chevron-left bx-sm align-middle"></i>
-        </a>
+
     </div>
     <div class="menu-inner-shadow"></div>
     @if (Auth::check() && Auth::user()->role->role_name == 'Super Admin')
-        <ul class="menu-inner py-1">
+        <ul class="menu-inner py-3">
             <!-- Dashboards -->
             <li class="menu-item {{ request()->routeIs('super.admin.dashboard') ? 'active open' : '' }}">
                 <a href="{{ route('super.admin.dashboard') }}" class="menu-link text-wrap">
@@ -293,8 +291,23 @@
                             Product Lists
                         </a>
                     </li>
+                    <li
+                        class="menu-item 
+            {{ request()->routeIs('products.index*') || request()->routeIs('product.trash-view*') ? 'active' : '' }}">
+                        <a href="{{ route('products.index') }}" class="menu-link">
+                            Payment Management
+                        </a>
+                    </li>
+
                 </ul>
             </li>
+            <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active open' : '' }}">
+                <a href="{{ route('admin.dashboard') }}" class="menu-link text-wrap">
+                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <div data-i18n="Dashboards">Dashboard</div>
+                </a>
+            </li>
+
 
         </ul>
     @elseif(Auth::check() && Auth::user()->role->role_name == 'User')

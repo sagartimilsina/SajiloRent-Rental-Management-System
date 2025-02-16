@@ -42,7 +42,7 @@ class SliderImagesController extends Controller
         $request->validate([
             'title' => 'required|string|min:5|max:255',
             'sub_title' => 'nullable|string|min:5|max:255',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:5120', // Allow uploaded images
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:25600', // Allow uploaded images
             'cropped_image' => 'nullable|string', // Allow base64 cropped image data
 
         ]);
@@ -107,7 +107,7 @@ class SliderImagesController extends Controller
         $request->validate([
             'title' => 'nullable|string|min:5|max:255',
             'sub_title' => 'nullable|string|min:5|max:255',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // Allow uploaded images
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:25600 ', // Allow uploaded images
             'cropped_image' => 'nullable|string', // Allow base64 cropped image data
 
         ]);

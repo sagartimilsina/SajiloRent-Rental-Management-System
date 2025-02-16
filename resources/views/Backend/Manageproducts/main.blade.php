@@ -103,6 +103,24 @@
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li>
+                                                                <a href="{{ route('property.payments', $item->id) }}"
+                                                                    class="dropdown-item text-info">
+                                                                    <i class="bx bx-show me-1"></i> View Payment List
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ route('property.review', $item->id) }}"
+                                                                    class="dropdown-item text-info">
+                                                                    <i class="bx bx-show me-1"></i> View Review
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ route('property.contact', $item->id) }}"
+                                                                    class="dropdown-item text-primary">
+                                                                    <i class="bx bx-show me-1"></i> View Contact Response
+                                                                </a>
+                                                            </li>
+                                                            <li>
                                                                 <a href="{{ route('products.show', $item->id) }}"
                                                                     class="dropdown-item text-info">
                                                                     <i class="bx bx-show me-1"></i> View
@@ -179,7 +197,8 @@
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="button" class="btn btn-secondary"
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
                                                                                 data-bs-dismiss="modal">Cancel</button>
                                                                             <button type="submit"
                                                                                 class="btn btn-danger">Delete</button>

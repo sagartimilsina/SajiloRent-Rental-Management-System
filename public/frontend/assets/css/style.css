@@ -399,7 +399,8 @@ h2 {
 .form-label {
     font-size: 1rem;
     font-weight: bold;
-    color: var(--main-primary)
+    color: var(--main-primary);
+
 }
 
 .form-control,
@@ -1252,7 +1253,7 @@ ol {
 
 .summary-row {
     display: flex;
-    justify-content:;
+    justify-content: ;
     margin-bottom: 10px;
 }
 
@@ -1418,7 +1419,7 @@ ol {
     top: 100%;
     left: 0;
     display: none;
-    background-color: var(--primary);
+    background-color: var(--main-primary);
     min-width: 200px;
     z-index: 1050;
 }
@@ -1428,11 +1429,14 @@ ol {
     white-space: nowrap;
     /* Prevent wrapping */
     text-decoration: none;
+    color: #fff;
 
 }
 
 .dropdown-item:hover {
     background-color: #e9ecef;
+    color: var(--primary);
+
 }
 
 .dropdown:hover>.dropdown-menu {
@@ -1460,4 +1464,305 @@ ol {
 .dropdown-menu.left-align {
     left: auto;
     right: 100%;
+}
+
+/* Hide all content sections by default
+        .content-section {
+          display: none;
+        } */
+
+/* Only display active sections */
+.content-section.active {
+    display: block;
+}
+
+/* Styling for active sidebar links */
+.active-profile {
+    background-color: var(--main-primary);
+    color: white;
+}
+
+
+/* 
+
+.purchase-card {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 10px;
+    flex-wrap: wrap;
+    background: #fff;
+    max-width: 630px !important;
+    max-height: 174px;
+    position: relative;
+    flex-direction: row;
+
+
+}
+
+.purchase-card img {
+    max-width: 94px;
+  
+    height: 92px;
+    border-radius: 5px;
+    display: block;
+}
+
+.purchase-card-body {
+    flex: 1;
+    margin-left: 20px;
+}
+
+
+.full-width-border {
+    border-top: 0.5px solid #9D9999;
+   
+    width: 100%;
+    margin-top: 10px;
+
+    padding: 0%;
+
+}
+
+.purchase-card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: gray;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.purchase-card p {
+    font-size: 16px;
+    padding: 0%;
+    margin: 0%;
+    font-weight: 400;
+    color: #000;
+
+}
+
+.purchase-card h5 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #000000;
+
+}
+
+.purchase-card-footer small {
+    font-size: 12px;
+    font-weight: 300;
+
+}
+
+.additional-info {
+    height: 364px;
+    max-width: 630px;
+    margin-right: 10px;
+    border-radius: 8px;
+    margin-left: 10px;
+}
+
+
+
+.purchase-card .delete-btn {
+    background-color: white;
+    position: absolute;
+    top: 20%;
+    right: 20px;
+  
+    transform: translateY(-50%);
+   
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 15px;
+    transition: transform 0.2s ease;
+    float: right;
+    color: #0064A7CC;
+}
+
+.purchase-card .delete-btn i {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+}
+
+.edit-profile-card input,
+.edit-profile-card select {
+    min-height: 40px;
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border: 1px solid #818181;
+    border-radius: 4px;
+    max-width: 100%;
+    box-sizing: border-box;
+  
+}
+
+
+.edit-profile-card input:focus,
+.edit-profile-card select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.edit-profile-card {
+    padding: 30px;
+    
+
+}
+
+img.rounded-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    max-width: 100%;
+    right: -20px;
+    top: 0px;
+
+}
+
+.edit-profile-card .save-btn {
+    display: flex;
+    justify-content: center;
+   
+    margin-top: 10px;
+ 
+}
+
+.edit-profile-card .save-changes-btn {
+    background-color: #196BA6;
+    height: 40px;
+    width: 152px;
+    border: 1px solid #196BA6;
+    border-radius: 4px;
+    color: white;
+    display: flex;
+    justify-content: center;
+   
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+
+
+
+ */
+
+
+
+.list-group-item:first-child {
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+.chat-container {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.chat-list {
+    height: 100%;
+    overflow-y: auto;
+    border-right: 1px solid #dee2e6;
+}
+
+.chat-messages {
+    height: 500px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.message-bubble {
+    max-width: 70%;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+}
+
+.message-sent {
+    background-color: var(--secondary);
+    color: white;
+    margin-left: auto;
+}
+
+.message-received {
+    background-color: var(--primary);
+    margin-right: auto;
+    color: #fff;
+}
+
+.chat-input-container {
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.user-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.user-item:hover {
+    background-color: #f8f9fa;
+}
+
+.user-item.active {
+    background-color: #e9ecef;
+}
+
+.timestamp {
+    font-size: 0.75rem;
+    color: #fff;
+}
+
+.pagination-container .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-container .pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination-container .pagination .page-item .page-link {
+    color: var(--main-primary);
+    background-color: var(--body-color);
+    border: 1px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.pagination-container .pagination .page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.pagination-container .pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: var(--body-color);
+    border-color: var(--primary);
+}
+
+.pagination-container .pagination .page-item:hover .page-link {
+    background-color: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
 }

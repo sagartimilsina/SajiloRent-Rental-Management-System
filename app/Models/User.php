@@ -33,6 +33,9 @@ class User extends Authenticatable
         'avatar',
         'status',
         'company_id',
+        'current_location',
+        'permanent_location',
+        'file',
     ];
 
     /**

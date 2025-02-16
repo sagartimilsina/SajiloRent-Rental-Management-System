@@ -164,8 +164,8 @@
         </div>
     </div>
 
-    <!-- Modal HTML for Image Upload -->
-    <div class="modal fade" id="modalToggle" tabindex="-1" aria-labelledby="modalToggleLabel" aria-hidden="true">
+    <div class="modal fade" id="modalToggle" tabindex="-1" aria-labelledby="modalToggleLabel" aria-hidden="true"
+        data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-xl" style="height: 80vh;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -178,18 +178,21 @@
                     @csrf
                     <input type="hidden" name="property_id" value="{{ $property->id ?? '' }}">
 
-                    <!-- Image upload drag and drop -->
+                    <!-- Drag and Drop Area -->
                     <div class="form-group m-auto p-3">
-                        <label for="images" class="form-label">Upload Images</label>
-                        <input type="file" id="images" name="images[]" class="form-control" accept="image/*"
-                            multiple>
+                        <label for="images" class="form-label">Upload Images (Max 10)</label>
+                        <div id="drop-area" class="drop-zone">
+                            <p>Drag & Drop images here or click to upload</p>
+                            <input type="file" id="images" name="images[]" class="form-control" accept="image/*"
+                                multiple hidden>
+                        </div>
                         <div id="image-previews" class="mt-2 d-flex flex-wrap"></div>
+                        <div id="error-message" class="text-danger mt-2" style="display: none;">You can only upload up to
+                            10 images.</div>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">
-                            Save Images
-                        </button>
+                        <button type="submit" class="btn btn-primary">Save Images</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="clearImages()">Close</button>
                     </div>
@@ -198,7 +201,184 @@
         </div>
     </div>
 
-    <!-- JavaScript for Image Preview and Upload Handling -->
+    <!-- Add some CSS for the drag-and-drop area and remove button -->
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .drop-zone:hover {
+            background-color: #f9f9f9;
+        }
+
+        .drop-zone.dragover {
+            background-color: #e0e0e0;
+            border-color: #000;
+        }
+
+        .drop-zone p {
+            margin: 0;
+            font-size: 16px;
+            color: #666;
+        }
+
+        #image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-btn:hover {
+            background-color: rgba(255, 0, 0, 1);
+        }
+
+        #error-message {
+            display: none;
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+
+    <!-- JavaScript for Drag-and-Drop and Remove Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('images');
+            const imagePreviews = document.getElementById('image-previews');
+            const errorMessage = document.getElementById('error-message');
+            const maxFiles = 10; // Maximum number of files allowed
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight drop area when item is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+            });
+
+            // Handle dropped files
+            dropArea.addEventListener('drop', handleDrop, false);
+            fileInput.addEventListener('change', handleFiles, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fileInput.files = files;
+                handleFiles();
+            }
+
+            function handleFiles() {
+                const files = fileInput.files;
+                imagePreviews.innerHTML = ''; // Clear previous previews
+
+                if (files.length > maxFiles) {
+                    errorMessage.style.display = 'block'; // Show error message
+                    fileInput.value = ''; // Clear the file input
+                    return;
+                } else {
+                    errorMessage.style.display = 'none'; // Hide error message
+                }
+
+                if (files.length > 0) {
+                    Array.from(files).forEach((file, index) => {
+                        if (file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const imagePreview = document.createElement('div');
+                                imagePreview.classList.add('image-preview');
+
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+
+                                const removeBtn = document.createElement('button');
+                                removeBtn.classList.add('remove-btn');
+                                removeBtn.innerHTML = '×';
+                                removeBtn.addEventListener('click', () => removeImage(index));
+
+                                imagePreview.appendChild(img);
+                                imagePreview.appendChild(removeBtn);
+                                imagePreviews.appendChild(imagePreview);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            }
+
+            // Remove image from preview and file input
+            function removeImage(index) {
+                const files = Array.from(fileInput.files);
+                files.splice(index, 1); // Remove the file at the specified index
+
+                // Update the file input with the remaining files
+                const dataTransfer = new DataTransfer();
+                files.forEach(file => dataTransfer.items.add(file));
+                fileInput.files = dataTransfer.files;
+
+                // Re-render the previews
+                handleFiles();
+            }
+
+            // Click on drop area to trigger file input
+            dropArea.addEventListener('click', () => fileInput.click());
+        });
+
+        // Clear images when modal is closed
+        function clearImages() {
+            document.getElementById('images').value = '';
+            document.getElementById('image-previews').innerHTML = '';
+            document.getElementById('error-message').style.display = 'none';
+        }
+    </script>
+
+    {{-- <!-- JavaScript for Image Preview and Upload Handling -->
     <script>
         // Custom array to track selected files
         let selectedFiles = [];
@@ -299,7 +479,7 @@
                 e.preventDefault();
             }
         });
-    </script>
+    </script> --}}
 
 
 @endsection

@@ -17,8 +17,7 @@ return new class extends Migration {
             $table->foreignId('user_id');
             $table->longText('property_review');
             $table->string('property_rating');
-            $table->softDeletes();
-
+            $table->string('read_status')->default('unread');
             $table->timestamps();
         });
     }

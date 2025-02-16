@@ -30,6 +30,9 @@ return new class extends Migration {
             $table->rememberToken();
             $table->boolean('is_seeded')->default(0)->nullable();
             $table->boolean('status')->default(1)->nullable();
+            $table->string('current_location')->nullable();
+            $table->string('permanent_location')->nullable();
+            $table->string('documents')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

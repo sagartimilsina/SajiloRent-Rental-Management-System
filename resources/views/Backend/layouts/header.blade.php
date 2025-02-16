@@ -120,9 +120,47 @@
             display: flex;
             justify-content: center;
             align-items: center;
-          
-            
         }
+
+        /* Background color for elements with .bg-primary class */
+        .bg-primary {
+            background-color: var(--primary) !important;
+            color: #fff !important;
+            /* Ensure text is white for better contrast */
+        }
+
+        /* Menu item link styles */
+        .menu-item a {
+            color: var(--primary) !important;
+            text-decoration: none;
+            /* Remove underline from links */
+        }
+
+        .menu-item a:hover {
+            color: var(--secondary) !important;
+            /* Change color on hover for better interactivity */
+        }
+
+        .menu-item.active a {
+            color: var(--secondary) !important;
+        }
+
+        .bg-menu-theme .menu-inner>.menu-item.active:before {
+            background: var(--secondary) !important;
+        }
+
+        .bg-menu-theme .menu-inner>.menu-item.active>.menu-link {
+            color: var(--secondary) !important;
+            background-color: rgba(210, 211, 233, 0.16) !important;
+        }
+
+        .bg-menu-theme .menu-sub>.menu-item.active>.menu-link:not(.menu-toggle):before {
+            background-color: var(--secondary) !important;
+            border: 3px solid #e7e7ff !important;
+        }
+    </style>
+    <style>
+        /* Define root variables for primary and secondary colors */
     </style>
 </head>
 
@@ -147,35 +185,34 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    
-   
-    
+
+
+
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const loaderWrapper = document.getElementById("loader-wrapper");
             const mainContent = document.getElementById("main-content");
-    
+
             // Show the loader on page load for reloads
             loaderWrapper.style.display = "flex";
             mainContent.style.display = "none";
-            window.addEventListener("load", function () {
+            window.addEventListener("load", function() {
                 loaderWrapper.style.display = "none";
                 mainContent.style.display = "block";
             });
-    
+
             // Show loader on form submission
             document.querySelectorAll("form").forEach(form => {
-                form.addEventListener("submit", function () {
+                form.addEventListener("submit", function() {
                     loaderWrapper.style.display = "flex";
                     mainContent.style.display = "none";
                 });
             });
-    
+
             // Show loader on page refresh/navigation
-            window.addEventListener("beforeunload", function () {
+            window.addEventListener("beforeunload", function() {
                 loaderWrapper.style.display = "flex";
                 mainContent.style.display = "none";
             });
         });
     </script>
-    

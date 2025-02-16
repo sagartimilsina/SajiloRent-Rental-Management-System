@@ -21,10 +21,8 @@ class SubCategoriesController extends Controller
         // Fetch categories based on the user's role
         if ($userRole == 'Admin') {
             $subCategories = SubCategories::with('user:id,name', 'category:id,category_name,created_by')
-                ->where('created_by', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->paginate(30);
-
         } elseif ($userRole == 'Super Admin') {
             $subCategories = SubCategories::with('user:id,name', 'category:id,category_name,created_by')
                 ->orderBy('created_at', 'desc')
@@ -162,7 +160,6 @@ class SubCategoriesController extends Controller
         $subCategory->save();
 
         return redirect()->route('subCategories.index')->with('success', 'Subcategory updated successfully!');
-
     }
 
     /**
@@ -189,7 +186,6 @@ class SubCategoriesController extends Controller
             // Error notification
             return redirect()->back()->with('error', $e->getMessage());
         }
-
     }
 
     public function publish(Request $request, $id)
@@ -207,7 +203,6 @@ class SubCategoriesController extends Controller
             $blog->publish_status = $request->publish_status;
             $blog->save();
             return redirect()->route('subCategories.index')->with('success', 'Sub Category published successfully.');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle the validation failure case
             $errors = implode(', ', array_map(function ($error) {
@@ -215,7 +210,6 @@ class SubCategoriesController extends Controller
             }, $e->errors())); // Convert errors array to a string
             // Redirect back with the error notification and input
             return redirect()->back()->with('error', $errors)->withInput();
-
         } catch (\Exception $e) {
             // General exception handling
             return redirect()->back()->with('error', $e->getMessage());

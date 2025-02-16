@@ -68,6 +68,21 @@ class FrontendController extends Controller
         return response()->json($subcategories);
     }
 
+    // public function product_filter($categoryId)
+    // {
+    //     $properties = Propeerty::where('property_publish_status', 1)
+    //         ->where('category_id', $categoryId)
+    //         ->orderBy('created_at', 'desc')
+    //         ->paginate(30);
+
+    //     $categories = Categories::orderBy('created_at', 'desc')
+    //         ->where('publish_status', 1)
+    //         ->get();
+
+
+    //     return view('frontend.product', compact('properties', 'categories'));
+    // }
+
     public function dynamic($id)
     {
         // Fetch the 'Abouts' entry based on the given ID and its publish status
@@ -130,19 +145,39 @@ class FrontendController extends Controller
 
     public function property_details($id)
     {
+        // Fetch property details with images
+        $property = Propeerty::with(['propertyImages' => function ($query) {
+            $query->where('property_publish_status', 1);
+        }])->findOrFail($id);
 
+
+        // Debugging: Check if the property is fetched correctly
+        if (!$property) {
+            return redirect()->back()->with('error', 'Property not found.');
+        }
+
+        // Increment the views count for the property
+        $property->increment('views_count');
+        // Fetch favorite IDs for authenticated users
+        $favoriteIds = [];
         if (Auth::check()) {
             $favoriteIds = Favourites::where('user_id', Auth::id())
                 ->where('favourite_status', true)
                 ->pluck('property_id')
                 ->toArray();
-        } else {
-            $favoriteIds = [];
         }
-        $property = Propeerty::with('propertyImages')->findOrFail($id);
+
+        // Fetch property reviews
         $property_review = Property_Review::where('property_id', $id)->get();
 
-        $similar_properties = Propeerty::where('property_publish_status', 1)->where('id', '!=', $id)->orderBy('created_at', 'desc')->take(8)->get();
+        // Fetch similar properties (excluding the current one)
+        $similar_properties = Propeerty::where('property_publish_status', 1)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->take(8)
+            ->get();
+
+        // Return the view with data
         return view('frontend.product_details', compact('property', 'similar_properties', 'property_review', 'favoriteIds'));
     }
 
@@ -221,11 +256,182 @@ class FrontendController extends Controller
             });
 
             // Redirect back with success message
-            return redirect()->back()->with('success', 'Your request has been submitted successfully!');
+            return redirect()->route('index')->with('success', 'Your request has been submitted successfully!');
         } catch (\Exception $e) {
             // Log the error and show the error message
             Log::error('Error submitting property request: ' . $e->getMessage());
             return redirect()->back()->withErrors(['An error occurred while processing your request. Please try again.']);
         }
+    }
+
+    public function product_or_property()
+    {
+        // Fetch all categories with their subcategories
+        $categories = Categories::with('subcategories')->get();
+
+        // Fetch all properties (or apply filters if needed)
+        $properties = Propeerty::with(['category', 'subcategory'])->paginate(20);
+
+        // Fetch favorite IDs for authenticated users
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+
+        return view('frontend.product', compact('categories', 'properties', 'favoriteIds'));
+    }
+
+
+
+    /**
+     * Filter properties based on category or subcategory.
+     */
+    public function filter(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $subCategoryId = $request->input('sub_category_id');
+        $filter = $request->input('filter');
+
+        // Query properties based on filters
+        $properties = Propeerty::query();
+
+        if ($categoryId) {
+            $properties->where('category_id', $categoryId);
+        }
+
+        if ($subCategoryId) {
+            $properties->where('sub_category_id', $subCategoryId);
+        }
+
+        // Apply additional filters
+        if ($filter) {
+            switch ($filter) {
+                case 'popular':
+                    $properties->orderBy('views_count', 'desc');
+                    break;
+                case 'date-new':
+                    $properties->orderBy('created_at', 'desc');
+                    break;
+                case 'date-old':
+                    $properties->orderBy('created_at', 'asc');
+                    break;
+                case 'price-low':
+                    $properties->orderBy('property_sell_price', 'asc');
+                    break;
+                case 'price-high':
+                    $properties->orderBy('property_sell_price', 'desc');
+                    break;
+                default:
+                    // No additional filter
+                    break;
+            }
+        }
+
+        $properties = $properties->with(['category', 'subcategory'])->paginate(20);
+
+        // Fetch favorite IDs for authenticated users
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+
+        // Return the filtered properties as JSON (for AJAX requests)
+        if ($request->ajax()) {
+            return response()->json([
+                'properties' => view('frontend.property.partials.property_list', compact('properties', 'favoriteIds'))->render(),
+                'pagination' => $properties->links()->toHtml(),
+            ]);
+        }
+
+        // For non-AJAX requests, return the full view
+        $categories = Categories::with('subcategories')->get(); // Fetch categories for the view
+        return view('frontend.product', compact('categories', 'properties', 'favoriteIds'));
+    }
+
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'location' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id', // Ensure this matches the form field name
+            'sub_category_id' => 'required|exists:sub_categories,id', // Ensure this matches the form field name
+            'min_price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|min:0',
+        ]);
+
+        // Additional validation for price range
+        if ($request->has('min_price') && $request->has('max_price')) {
+            $request->validate([
+                'max_price' => 'gte:min_price',
+            ]);
+        }
+
+        // Get the search parameters from the request
+        $location = $request->input('location');
+        $categoryId = $request->input('category_id');
+        $subCategoryId = $request->input('sub_category_id');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        // Start building the query
+        $query = Propeerty::query();
+
+        // Apply location filter
+        if ($location) {
+            $query->where('property_location', 'like', '%' . $location . '%');
+        }
+
+        // Apply category filter
+        if ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }
+
+        // Apply subcategory filter
+        if ($subCategoryId) {
+            $query->where('sub_category_id', $subCategoryId);
+        }
+
+        // Apply price range filter
+        if ($minPrice && $maxPrice) {
+            $query->whereBetween('property_sell_price', [$minPrice, $maxPrice]);
+        } elseif ($minPrice) {
+            $query->where('property_sell_price', '>=', $minPrice);
+        } elseif ($maxPrice) {
+            $query->where('property_sell_price', '<=', $maxPrice);
+        }
+
+        // Fetch the filtered properties
+        $properties = $query->with(['category', 'subcategory'])->paginate(10);
+
+        // Fetch favorite IDs for authenticated users
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+        // Fetch all categories with their subcategories
+        $categories = Categories::with('subcategories')->get();
+
+
+
+        // Fetch favorite IDs for authenticated users
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+
+        // Return the view with the filtered properties
+        return view('frontend.product', compact('properties', 'favoriteIds', 'categories'));
     }
 }

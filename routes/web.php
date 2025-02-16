@@ -80,7 +80,7 @@ Route::prefix('auth/google')->group(function () {
 Route::middleware(['auth', 'user'])->group(function () {
 
     Route::get('/', [FrontendController::class, 'index'])->name('index');
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'user_dashboard'])->name('user.dashboard');
 
     Route::get('/list-property/request', [FrontendController::class, 'request'])->name('list-property');
     Route::post('/request/submit', [FrontendController::class, 'submitRequest'])->name('request_submit');
@@ -95,6 +95,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/new-password', [AuthController::class, 'changeCredentials'])->name('new.password.post');
     Route::post('/property/{id}/review', [PropertyReviewController::class, 'store'])->name('property.review.store');
     Route::post('/favorites/toggle', [FavouritesController::class, 'store'])->name('favorites.toggle');
+    Route::get('/favorites/list', [FavouritesController::class, 'myFavourites'])->name('favorites.list');
+
     Route::post('cart/add', [CartController::class, 'store'])->name('cart.add');
     Route::post('/property/message/store', [PropeertyController::class, 'message_store'])->name('property.message.store');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -119,6 +121,18 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/payment/success', [StripePaymentController::class, 'paymentSuccess'])->name('payment.success.stripe');
     Route::get('/payment/failure', [StripePaymentController::class, 'paymentFailure'])->name('payment.failure.stripe');
     Route::get('/payment/invoice/{transaction_uuid}', [StripePaymentController::class, 'paymentInvoice'])->name('payment.invoice.stripe');
+
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/my-cart', [DashboardController::class, 'myCart'])->name('profile.myCart');
+        Route::get('/payment-history', [DashboardController::class, 'myPaymentHistory'])->name('profile.paymentHistory');
+        Route::get('/your-favorites', [DashboardController::class, 'myFavourites'])->name('profile.myFavourites');
+        Route::get('/edit-profile', [DashboardController::class, 'editProfile'])->name('profile.editProfile');
+        Route::get('/my-chats', [DashboardController::class, 'myChats'])->name('profile.myChats');
+        Route::get('/edit', [DashboardController::class, 'edit'])->name('profile.edit');
+        Route::patch('/update/{id?}', [DashboardController::class, 'updateProfile'])->name('profile.update');
+        Route::get('/payment-invoice/{transaction_uuid}', [DashboardController::class, 'paymentInvoice'])->name('profile.payment.invoice');
+    });
 });
 
 // Route::post('/favorites/toggle', [FavouritesController::class, 'store'])->name('favorites.toggle');
@@ -131,12 +145,20 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/blog-details/{id}', 'blog_details')->name('blog.details');
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/gallery', 'gallery')->name('gallery');
-    Route::get('/product/{categoryId}/{subcategoryId}', 'product')->name('product');
+    Route::get('/product/{categoryId}  ', 'product_filter')->name('product');
+    Route::get('/products-or-property', 'product_or_property')->name('product_or_property');
     Route::get('/faq', 'faq')->name('faq');
     Route::get('/get-subcategories/{categoryId}', 'getSubCategories')->name('get.subcategories');
+
     Route::get('/property-details/{id}', 'property_details')->name('property.details');
     Route::get('/about-dynamic/{id}', 'dynamic')->name('about_dynamic');
+    Route::get('/properties', 'properties')->name('properties.index');
+    Route::get('/properties/search', 'search')->name('properties.search');
+
+    // Filter properties
+    Route::get('/properties/filter', 'filter')->name('properties.filter');
 });
+
 
 // Super Admin Routes
 Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function () {
@@ -269,6 +291,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::patch('/product/{id}/publish', [PropeertyController::class, 'publish'])->name('product.publish');
     Route::patch('/product/{id}/unpublish', [PropeertyController::class, 'unpublish'])->name('product.unpublish');
     Route::get('/product/images/{id}', [PropertyImagesController::class, 'index'])->name('products.images');
+    Route::get('/product/review/{id}', [PropertyReviewController::class, 'showPropertyReviews'])->name('property.review');
+    Route::delete('/product/review/delete/{id}', [PropertyReviewController::class, 'destroy'])->name('property.review.delete');
+    Route::get('/product/message/{id}', [PropeertyController::class, 'message'])->name('property.contact');
+    Route::delete('/product/message/delete/{id}', [PropeertyController::class, 'messageDelete'])->name('property.message.delete');
+    Route::get('/property/payments/{id}', [PropeertyController::class, 'payments_details'])->name('property.payments');
 
     Route::resource('property-images', PropertyImagesController::class)->except('index');
     Route::get('/property-image/trash-view/{id}', action: [PropertyImagesController::class, 'trashView'])->name('property-images.trash-view');
