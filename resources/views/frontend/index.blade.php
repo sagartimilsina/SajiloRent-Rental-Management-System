@@ -517,7 +517,7 @@
                         </div>
                     </div>
                     <!-- Gallery Description -->
-                    <div class="col-xl-6 col-md-12 col-lg-4">
+                    <div class="col-xl-6 col-md-12 col-lg-4 ">
                         <h1 class="gallery-title">
                             Our Photo Gallery
                         </h1>

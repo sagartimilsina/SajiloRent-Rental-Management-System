@@ -35,6 +35,8 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\RequestOwnerListsController;
 use App\Http\Controllers\TenantAgreementwithSystemController;
 
+use App\Http\Controllers\ContactController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +51,7 @@ Route::get('/send-otp', function () {
     return view('welcome');
 });
 
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 Route::get('/send-message', [MessageChatController::class, 'index'])->name('send-message')->middleware('auth');
@@ -111,6 +114,9 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::get('/esewa/success', [EsewaPaymentController::class, 'success'])->name('esewa.success');
     Route::get('/esewa/failure', [EsewaPaymentController::class, 'failure'])->name('esewa.failure');
     Route::get('/esewa/invoice/{transaction_uuid}', [EsewaPaymentController::class, 'paymentInvoice'])->name('esewa.invoice');
+
+    // contact form store
+
 
 
 
@@ -259,6 +265,7 @@ Route::middleware(['auth', 'superAdmin'])->prefix('superAdmin')->group(function 
     Route::get('payments', action: [PaymentsController::class, 'index'])->name('superadmin.payment.index');
     Route::get('/payment-invoice/{transaction_uuid}', [PaymentsController::class, 'paymentInvoice'])->name('superadmin.payment.invoice');
 });
+
 
 
 

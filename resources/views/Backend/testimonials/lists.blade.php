@@ -4,6 +4,8 @@
 
 @section('content')
     <div class="container py-5">
+<<<<<<< HEAD
+=======
         {{-- <!-- Success Alert -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
@@ -12,6 +14,7 @@
             </div>
         @endif
         <!-- End of Success Alert --> --}}
+>>>>>>> e6e0a1f4e1304c5ead4ad7deaaf72830573ecbed
 
         <div class="row">
             <div class="col-12">
@@ -53,7 +56,6 @@
                             <thead class="table-light ">
                                 <tr>
                                     <th>SN</th>
-                                    {{-- <th>Category</th> --}}
                                     <th>Name</th>
                                     <th>Position</th>
                                     <th>Rating</th>
@@ -67,11 +69,6 @@
                                 @foreach ($testimonials as $item)
                                     <tr class="align-middle">
                                         <td>{{ $loop->iteration }}</td>
-                                        {{-- @if ($item->category)
-                                            <td>{{ $item->category->name }}</td>
-                                        @else
-                                            <td>N/A</td>
-                                        @endif --}}
                                         <td><strong>{{ $item->name }}</strong></td>
                                         <td>{{ $item->position }}</td>
                                         <td>{{ $item->rating }}</td>
