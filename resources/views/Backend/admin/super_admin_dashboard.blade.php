@@ -189,7 +189,7 @@
 
         <!-- Request Applications Cards -->
         <div class="row mt-4">
-            @foreach ([['Pending Requests', $pending_request_applications, 'bx-hourglass', 'warning'], ['Approved Requests', $approved_request_applications, 'bx-check-circle', 'success'], ['Rejected Requests', $rejected_request_applications, 'bx-x-circle', 'danger'], ['Expired Requests', $expired_request_applications, 'bx-timer', 'secondary']] as [$title, $count, $icon, $color])
+            @foreach ([['Pending ', $pending_request_applications, 'bx-hourglass', 'warning'], ['Approved ', $approved_request_applications, 'bx-check-circle', 'success'], ['Rejected ', $rejected_request_applications, 'bx-x-circle', 'danger'], ['Expired ', $expired_request_applications, 'bx-timer', 'secondary']] as [$title, $count, $icon, $color])
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
                     <a href="{{ route('RequestOwnerLists.index', ['status' => $title]) }}">
                         <div class="card shadow-sm border-0 rounded-3">

@@ -65,6 +65,8 @@ Route::get('/load-more-gallery', [GalleryController::class, 'loadMore'])->name('
 // Auth Routes
 
 
+
+
 Route::prefix('auth')->group(function () {
     // Login Routes
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -191,6 +193,7 @@ Route::controller(FrontendController::class)->group(function () {
     Route::get('/about-dynamic/{id}', 'dynamic')->name('about_dynamic');
     Route::get('/properties', 'properties')->name('properties.index');
     Route::get('/properties/search', 'search')->name('properties.search');
+    Route::get('/seraching', 'serachthroughsearchinput')->name('seraching');
 
     // Filter properties
     Route::get('/properties/filter', 'filter')->name('properties.filter');

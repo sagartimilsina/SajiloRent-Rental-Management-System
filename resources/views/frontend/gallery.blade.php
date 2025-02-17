@@ -9,7 +9,7 @@
             <div class="row justify-content-center" id="imageGallery">
                 @foreach ($gallery_images as $images)
                     <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="gallery-item" data-bs-toggle="modal" data-bs-target="#imageModal"
+                        <div class="gallery-item" data-bs-toggle="modal{{ $images->id }}" data-bs-target="#imageModal"
                             data-bs-image="{{ asset('storage/' . $images->gallery_file) }}"
                             data-bs-title="{{ $images->gallery_name }}">
                             <img alt="{{ $images->gallery_name }}" height="300"

@@ -131,7 +131,7 @@
                 </a>
             </li>
 
-            <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
+            {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>
                     <div data-i18n="Layouts">Maintenance and Support</div>
@@ -148,7 +148,7 @@
                         </a>
                     </li>
                 </ul>
-            </li> --}}
+            </li>  --}}
             {{-- <li class="menu-item {{ request()->is('superadmin.companies.index*') ? 'active open' : '' }}">
                 <a href="#" class="menu-link menu-toggle">
                     <i class="menu-icon bx bx-user"></i>

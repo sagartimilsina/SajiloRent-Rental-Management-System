@@ -399,7 +399,7 @@
 
 
                     @if ($apartments->count() > 0)
-                        <div class="row">
+                        <div class="row justify-content-center">
                             @foreach ($apartments as $apartment)
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
                                     <div class="card h-100 shadow-sm">

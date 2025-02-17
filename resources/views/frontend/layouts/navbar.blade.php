@@ -181,17 +181,11 @@
             @endif
         </div>
     </div>
-
-
-
-
 </nav>
-
-
-
 <!-- Search Form -->
-<form class="navbar-search d-none position-absolute">
-    <input class="form-control me-2 search" type="search" placeholder="Search" aria-label="Search">
+<form class="navbar-search d-none position-absolute" action="{{ route('seraching') }}" method="GET">
+    <input class="form-control me-2 search" type="search" name ="search" placeholder="Search through our products"
+        aria-label="Search">
 </form>
 <script>
     document.addEventListener("DOMContentLoaded", () => {

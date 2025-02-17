@@ -63,7 +63,7 @@ class FrontendController extends Controller
         $achievements = Achievement::all();
 
 
-        return view('frontend.index', compact('Sliders', 'categories','achievements', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
+        return view('frontend.index', compact('Sliders', 'categories', 'achievements', 'abouts', 'apartments', 'galleries', 'testimonials', 'blogs', 'favoriteIds'));
     }
     // In your Controller
     public function getSubcategories($id)
@@ -447,6 +447,32 @@ class FrontendController extends Controller
         }
 
         // Return the view with the filtered properties
+        return view('frontend.product', compact('properties', 'favoriteIds', 'categories'));
+    }
+
+
+    public function serachthroughsearchinput(Request $request)
+    {
+
+        $search = $request->input('search');
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+        // Fetch all categories with their subcategories
+        $categories = Categories::with('subcategories')->get();
+        // Fetch favorite IDs for authenticated users
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Favourites::where('user_id', Auth::id())
+                ->where('favourite_status', true)
+                ->pluck('property_id')
+                ->toArray();
+        }
+        $properties = Propeerty::where('property_name', 'like', '%' . $search . '%')->paginate(20);
         return view('frontend.product', compact('properties', 'favoriteIds', 'categories'));
     }
 }

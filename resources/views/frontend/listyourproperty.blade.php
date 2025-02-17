@@ -146,7 +146,8 @@
                                         <input type="checkbox" class="form-check-input text-dark" id="agreeTerms"
                                             name="agree_terms">
                                         <label class="form-check-label" for="agreeTerms">
-                                            I agree to the terms and conditions of the system.
+                                            I agree to the <a href="{{ url('/about-dynamic/2') }}" class="text-decoration-none " target="_blank">terms and conditions
+                                            </a> of the system.
                                         </label>
                                         @error('agree_terms')
                                             <span class="text-danger mt-1 d-block">{{ $message }}</span>
