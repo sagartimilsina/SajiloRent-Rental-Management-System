@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('property_id');
             $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
-            $table->foreignId('user_id');
+            // $table->foreignId('user_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->longText('property_review');
             $table->string('property_rating');
             $table->string('read_status')->default('unread');

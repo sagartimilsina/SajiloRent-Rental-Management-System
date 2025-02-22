@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('maintaintance_requests', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('property_id');
-            $table->foreignId('property_id');
-            // $table->unsignedBigInteger('user_id');
-            $table->foreignId('user_id');
+            $table->unsignedBigInteger('property_id');
+            // $table->foreignId('property_id');
+            $table->unsignedBigInteger('user_id');
+            // $table->foreignId('user_id');
+            $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('request_type');
             $table->string('request_description');
             $table->enum('request_status', ['pending', 'approved', 'rejected', 'completed'])->default('pending');

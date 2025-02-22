@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('user_id');
-            $table->foreignId('user_id');
-            // $table->unsignedBigInteger('property_id');
-            $table->foreignId('property_id');
+             $table->unsignedBigInteger('user_id');
+            // $table->foreignId('user_id');
+             $table->unsignedBigInteger('property_id');
+            // $table->foreignId('property_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('property_id')->references('id')->on('propeerties')->onDelete('cascade');
             $table->enum('tenant_status', ['active', 'inactive'])->default('active');
             $table->softDeletes();
             $table->timestamps();
