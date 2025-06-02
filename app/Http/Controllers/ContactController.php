@@ -21,7 +21,7 @@ class ContactController extends Controller
         $contact = Contact::create($validated);
 
         // Send Email
-        Mail::to('aashishpaudel.xdezo@gmail.com')->send(new ContactMail($contact));
+        Mail::to('timilsinasagaro4@gmail.com')->send(new ContactMail($contact));
 
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }
